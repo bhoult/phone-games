@@ -2,7 +2,10 @@
 
 Made by Claude Fable 5.2, instigated by [Brandon Hoult](https://hoult.co).
 
-![Title screen, a lake level, the pitiful look, and a win](docs/screens.jpg)
+**[Play it in your browser](https://bhoult.github.io/phone-games/rufus-crush/)**, or on your phone: open that link and
+add it to the home screen. After the first visit it plays with no connection.
+
+[![Title screen, a lake level, the pitiful look, and a win](docs/screens.jpg)](https://bhoult.github.io/phone-games/rufus-crush/)
 
 A match-3 for phones about the very busy life of one black lab. Line up tennis
 balls, squirrels, cats, stolen socks, poodles, squeaky toys and sticks across
@@ -14,6 +17,10 @@ Written in Rust, drawn with WebGL, compiled to one WebAssembly file. Everything
 offline.
 
 ## Play it
+
+Online: <https://bhoult.github.io/phone-games/rufus-crush/>
+
+From a copy of this repository:
 
 ```
 ./build.sh serve
@@ -50,7 +57,14 @@ Each level is rated one to three paws. Progress is saved on the device.
 
 ## Putting it on a phone
 
-### Android: the app (recommended)
+### Any phone: the web page (easiest)
+
+Open <https://bhoult.github.io/phone-games/rufus-crush/> on the phone and choose "Add to Home screen" (Android Chrome:
+the menu; iPhone Safari: the share button). A service worker caches all nine
+files of the game on the first visit, so from then on it starts from the home
+screen and plays with no connection. Progress is kept on the phone.
+
+### Android: the app
 
 ```
 android/build.sh install
@@ -65,20 +79,16 @@ the phone and open.
 Needs the Android SDK (`ANDROID_HOME`, default `~/Android/Sdk`) and a JDK 17+
 (`JAVA_HOME`).
 
-### Any phone: the web page
+### Hosting it yourself
 
-`./build.sh` leaves the whole game in `dist/` as nine static files. Put that
-folder on any web host and open it on the phone, then "Add to Home screen". A
-service worker caches all nine files on the first visit, so after that it
-starts and plays with no connection.
+`./build.sh` leaves the whole game in `dist/` as nine static files that can go
+on any web host. One catch: browsers only allow the offline caching on
+**https** or **localhost**. Opening `http://192.168.x.x:8080` over wifi plays
+fine but will not install for offline use.
 
-One catch: browsers only allow that offline caching on **https** or
-**localhost**. Opening `http://192.168.x.x:8080` over wifi plays fine but will
-not install for offline use. Two ways round it without a host:
-
-- Android: `adb reverse tcp:8080 tcp:8080`, then open `http://localhost:8080`
-  in Chrome on the phone and add it to the home screen.
-- Or use the APK above.
+The copy at the link above is `docs/rufus-crush` at the top of this
+repository, served by GitHub Pages. `./build.sh pages` rebuilds it; commit and
+push to publish.
 
 ## How it's put together
 
@@ -175,7 +185,8 @@ progress or settings (`unlock`, `mute`, `difficulty`) never writes to saved data
 
 ## Updating a copy that is already installed
 
-The web page: reload it, wait a few seconds, and reload it again. The first
+The web page, or the copy on your home screen: reload it, wait a few seconds,
+and reload it again (on a phone, close it and open it twice). The first
 reload fetches the new build in the background while still showing the old
 one; the second one runs it. Progress is kept. The Android app: run
 `android/build.sh install` again.

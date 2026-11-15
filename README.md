@@ -7,9 +7,13 @@ handful of static files, and plays with no connection.
 
 | Game | What it is |
 | --- | --- |
-| [Rufus Crush](rufus-crush/) | A match-3 about the very busy life of one black lab. Rust and WebGL, 36 levels, Easy / Normal / Hard. |
+| [Rufus Crush](rufus-crush/) | A match-3 about the very busy life of one black lab. Rust and WebGL, 36 levels, Easy / Normal / Hard. **[Play it](https://bhoult.github.io/phone-games/rufus-crush/)** |
 
-![Rufus Crush](rufus-crush/docs/screens.jpg)
+**[Play Rufus Crush in your browser](https://bhoult.github.io/phone-games/rufus-crush/)**, or on your phone: open that
+link and add it to the home screen. After the first visit it plays with no
+connection. All the games are listed at <https://bhoult.github.io/phone-games/>.
+
+[![Rufus Crush: the title screen, a lake level, the pitiful look, and a win](rufus-crush/docs/screens.jpg)](https://bhoult.github.io/phone-games/rufus-crush/)
 
 ## Licence
 

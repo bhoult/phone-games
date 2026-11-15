@@ -4,6 +4,8 @@
 #
 #   ./build.sh          build
 #   ./build.sh serve    build, then serve on http://localhost:8080
+#   ./build.sh pages    build, then copy into ../docs/rufus-crush, which is
+#                       what GitHub Pages serves: commit and push to publish
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -45,6 +47,14 @@ BUILD_ID=$(cat dist/index.html dist/rufus.js dist/engine.js dist/rufus-crush.was
 sed "s/__BUILD_ID__/$BUILD_ID/" web/sw.js > dist/sw.js
 
 echo "built dist/ ($(du -sh dist | cut -f1), build $BUILD_ID)"
+
+if [[ "${1:-}" == "pages" ]]; then
+  rm -rf ../docs/rufus-crush
+  mkdir -p ../docs
+  cp -r dist ../docs/rufus-crush
+  touch ../docs/.nojekyll
+  echo "copied to ../docs/rufus-crush: commit and push to publish it"
+fi
 
 if [[ "${1:-}" == "serve" ]]; then
   PORT="${PORT:-8080}"
