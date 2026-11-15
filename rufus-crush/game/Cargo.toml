@@ -1,0 +1,15 @@
+[package]
+name = "rufus-crush"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[dependencies]
+macroquad = "0.4"
+rufus-core = { path = "../core" }
+quad-snd = "0.2"
+
+[build-dependencies]
+resvg = { version = "0.45", default-features = false }
+png = "0.17"
+

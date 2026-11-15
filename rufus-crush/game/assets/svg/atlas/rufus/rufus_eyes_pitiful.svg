@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="208" height="120" viewBox="85 58 130 75">
+  <!-- the look: enormous, wet, aimed straight up at you -->
+  <ellipse cx="123" cy="103" rx="18" ry="19.5" fill="#7a4416" stroke="#040405" stroke-width="2.6"/>
+  <ellipse cx="123" cy="108" rx="14.5" ry="13" fill="#c47a24"/>
+  <circle cx="124" cy="99" r="12" fill="#040405"/>
+  <circle cx="118.5" cy="92.5" r="6.4" fill="#fff"/>
+  <circle cx="130" cy="104.5" r="3.4" fill="#fff" opacity="0.95"/>
+  <circle cx="119" cy="106" r="1.8" fill="#fff" opacity="0.8"/>
+  <ellipse cx="177" cy="103" rx="18" ry="19.5" fill="#7a4416" stroke="#040405" stroke-width="2.6"/>
+  <ellipse cx="177" cy="108" rx="14.5" ry="13" fill="#c47a24"/>
+  <circle cx="176" cy="99" r="12" fill="#040405"/>
+  <circle cx="170.5" cy="92.5" r="6.4" fill="#fff"/>
+  <circle cx="182" cy="104.5" r="3.4" fill="#fff" opacity="0.95"/>
+  <circle cx="171" cy="106" r="1.8" fill="#fff" opacity="0.8"/>
+  <!-- welling up along the lower lids -->
+  <path d="M109 115 Q123 126 138 115" fill="none" stroke="#cfeaff" stroke-width="3.6" stroke-linecap="round"/>
+  <path d="M162 115 Q177 126 191 115" fill="none" stroke="#cfeaff" stroke-width="3.6" stroke-linecap="round"/>
+  <!-- brows: inner ends as high as they will go -->
+  <path d="M101 93 Q117 79 142 67" fill="none" stroke="#9aa0ba" stroke-width="6" stroke-linecap="round"/>
+  <path d="M199 93 Q183 79 158 67" fill="none" stroke="#9aa0ba" stroke-width="6" stroke-linecap="round"/>
+  <path d="M133 64 q4 -3 8 -3 M167 64 q-4 -3 -8 -3" fill="none" stroke="#5b6076" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- one tear, held in reserve -->
+  <path d="M196 117 C199 122 201 125 201 128 A5 5 0 0 1 191 128 C191 125 193 122 196 117 Z" fill="#bfe6ff" stroke="#6fb2e6" stroke-width="1.6" stroke-linejoin="round"/>
+</svg>

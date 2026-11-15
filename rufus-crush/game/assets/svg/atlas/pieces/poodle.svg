@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100">
+  <ellipse cx="50" cy="93" rx="32" ry="4.5" fill="#000" opacity="0.18"/>
+  <!-- outline pass, then fill pass, so the curls merge into one fluffy shape -->
+  <g fill="#8a82b4" stroke="#8a82b4" stroke-width="7" stroke-linejoin="round">
+    <circle cx="50" cy="21" r="14"/><circle cx="37" cy="27" r="10"/><circle cx="63" cy="27" r="10"/>
+    <circle cx="19" cy="55" r="14"/><circle cx="17" cy="72" r="11.5"/><circle cx="27" cy="42" r="10"/>
+    <circle cx="81" cy="55" r="14"/><circle cx="83" cy="72" r="11.5"/><circle cx="73" cy="42" r="10"/>
+    <ellipse cx="50" cy="58" rx="25" ry="26"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="50" cy="21" r="14"/><circle cx="37" cy="27" r="10"/><circle cx="63" cy="27" r="10"/>
+    <circle cx="19" cy="55" r="14"/><circle cx="17" cy="72" r="11.5"/><circle cx="27" cy="42" r="10"/>
+    <circle cx="81" cy="55" r="14"/><circle cx="83" cy="72" r="11.5"/><circle cx="73" cy="42" r="10"/>
+    <ellipse cx="50" cy="58" rx="25" ry="26"/>
+  </g>
+  <!-- soft curl shading -->
+  <g fill="none" stroke="#dcd6f2" stroke-width="2.6" stroke-linecap="round">
+    <path d="M10 58 Q13 66 20 64"/><path d="M12 76 Q17 82 23 78"/><path d="M90 58 Q87 66 80 64"/><path d="M88 76 Q83 82 77 78"/>
+    <path d="M40 14 Q46 20 52 15"/><path d="M56 24 Q61 28 66 24"/>
+  </g>
+  <ellipse cx="50" cy="70" rx="13.5" ry="10.5" fill="#fff3e6"/>
+  <!-- face -->
+  <circle cx="39.5" cy="54" r="4.6" fill="#221a2e"/><circle cx="41" cy="52.5" r="1.6" fill="#fff"/>
+  <circle cx="60.5" cy="54" r="4.6" fill="#221a2e"/><circle cx="62" cy="52.5" r="1.6" fill="#fff"/>
+  <ellipse cx="50" cy="64" rx="5.4" ry="4" fill="#221a2e"/>
+  <path d="M50 68 V71 M50 71 Q45 76 41 72 M50 71 Q55 76 59 72" fill="none" stroke="#5a4f7c" stroke-width="1.9" stroke-linecap="round"/>
+  <path d="M46.5 74 Q50 82 53.5 74 Z" fill="#ff8fa6" stroke="#c4506c" stroke-width="1.1" stroke-linejoin="round"/>
+  <!-- bow -->
+  <path d="M50 22 L35 13 Q32 22 35 31 Z" fill="#ff5fa2" stroke="#b02468" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M50 22 L65 13 Q68 22 65 31 Z" fill="#ff5fa2" stroke="#b02468" stroke-width="2.2" stroke-linejoin="round"/>
+  <circle cx="50" cy="22" r="4.8" fill="#ff8cc0" stroke="#b02468" stroke-width="2.2"/>
+</svg>

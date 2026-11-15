@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="20" y1="20" x2="70" y2="80">
+      <stop offset="0" stop-color="#d79a58"/>
+      <stop offset="1" stop-color="#9a6130"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="50" cy="92" rx="30" ry="4.5" fill="#000" opacity="0.18"/>
+  <!-- leaves, behind the twig -->
+  <g stroke="#1f7a2e" stroke-width="2.6" stroke-linejoin="round">
+    <path d="M33 24 C20 22 11 13 10 4 C22 3 33 9 37 20 Z" fill="#5fd04e"/>
+    <path d="M38 22 C40 10 49 3 59 3 C59 14 52 23 41 26 Z" fill="#8ae35a"/>
+  </g>
+  <path d="M14 7 Q24 12 34 22 M55 6 Q48 14 40 24" fill="none" stroke="#1f7a2e" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+  <!-- outline -->
+  <g fill="none" stroke="#4a2a10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 78 Q44 64 60 46 Q72 32 84 20" stroke-width="23"/>
+    <path d="M50 55 Q41 42 37 27" stroke-width="15.5"/>
+  </g>
+  <!-- wood -->
+  <g fill="none" stroke="url(#g)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 78 Q44 64 60 46 Q72 32 84 20" stroke-width="16"/>
+    <path d="M50 55 Q41 42 37 27" stroke-width="9"/>
+  </g>
+  <!-- light along the top edge -->
+  <path d="M19 72 Q43 59 57 43 Q68 30 79 19" fill="none" stroke="#f3c88a" stroke-width="3.4" stroke-linecap="round" opacity="0.85"/>
+  <!-- bark marks and tooth marks: this is a well-loved stick -->
+  <path d="M30 76 q5 -1 8 -5 M66 43 q4 -2 6 -6 M43 66 q3 0 5 -3" fill="none" stroke="#6a3d18" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M52 50 l5 4 M57 45 l5 4" fill="none" stroke="#f6dcae" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- sawn ends -->
+  <ellipse cx="16.5" cy="78.5" rx="6.6" ry="7.4" transform="rotate(-27 16.5 78.5)" fill="#f6dcae" stroke="#4a2a10" stroke-width="2.6"/>
+  <ellipse cx="16.5" cy="78.5" rx="2.8" ry="3.3" transform="rotate(-27 16.5 78.5)" fill="none" stroke="#c9995a" stroke-width="1.7"/>
+  <ellipse cx="84.5" cy="19.5" rx="6.6" ry="7.4" transform="rotate(-42 84.5 19.5)" fill="#f6dcae" stroke="#4a2a10" stroke-width="2.6"/>
+  <ellipse cx="84.5" cy="19.5" rx="2.8" ry="3.3" transform="rotate(-42 84.5 19.5)" fill="none" stroke="#c9995a" stroke-width="1.7"/>
+</svg>

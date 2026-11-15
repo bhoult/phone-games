@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="333" height="285" viewBox="46 150 208 178">
+  <!-- haunches -->
+  <ellipse cx="96" cy="284" rx="40" ry="36" fill="#1a1b21" stroke="#08080b" stroke-width="3.5"/>
+  <ellipse cx="204" cy="284" rx="40" ry="36" fill="#1a1b21" stroke="#08080b" stroke-width="3.5"/>
+  <path d="M62 272 Q68 254 86 250" fill="none" stroke="#5b6076" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+  <!-- back feet -->
+  <ellipse cx="86" cy="314" rx="27" ry="11.5" fill="#25262d" stroke="#08080b" stroke-width="3.5"/>
+  <ellipse cx="214" cy="314" rx="27" ry="11.5" fill="#25262d" stroke="#08080b" stroke-width="3.5"/>
+  <!-- torso -->
+  <path d="M150 158 C192 158 207 200 207 246 C207 292 186 318 150 318 C114 318 93 292 93 246 C93 200 108 158 150 158 Z" fill="#25262d" stroke="#08080b" stroke-width="3.5"/>
+  <ellipse cx="150" cy="232" rx="27" ry="38" fill="#353741" opacity="0.9"/>
+  <!-- front legs -->
+  <path d="M117 232 C117 262 116 290 116 306 L142 306 C142 290 143 262 143 236 Z" fill="#25262d" stroke="#08080b" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M183 232 C183 262 184 290 184 306 L158 306 C158 290 157 262 157 236 Z" fill="#25262d" stroke="#08080b" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M122 240 V292" stroke="#5b6076" stroke-width="3.5" stroke-linecap="round" opacity="0.6"/>
+  <ellipse cx="128" cy="313" rx="19" ry="10.5" fill="#25262d" stroke="#08080b" stroke-width="3.5"/>
+  <ellipse cx="172" cy="313" rx="19" ry="10.5" fill="#25262d" stroke="#08080b" stroke-width="3.5"/>
+  <path d="M122 313 V320 M134 313 V320 M166 313 V320 M178 313 V320 M79 315 V322 M93 315 V322 M207 315 V322 M221 315 V322" stroke="#08080b" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- collar and tag -->
+  <path d="M104 172 Q150 200 196 172 L198 188 Q150 218 102 188 Z" fill="#ef3340" stroke="#7d0f1b" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M110 177 Q150 201 190 177" fill="none" stroke="#ff8a8f" stroke-width="2.6" stroke-linecap="round" opacity="0.8"/>
+  <circle cx="150" cy="212" r="10.5" fill="#ffd23a" stroke="#9a5b00" stroke-width="2.6"/>
+  <circle cx="147" cy="209" r="3" fill="#fff6c2"/>
+</svg>

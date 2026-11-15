@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff07a"/>
+      <stop offset="0.5" stop-color="#ffc21f"/>
+      <stop offset="1" stop-color="#e58a00"/>
+    </linearGradient>
+    <radialGradient id="in" cx="50%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#fffbd0"/>
+      <stop offset="1" stop-color="#ffd84a"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="50" cy="94" rx="30" ry="4" fill="#000" opacity="0.18"/>
+  <circle cx="50" cy="50" r="43" fill="url(#rim)" stroke="#8f5200" stroke-width="3.5"/>
+  <circle cx="50" cy="50" r="34.5" fill="url(#in)" stroke="#c77a00" stroke-width="1.8"/>
+  <!-- Rufus -->
+  <path d="M27 40 C19 44 17 58 22 68 C27 69 32 62 33 52 Z" fill="#1d1e24" stroke="#0a0a0d" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M73 40 C81 44 83 58 78 68 C73 69 68 62 67 52 Z" fill="#1d1e24" stroke="#0a0a0d" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M50 26 C66 26 74 37 74 50 C74 66 64 77 50 77 C36 77 26 66 26 50 C26 37 34 26 50 26 Z" fill="#26272f" stroke="#0a0a0d" stroke-width="2.2"/>
+  <path d="M34 36 Q42 29 52 30" fill="none" stroke="#4c5062" stroke-width="2.6" stroke-linecap="round"/>
+  <ellipse cx="50" cy="63" rx="14" ry="11" fill="#363842"/>
+  <circle cx="40" cy="47" r="5" fill="#9a5a1e"/><circle cx="40" cy="47" r="2.9" fill="#0a0a0d"/><circle cx="41.6" cy="45.4" r="1.5" fill="#fff"/>
+  <circle cx="60" cy="47" r="5" fill="#9a5a1e"/><circle cx="60" cy="47" r="2.9" fill="#0a0a0d"/><circle cx="61.6" cy="45.4" r="1.5" fill="#fff"/>
+  <ellipse cx="50" cy="57" rx="6.2" ry="4.4" fill="#08080a"/><ellipse cx="48.4" cy="55.6" rx="2.2" ry="1.1" fill="#6d7186"/>
+  <path d="M50 61 V64 M50 64 Q44 70 39.5 65.5 M50 64 Q56 70 60.5 65.5" fill="none" stroke="#08080a" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M45.5 66.5 Q50 80 54.5 66.5 Z" fill="#ff7d92" stroke="#b83a55" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- sparkles -->
+  <path d="M15 17 L17.2 23 L23 25 L17.2 27 L15 33 L12.8 27 L7 25 L12.8 23 Z" fill="#fff"/>
+  <path d="M85 68 L86.8 73 L92 75 L86.8 77 L85 82 L83.2 77 L78 75 L83.2 73 Z" fill="#fff"/>
+  <path d="M82 10 L83.3 13.6 L87 15 L83.3 16.4 L82 20 L80.7 16.4 L77 15 L80.7 13.6 Z" fill="#fff"/>
+</svg>

@@ -1,0 +1,7 @@
+[package]
+name = "rufus-core"
+version = "0.1.0"
+edition = "2021"
+description = "Rufus Crush board rules: pure logic, no rendering, no dependencies."
+
+[dependencies]

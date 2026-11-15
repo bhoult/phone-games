@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="512" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9c4"/><stop offset="1" stop-color="#ffd8a0"/></linearGradient>
+    <linearGradient id="rug" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a999ea"/><stop offset="1" stop-color="#8c78d8"/></linearGradient>
+    <linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc8f8"/><stop offset="1" stop-color="#d8f2ff"/></linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#wall)"/>
+  <g stroke="#ffcf8f" stroke-width="12" opacity="0.5"><path d="M30 0 V300"/><path d="M90 0 V300"/><path d="M150 0 V300"/><path d="M210 0 V300"/><path d="M270 0 V300"/><path d="M330 0 V300"/><path d="M390 0 V300"/><path d="M450 0 V300"/><path d="M510 0 V300"/><path d="M570 0 V300"/><path d="M630 0 V300"/><path d="M690 0 V300"/><path d="M750 0 V300"/></g>
+  <rect x="0" y="268" width="800" height="34" fill="#f2bd80"/>
+  <rect x="0" y="262" width="800" height="8" fill="#d89a58"/>
+  <!-- window -->
+  <g transform="translate(470 46)">
+    <rect x="-8" y="-8" width="216" height="166" rx="8" fill="#fff" stroke="#b9895a" stroke-width="4"/>
+    <rect x="4" y="4" width="192" height="142" fill="url(#win)"/>
+    <g fill="#fff" opacity="0.9"><ellipse cx="60" cy="50" rx="30" ry="11"/><circle cx="50" cy="42" r="12"/><circle cx="70" cy="38" r="15"/></g>
+    <path d="M4 146 V112 Q60 84 110 108 T196 100 V146 Z" fill="#7fd67a"/>
+    <path d="M100 4 V146 M4 76 H196" stroke="#fff" stroke-width="7"/>
+    <path d="M-8 -8 Q22 60 -8 150 Z" fill="#ff8a7a" stroke="#c4483c" stroke-width="2.6"/>
+    <path d="M208 -8 Q178 60 208 150 Z" fill="#ff8a7a" stroke="#c4483c" stroke-width="2.6"/>
+    <rect x="-18" y="-18" width="236" height="12" rx="6" fill="#b9895a"/>
+  </g>
+  <!-- framed portrait of the household's most important member -->
+  <g transform="translate(330 70)">
+    <rect x="0" y="0" width="92" height="104" rx="5" fill="#fffaf0" stroke="#8a5a2b" stroke-width="7"/>
+    <g fill="#8a5a2b" opacity="0.85" transform="translate(46 56)"><ellipse cx="0" cy="12" rx="20" ry="16"/><ellipse cx="-22" cy="-8" rx="8" ry="10.5" transform="rotate(-24 -22 -8)"/><ellipse cx="-8" cy="-22" rx="8" ry="11"/><ellipse cx="8" cy="-22" rx="8" ry="11"/><ellipse cx="22" cy="-8" rx="8" ry="10.5" transform="rotate(24 22 -8)"/></g>
+  </g>
+  <!-- floor lamp -->
+  <g transform="translate(748 96)"><path d="M0 60 V226" stroke="#7a6a5a" stroke-width="6"/><ellipse cx="0" cy="228" rx="26" ry="7" fill="#7a6a5a"/><path d="M-34 60 L-22 0 H22 L34 60 Z" fill="#ffe680" stroke="#d6a82a" stroke-width="3" stroke-linejoin="round"/></g>
+  <!-- the couch he is not allowed on -->
+  <g transform="translate(22 150)">
+    <rect x="0" y="34" width="292" height="118" rx="26" fill="#3fa7b5" stroke="#1f6f7c" stroke-width="4"/>
+    <rect x="18" y="0" width="256" height="96" rx="26" fill="#57c2cf" stroke="#1f6f7c" stroke-width="4"/>
+    <rect x="26" y="78" width="118" height="48" rx="16" fill="#6fd3de" stroke="#1f6f7c" stroke-width="3.5"/>
+    <rect x="148" y="78" width="118" height="48" rx="16" fill="#6fd3de" stroke="#1f6f7c" stroke-width="3.5"/>
+    <rect x="-6" y="52" width="40" height="100" rx="18" fill="#3fa7b5" stroke="#1f6f7c" stroke-width="4"/>
+    <rect x="258" y="52" width="40" height="100" rx="18" fill="#3fa7b5" stroke="#1f6f7c" stroke-width="4"/>
+    <g transform="translate(218 60) rotate(12)"><rect x="-26" y="-24" width="52" height="48" rx="12" fill="#ffd76a" stroke="#c9972a" stroke-width="3.5"/></g>
+    <path d="M40 152 v10 M252 152 v10" stroke="#5a3a1a" stroke-width="9" stroke-linecap="round"/>
+  </g>
+  <rect x="0" y="302" width="800" height="98" fill="url(#rug)"/>
+  <path d="M0 316 H800" stroke="#c9bdf5" stroke-width="5" stroke-dasharray="18 14" opacity="0.8"/>
+  <path d="M0 386 H800" stroke="#7a66c8" stroke-width="5" stroke-dasharray="18 14" opacity="0.8"/>
+  <!-- a parcel by the door -->
+  <g transform="translate(640 296)"><rect x="0" y="0" width="70" height="56" rx="4" fill="#d9a566" stroke="#7b4f1e" stroke-width="3"/><rect x="28" y="0" width="14" height="56" fill="#fff3d0" opacity="0.9"/><rect x="0" y="0" width="70" height="14" rx="4" fill="#efc48d" opacity="0.8"/></g>
+</svg>

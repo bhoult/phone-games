@@ -1,0 +1,11 @@
+/target/
+/dist/
+/web/icons/
+/android/.gradle/
+/android/build/
+/android/app/build/
+/android/app/src/main/assets/game/
+/android/app/src/main/res/drawable-nodpi/icon_art.png
+/android/local.properties
+/android/*.apk
+__pycache__/

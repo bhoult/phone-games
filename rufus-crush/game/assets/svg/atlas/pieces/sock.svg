@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7466"/>
+      <stop offset="1" stop-color="#d6263a"/>
+    </linearGradient>
+    <clipPath id="c">
+      <path d="M27 9 H59 V49 C59 56 63 59 71 62 C87 67 94 76 88 86 C84 93 69 94 54 91 C37 88 27 79 27 63 Z"/>
+    </clipPath>
+  </defs>
+  <ellipse cx="54" cy="93" rx="31" ry="4.5" fill="#000" opacity="0.18"/>
+  <g transform="rotate(-7 50 50)">
+    <path d="M27 9 H59 V49 C59 56 63 59 71 62 C87 67 94 76 88 86 C84 93 69 94 54 91 C37 88 27 79 27 63 Z" fill="url(#g)"/>
+    <g clip-path="url(#c)">
+      <rect x="20" y="4" width="50" height="16" fill="#fff8f0"/>
+      <rect x="20" y="27" width="50" height="7.5" fill="#fff8f0"/>
+      <rect x="20" y="41" width="50" height="7.5" fill="#fff8f0"/>
+      <circle cx="91" cy="85" r="15" fill="#fff8f0"/>
+      <circle cx="27" cy="74" r="13" fill="#fff8f0"/>
+      <path d="M33 5 V20 M40 5 V20 M47 5 V20 M54 5 V20" stroke="#e7c9c0" stroke-width="1.6"/>
+    </g>
+    <path d="M27 9 H59 V49 C59 56 63 59 71 62 C87 67 94 76 88 86 C84 93 69 94 54 91 C37 88 27 79 27 63 Z" fill="none" stroke="#8c1220" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M27 20 H59" stroke="#8c1220" stroke-width="2" opacity="0.55"/>
+  </g>
+</svg>
