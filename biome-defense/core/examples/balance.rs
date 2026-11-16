@@ -7,6 +7,8 @@
 //!   cargo run -p biome-core --release --example balance waves    who comes when
 //!   cargo run -p biome-core --release --example balance pack     how much of
 //!       the work the pack does, and whether it can win with nothing built
+//!   cargo run -p biome-core --release --example balance carpet   whether
+//!       building and never upgrading does better than the stand-in's way
 //!
 //! How hard the game is comes from one table, `CURVE`, below.
 
@@ -87,7 +89,43 @@ fn limit(pass: impl Fn(f32) -> bool) -> f32 {
 /// once the waves around it are set.
 const BOSS_SHARE: f32 = 0.6;
 
+/// Plays every stage both ways: the stand-in's (build what the stage is
+/// sized for, then upgrade) and carpeting (spend everything on more
+/// level-one structures). Hearts left, averaged over the three creatures.
+fn carpet() {
+    println!("Hearts kept (of the home's own), stand-in's way against never upgrading, by difficulty.\n");
+    println!("{:<22}{:>22}{:>22}", "stage", "Normal  tend / carpet", "Hard  tend / carpet");
+    let mut wins = [[0u32; 2]; 2];
+    let mut built = [0.0f32; 2];
+    for level in 0..LEVEL_COUNT {
+        let mut row = format!("{:>2} {:<19}", level + 1, LEVELS[level].name);
+        for (di, d) in [Difficulty::Normal, Difficulty::Hard].into_iter().enumerate() {
+            let mut cell = String::new();
+            for (si, style) in [Style::Careful, Style::Carpet].into_iter().enumerate() {
+                let mut kept = 0.0;
+                for &hero in &HEROES {
+                    let sim = play(Sim::new(&setup(level, hero, d, 7)), style);
+                    kept += sim.hearts.max(0) as f32 / sim.max_hearts as f32 / 3.0;
+                    wins[di][si] += (sim.phase == Phase::Won) as u32;
+                    if di == 0 {
+                        built[si] += sim.towers.iter().flatten().count() as f32 / (3 * LEVEL_COUNT) as f32;
+                    }
+                }
+                cell += &format!("{}{:>4.0}%", if si == 0 { "" } else { " /" }, kept * 100.0);
+            }
+            row += &format!("{cell:>22}");
+        }
+        println!("{row}");
+    }
+    println!("\nstages won of {}: Normal {} tending, {} carpeting; Hard {} tending, {} carpeting", LEVEL_COUNT * 3, wins[0][0], wins[0][1], wins[1][0], wins[1][1]);
+    println!("structures standing at the end, on average: {:.1} tending, {:.1} carpeting", built[0], built[1]);
+}
+
 fn main() {
+    if std::env::args().nth(1).as_deref() == Some("carpet") {
+        carpet();
+        return;
+    }
     let tune = std::env::args().nth(1).as_deref() == Some("tune");
     if tune {
         // Each wave in turn: find the biggest crowd the stand-in can stop

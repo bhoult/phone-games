@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 100 100">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3c064"/><stop offset="1" stop-color="#b9742a"/></linearGradient></defs>
-  <!-- an acorn, point first -->
-  <path d="M14 50 H9" stroke="#3e240e" stroke-width="7" stroke-linecap="round"/>
-  <path d="M38 20 C64 18 82 34 92 50 C82 66 64 82 38 80 Z" fill="url(#g)" stroke="#5e3410" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M52 30 Q64 32 74 40" fill="none" stroke="#fff3c8" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
-  <path d="M40 14 C22 16 13 34 13 50 C13 66 22 84 40 86 C45 64 45 36 40 14 Z" fill="#8a5a2c" stroke="#3e240e" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M24 34 L34 42 M22 54 L34 60 M28 70 L36 74" fill="none" stroke="#3e240e" stroke-width="4" stroke-linecap="round"/>
-</svg>

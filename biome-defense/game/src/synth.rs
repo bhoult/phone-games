@@ -13,8 +13,8 @@ pub enum Sfx {
     Build,
     Upgrade,
     Sell,
-    /// An invader shooed; the number climbs a scale as they go in a run.
-    Shoo(u8),
+    /// An invader stopped; the number climbs a scale as they go in a run.
+    Down(u8),
     Dart,
     Lob,
     Zap,
@@ -189,7 +189,7 @@ impl Buf {
 // ---- the sounds ---------------------------------------------------------------
 
 /// Major pentatonic steps, so any run of pops sounds like a tune.
-const SCALE: [f32; 8] = [0.0, 2.0, 4.0, 7.0, 9.0, 12.0, 14.0, 16.0];
+const SCALE: [f32; 8] = [0.0, 3.0, 5.0, 7.0, 10.0, 12.0, 15.0, 17.0];
 
 fn bell(b: &mut Buf, at: f32, freq: f32, dur: f32, amp: f32) {
     b.tone(at, dur, Wave::Sine, |_| freq, |t| amp * pluck_env(t, dur, 0.002));
@@ -250,13 +250,15 @@ pub fn render(s: Sfx) -> Vec<u8> {
             }
             b
         }
-        Sfx::Shoo(i) => {
+        Sfx::Down(i) => {
             peak = 0.7;
-            let f = 523.25 * 2f32.powf(SCALE[(i as usize).min(7)] / 12.0);
+            // a dull knock, with a low note in it that climbs through a run
+            let f = 196.0 * 2f32.powf(SCALE[(i as usize).min(7)] / 12.0);
             let mut b = Buf::new(0.2);
-            b.tone(0.0, 0.19, Wave::Pluck, |_| f, |t| pluck_env(t, 0.19, 0.003));
-            b.tone(0.0, 0.05, Wave::Sine, |_| f * 3.0, |t| 0.3 * pluck_env(t, 0.05, 0.001));
-            b.noise(0.0, 0.05, 9, |t| 0.18 * (1.0 - t / 0.05));
+            b.tone(0.0, 0.17, Wave::Pluck, |_| f, |t| 0.8 * pluck_env(t, 0.17, 0.003));
+            b.tone(0.0, 0.09, Wave::Sine, |t| 90.0 + 160.0 * (-t * 45.0).exp(), |t| 0.7 * pluck_env(t, 0.09, 0.002));
+            b.noise(0.0, 0.05, 9, |t| 0.22 * (1.0 - t / 0.05));
+            b.lowpass(2400.0);
             b
         }
         Sfx::Dart => {
@@ -426,15 +428,14 @@ pub fn render(s: Sfx) -> Vec<u8> {
         Sfx::Win => {
             peak = 0.6;
             let mut b = Buf::new(2.2);
-            for (i, n) in [69.0, 74.0, 78.0, 81.0].iter().enumerate() {
-                b.tone(i as f32 * 0.115, 0.3, Wave::Pluck, |_| midi(*n), |t| pluck_env(t, 0.3, 0.004));
+            // three low notes up, then an open chord left to ring: relief, not a party
+            for (i, n) in [50.0, 57.0, 62.0].iter().enumerate() {
+                b.tone(i as f32 * 0.16, 0.5, Wave::Pluck, |_| midi(*n), |t| pluck_env(t, 0.5, 0.004));
             }
-            for (n, amp) in [(74.0, 0.6), (78.0, 0.55), (81.0, 0.55), (86.0, 0.7), (90.0, 0.35)] {
-                b.tone(0.52, 1.6, Wave::Pluck, |_| midi(n), move |t| amp * pluck_env(t, 1.6, 0.006));
-                b.tone(0.52, 1.6, Wave::Tri, |t| midi(n) * (1.0 + 0.004 * (t * 36.0).sin()), move |t| amp * 0.3 * hold_env(t, 1.6, 0.05, 1.1));
+            for (n, amp) in [(50.0, 0.7), (57.0, 0.6), (62.0, 0.6), (65.0, 0.4), (69.0, 0.45)] {
+                b.tone(0.56, 1.6, Wave::Pluck, |_| midi(n), move |t| amp * pluck_env(t, 1.6, 0.006));
+                b.tone(0.56, 1.6, Wave::Tri, |t| midi(n) * (1.0 + 0.003 * (t * 30.0).sin()), move |t| amp * 0.35 * hold_env(t, 1.6, 0.08, 1.1));
             }
-            bell(&mut b, 0.56, midi(98.0), 0.9, 0.3);
-            bell(&mut b, 0.74, midi(102.0), 0.9, 0.25);
             b
         }
         Sfx::Lose => {
@@ -452,7 +453,7 @@ pub fn render(s: Sfx) -> Vec<u8> {
         }
         Sfx::Star(i) => {
             peak = 0.55;
-            let f = 1046.5 * [1.0, 1.26, 1.5][(i as usize).min(2)];
+            let f = 440.0 * [1.0, 1.189, 1.498][(i as usize).min(2)];
             let mut b = Buf::new(0.7);
             bell(&mut b, 0.0, f, 0.6, 1.0);
             bell(&mut b, 0.05, f * 2.0, 0.5, 0.4);
@@ -483,15 +484,15 @@ pub fn render(s: Sfx) -> Vec<u8> {
         Sfx::Blip => {
             peak = 0.22;
             let mut b = Buf::new(0.05);
-            b.tone(0.0, 0.04, Wave::Tri, |_| 620.0, |t| pluck_env(t, 0.04, 0.002));
+            b.tone(0.0, 0.04, Wave::Tri, |_| 330.0, |t| pluck_env(t, 0.04, 0.002));
             b
         }
         Sfx::Join => {
             peak = 0.55;
             let mut b = Buf::new(1.4);
-            for (i, n) in [62.0, 66.0, 69.0, 74.0, 78.0, 81.0].iter().enumerate() {
-                bell(&mut b, i as f32 * 0.09, midi(*n + 12.0), 0.7, 0.8);
-                b.tone(i as f32 * 0.09, 0.4, Wave::Pluck, |_| midi(*n), |t| 0.5 * pluck_env(t, 0.4, 0.004));
+            for (i, n) in [50.0, 57.0, 62.0, 65.0, 69.0].iter().enumerate() {
+                bell(&mut b, i as f32 * 0.13, midi(*n + 12.0), 0.8, 0.5);
+                b.tone(i as f32 * 0.13, 0.6, Wave::Pluck, |_| midi(*n), |t| 0.6 * pluck_env(t, 0.6, 0.004));
             }
             b
         }
@@ -533,98 +534,101 @@ fn lead(b: &mut Buf, tune: &Tune, bar: f32, eighth: f32, amp: f32) {
     }
 }
 
-/// The trail: an easy walking tune in D for the map and the quiet screens.
+/// The trail: slow and unhurried in D minor, for the map and the quiet
+/// screens. A low drone, a few plucked notes, a line above them that is
+/// in no hurry to resolve.
 pub fn trail() -> Vec<u8> {
-    let beat = 0.62;
+    let beat = 0.8;
     let bar = beat * 4.0;
     let mut b = Buf::new(bar * 8.0);
     b.wrap = true;
-    const D: (f32, [f32; 3]) = (50.0, [62.0, 66.0, 69.0]);
-    const G: (f32, [f32; 3]) = (43.0, [62.0, 67.0, 71.0]);
-    const A: (f32, [f32; 3]) = (45.0, [61.0, 64.0, 69.0]);
-    const BM: (f32, [f32; 3]) = (47.0, [62.0, 66.0, 71.0]);
-    let bars = [D, D, G, A, BM, G, A, D];
+    const DM: (f32, [f32; 3]) = (38.0, [62.0, 65.0, 69.0]);
+    const BB: (f32, [f32; 3]) = (34.0, [62.0, 65.0, 70.0]);
+    const C: (f32, [f32; 3]) = (36.0, [60.0, 64.0, 67.0]);
+    const AM: (f32, [f32; 3]) = (33.0, [60.0, 64.0, 69.0]);
+    const GM: (f32, [f32; 3]) = (31.0, [62.0, 67.0, 70.0]);
+    const A: (f32, [f32; 3]) = (33.0, [61.0, 64.0, 69.0]);
+    let bars = [DM, BB, C, AM, DM, GM, A, DM];
     for (i, (root, triad)) in bars.iter().enumerate() {
         let t0 = i as f32 * bar;
-        // bass: root on one, the fifth on three
-        b.tone(t0, beat * 1.6, Wave::Tri, |_| midi(*root), |t| 0.42 * pluck_env(t, beat * 1.6, 0.008));
-        b.tone(t0 + beat * 2.0, beat * 1.4, Wave::Tri, |_| midi(*root + 7.0), |t| 0.3 * pluck_env(t, beat * 1.4, 0.008));
-        // a kalimba picking through the chord in eighths
-        for e in 0..8 {
-            let n = triad[[0, 1, 2, 1, 0, 2, 1, 2][e]] + if e == 5 { 12.0 } else { 0.0 };
-            b.tone(t0 + e as f32 * beat * 0.5 + 0.004, 0.42, Wave::Pluck, |_| midi(n + 12.0), |t| 0.085 * pluck_env(t, 0.42, 0.003));
-        }
-        // a soft shaker on the off beats
-        for e in [1, 3, 5, 7] {
-            b.noise(t0 + e as f32 * beat * 0.5, 0.035, 60 + (i * 8 + e) as u32, |t| 0.035 * (1.0 - t / 0.035));
+        // the drone: root and fifth, swelling in and out over the bar
+        b.tone(t0, bar * 1.05, Wave::Sine, |_| midi(*root + 12.0), |t| 0.3 * hold_env(t, bar * 1.05, 0.7, 0.9));
+        b.tone(t0, bar * 1.05, Wave::Tri, |_| midi(*root + 19.0), |t| 0.085 * hold_env(t, bar * 1.05, 0.9, 0.9));
+        // a bass note to walk on
+        b.tone(t0, beat * 2.4, Wave::Tri, |_| midi(*root + 12.0), |t| 0.3 * pluck_env(t, beat * 2.4, 0.01));
+        // three plucked notes up through the chord, then room
+        for (e, k) in [(2usize, 0usize), (3, 1), (5, 2)] {
+            b.tone(t0 + e as f32 * beat * 0.5 + 0.004, 0.9, Wave::Pluck, |_| midi(triad[k]), |t| 0.1 * pluck_env(t, 0.9, 0.004));
         }
     }
-    let tune: [(u8, u8, u8, f32); 30] = [
-        (0, 0, 3, 78.0), (0, 3, 1, 76.0), (0, 4, 2, 74.0), (0, 6, 2, 69.0),
-        (1, 0, 2, 74.0), (1, 2, 2, 76.0), (1, 4, 4, 78.0),
-        (2, 0, 3, 79.0), (2, 3, 1, 78.0), (2, 4, 2, 76.0), (2, 6, 2, 74.0),
-        (3, 0, 2, 76.0), (3, 2, 2, 73.0), (3, 4, 4, 69.0),
-        (4, 0, 3, 78.0), (4, 3, 1, 81.0), (4, 4, 2, 83.0), (4, 6, 2, 81.0),
-        (5, 0, 2, 79.0), (5, 2, 2, 78.0), (5, 4, 2, 74.0), (5, 6, 2, 71.0),
-        (6, 0, 2, 73.0), (6, 2, 2, 76.0), (6, 4, 2, 81.0), (6, 6, 2, 76.0),
-        (7, 0, 2, 78.0), (7, 2, 2, 74.0), (7, 4, 3, 74.0), (7, 7, 1, 69.0),
+    let tune: [(u8, u8, u8, f32); 15] = [
+        (0, 0, 6, 69.0), (0, 6, 2, 65.0),
+        (1, 0, 4, 74.0), (1, 4, 4, 70.0),
+        (2, 0, 6, 67.0), (2, 6, 2, 64.0),
+        (3, 0, 7, 69.0),
+        (4, 0, 3, 74.0), (4, 3, 1, 72.0), (4, 4, 4, 69.0),
+        (5, 0, 4, 70.0), (5, 4, 4, 67.0),
+        (6, 0, 4, 64.0), (6, 4, 4, 69.0),
+        (7, 0, 7, 62.0),
     ];
-    lead(&mut b, &tune, bar, beat * 0.5, 0.2);
-    b.wav(0.75)
+    lead(&mut b, &tune, bar, beat * 0.5, 0.14);
+    b.wav(0.72)
 }
 
-/// The defence: a brisk march in A minor for the stages.
+/// The defence: a low, steady pulse in A minor for the stages. A drum to
+/// keep time, a bass that does not let up, and a line over it that stays
+/// down where it is dark.
 pub fn defend() -> Vec<u8> {
-    let beat = 0.46;
+    let beat = 0.5;
     let bar = beat * 4.0;
     let mut b = Buf::new(bar * 8.0);
     b.wrap = true;
     const AM: (f32, [f32; 3]) = (45.0, [57.0, 60.0, 64.0]);
     const F: (f32, [f32; 3]) = (41.0, [57.0, 60.0, 65.0]);
     const G: (f32, [f32; 3]) = (43.0, [59.0, 62.0, 67.0]);
-    const C: (f32, [f32; 3]) = (48.0, [60.0, 64.0, 67.0]);
+    const DM: (f32, [f32; 3]) = (38.0, [57.0, 62.0, 65.0]);
     const E: (f32, [f32; 3]) = (40.0, [56.0, 59.0, 64.0]);
-    let bars = [AM, AM, F, G, AM, C, F, E];
+    let bars = [AM, AM, F, G, AM, DM, F, E];
     for (i, (root, triad)) in bars.iter().enumerate() {
         let t0 = i as f32 * bar;
+        // a held note under everything
+        b.tone(t0, bar * 1.02, Wave::Sine, |_| midi(*root), |t| 0.22 * hold_env(t, bar * 1.02, 0.4, 0.5));
         for q in 0..4 {
             let at = t0 + q as f32 * beat;
-            // marching bass: root, fifth, root, octave
-            let n = *root + [0.0, 7.0, 0.0, 12.0][q];
-            b.tone(at, beat * 0.8, Wave::Tri, |_| midi(n), |t| 0.42 * pluck_env(t, beat * 0.8, 0.006));
-            // drum: low on one and three, a rattle on two and four
+            // the bass keeps to the root, with the fifth on four
+            let n = *root + [0.0, 0.0, 0.0, 7.0][q];
+            b.tone(at, beat * 0.85, Wave::Tri, |_| midi(n), |t| 0.4 * pluck_env(t, beat * 0.85, 0.006));
+            // drum: low on one and three, a dry tap on two and four
             if q % 2 == 0 {
-                b.tone(at, 0.12, Wave::Sine, |t| 52.0 + 80.0 * (-t * 40.0).exp(), |t| 0.55 * pluck_env(t, 0.12, 0.002));
+                b.tone(at, 0.16, Wave::Sine, |t| 44.0 + 70.0 * (-t * 34.0).exp(), |t| 0.6 * pluck_env(t, 0.16, 0.002));
             } else {
-                b.noise(at, 0.07, 80 + (i * 4 + q) as u32, |t| 0.11 * pluck_env(t, 0.07, 0.002));
-                // chord stab with the rattle
+                b.noise(at, 0.05, 80 + (i * 4 + q) as u32, |t| 0.07 * pluck_env(t, 0.05, 0.002));
+                // the chord, low and brief
                 for (k, c) in triad.iter().enumerate() {
-                    b.tone(at + k as f32 * 0.01, 0.22, Wave::Pluck, |_| midi(*c + 12.0), |t| 0.11 * pluck_env(t, 0.22, 0.003));
+                    b.tone(at + k as f32 * 0.012, 0.3, Wave::Pluck, |_| midi(*c), |t| 0.075 * pluck_env(t, 0.3, 0.003));
                 }
             }
-            // ticking eighths
-            for e in 0..2 {
-                b.noise(at + e as f32 * beat * 0.5, 0.025, 120 + (i * 8 + q * 2 + e) as u32, |t| if e == 1 { 0.05 } else { 0.028 } * (1.0 - t / 0.025));
-            }
+            // a tick on the off-beat
+            b.noise(at + beat * 0.5, 0.02, 120 + (i * 8 + q * 2) as u32, |t| 0.03 * (1.0 - t / 0.02));
         }
     }
-    let tune: [(u8, u8, u8, f32); 31] = [
-        (0, 0, 2, 69.0), (0, 2, 1, 72.0), (0, 3, 1, 76.0), (0, 4, 3, 76.0), (0, 7, 1, 74.0),
-        (1, 0, 2, 72.0), (1, 2, 2, 74.0), (1, 4, 4, 69.0),
-        (2, 0, 2, 72.0), (2, 2, 1, 77.0), (2, 3, 1, 81.0), (2, 4, 3, 81.0), (2, 7, 1, 79.0),
-        (3, 0, 2, 79.0), (3, 2, 2, 74.0), (3, 4, 4, 71.0),
-        (4, 0, 2, 76.0), (4, 2, 1, 76.0), (4, 3, 1, 79.0), (4, 4, 2, 81.0), (4, 6, 2, 84.0),
-        (5, 0, 3, 79.0), (5, 3, 1, 76.0), (5, 4, 4, 72.0),
-        (6, 0, 2, 77.0), (6, 2, 2, 76.0), (6, 4, 2, 74.0), (6, 6, 2, 72.0),
-        (7, 0, 3, 71.0), (7, 3, 1, 68.0), (7, 4, 4, 64.0),
+    let tune: [(u8, u8, u8, f32); 21] = [
+        (0, 0, 3, 57.0), (0, 3, 1, 60.0), (0, 4, 4, 64.0),
+        (1, 0, 2, 62.0), (1, 2, 2, 60.0), (1, 4, 4, 57.0),
+        (2, 0, 3, 60.0), (2, 3, 1, 65.0), (2, 4, 4, 69.0),
+        (3, 0, 4, 67.0), (3, 4, 4, 62.0),
+        (4, 0, 3, 64.0), (4, 3, 1, 67.0), (4, 4, 4, 69.0),
+        (5, 0, 4, 65.0), (5, 4, 4, 62.0),
+        (6, 0, 4, 65.0), (6, 4, 4, 60.0),
+        (7, 0, 3, 59.0), (7, 3, 1, 56.0), (7, 4, 4, 52.0),
     ];
-    lead(&mut b, &tune, bar, beat * 0.5, 0.19);
-    b.wav(0.75)
+    lead(&mut b, &tune, bar, beat * 0.5, 0.15);
+    b.wav(0.72)
 }
 
 pub const ALL: [Sfx; 44] = [
     Sfx::Click, Sfx::Error, Sfx::Build, Sfx::Upgrade, Sfx::Sell,
-    Sfx::Shoo(0), Sfx::Shoo(1), Sfx::Shoo(2), Sfx::Shoo(3), Sfx::Shoo(4), Sfx::Shoo(5), Sfx::Shoo(6), Sfx::Shoo(7),
+    Sfx::Down(0), Sfx::Down(1), Sfx::Down(2), Sfx::Down(3), Sfx::Down(4), Sfx::Down(5), Sfx::Down(6), Sfx::Down(7),
     Sfx::Dart, Sfx::Lob, Sfx::Zap, Sfx::Peck, Sfx::Tongue, Sfx::Burst, Sfx::Leak, Sfx::Wave, Sfx::Boss,
     Sfx::Pounce, Sfx::Slam, Sfx::Gust, Sfx::Thump, Sfx::Storm, Sfx::Dam, Sfx::Shell, Sfx::Whistle,
     Sfx::Ko, Sfx::Up, Sfx::Win, Sfx::Lose, Sfx::Star(0), Sfx::Star(1), Sfx::Star(2),

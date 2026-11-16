@@ -265,7 +265,7 @@ async fn main() {
             cover = (arriving / FADE).clamp(0.0, 1.0);
         }
         if cover > 0.0 {
-            app.g.rect(Rect::new(0.0, 0.0, app.w, app.h), alpha(rgb(0x10180c), cover));
+            app.g.rect(Rect::new(0.0, 0.0, app.w, app.h), alpha(rgb(0x0b0d0a), cover));
         }
         next_frame().await
     }

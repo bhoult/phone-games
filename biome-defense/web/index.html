@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Biome Defense</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#24512f">
+<meta name="theme-color" content="#0b0d0a">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,7 +16,7 @@
   html, body {
     margin: 0; padding: 0; width: 100%; height: 100%;
     overflow: hidden; position: fixed; inset: 0;
-    background: #24512f;
+    background: #0b0d0a;
     overscroll-behavior: none;
     -webkit-user-select: none; user-select: none;
     -webkit-touch-callout: none;
@@ -36,28 +36,25 @@
   }
   #splash {
     position: fixed; inset: 0; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 22px;
-    background: linear-gradient(#3f8a4a, #24512f);
-    color: #fff; font: 700 20px system-ui, sans-serif; text-align: center;
-    transition: opacity .35s ease;
+    align-items: center; justify-content: center; gap: 26px;
+    background: #0b0d0a;
+    color: #e9e2d0; font: 600 13px Georgia, "Times New Roman", serif; text-align: center;
+    letter-spacing: .34em; text-transform: uppercase;
+    transition: opacity .5s ease;
   }
   #splash.gone { opacity: 0; pointer-events: none; }
-  #splash .seed {
-    width: 34px; height: 46px; border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
-    background: radial-gradient(circle at 35% 30%, #ffe2a0, #d99a3a 70%);
-    box-shadow: inset 0 0 0 3px #7a4a12;
-    animation: hop .55s cubic-bezier(.3,0,.7,1) infinite alternate;
-  }
-  @keyframes hop { from { transform: translateY(26px) scale(1.12, .88); } to { transform: translateY(-34px) rotate(14deg); } }
-  #splash small { font-weight: 500; opacity: .85; font-size: 14px; }
+  #splash .bar { width: 120px; height: 1px; background: rgba(233, 226, 208, .22); overflow: hidden; }
+  #splash .bar i { display: block; width: 40%; height: 100%; background: #d9b25a; animation: slide 1.4s ease-in-out infinite; }
+  @keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+  #splash small { display: block; margin-top: 10px; letter-spacing: .08em; text-transform: none; opacity: .6; font-size: 12px; font-weight: 400; }
 </style>
 </head>
 <body>
 <canvas id="glcanvas" tabindex="1"></canvas>
 <div id="safe"></div>
 <div id="splash">
-  <div class="seed"></div>
-  <div>Gathering the pack&hellip;<br><small id="splash-msg">(somebody is always late. usually the tortoise.)</small></div>
+  <div>Biome Defense<small id="splash-msg">loading</small></div>
+  <div class="bar"><i></i></div>
 </div>
 <script>
   // Keep hold of the audio contexts the engine creates, so sound can be

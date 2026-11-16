@@ -3,7 +3,8 @@
 # from anywhere (or installed to a phone's home screen for offline play).
 #
 #   ./build.sh          build
-#   ./build.sh serve    build, then serve on http://localhost:8080
+#   ./build.sh serve    build, then serve on http://localhost:8080 (or the
+#                       next free port: it prints the address)
 #   ./build.sh pages    build, then copy into ../docs/biome-defense, which is
 #                       what GitHub Pages serves: commit and push to publish
 set -euo pipefail
@@ -58,7 +59,27 @@ fi
 
 if [[ "${1:-}" == "serve" ]]; then
   PORT="${PORT:-8080}"
+  # Another game is often already being served on the usual port: take the
+  # next free one rather than fail, and say which.
+  port_free() {
+    python3 -c 'import socket, sys
+s = socket.socket()
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.bind(("0.0.0.0", int(sys.argv[1])))' "$1" 2>/dev/null
+  }
+  asked=$PORT
+  until port_free "$PORT"; do
+    PORT=$((PORT + 1))
+    if ((PORT > asked + 50)); then
+      echo "no free port between $asked and $PORT" >&2
+      exit 1
+    fi
+  done
   echo
+  if [[ "$PORT" != "$asked" ]]; then
+    echo "  port $asked is already in use by something else, so this is on $PORT"
+    echo
+  fi
   echo "  this computer:  http://localhost:$PORT"
   for ip in $(hostname -I 2>/dev/null); do
     case "$ip" in 192.168.*|10.*) echo "  on the wifi:    http://$ip:$PORT   (plays, but only https/localhost can install for offline)";; esac

@@ -1,8 +1,8 @@
 // Offline cache for Biome Defense. The whole game is nine static files, so
 // they are all fetched at install time; after that no network is needed.
-// eb89e4bc0940 is replaced by build.sh so each build gets a fresh cache.
+// fa8efe89c83c is replaced by build.sh so each build gets a fresh cache.
 const PREFIX = "biome-defense-";
-const CACHE = PREFIX + "eb89e4bc0940";
+const CACHE = PREFIX + "fa8efe89c83c";
 const FILES = [
   "./",
   "index.html",

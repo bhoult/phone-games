@@ -46,35 +46,28 @@ impl Pack {
         let cx = app.x0 + app.pw / 2.0;
         let p = app.save.p().clone();
         let g = &app.g;
-        g.vgrad(Rect::new(0.0, 0.0, app.w, app.h), rgb(0x2f5a3a), rgb(0x1a3324));
-        // a scatter of leaves behind everything
-        for k in 0..14 {
-            let x = app.x0 + ((k * 73 + 11) % 100) as f32 / 100.0 * app.pw;
-            let y = ((k * 131 + 40) % 100) as f32 / 100.0 * app.h + (self.t * 0.4 + k as f32).sin() * 6.0 * u;
-            g.spr_fit(spr::P_LEAF, x, y, (26.0 + (k % 3) as f32 * 10.0) * u, k as f32 * 0.9, alpha(rgb(0x4a8a4a), 0.35));
-        }
-        if app.x0 > 1.0 {
-            g.rect(Rect::new(0.0, 0.0, app.x0, app.h), rgb(0x16240f));
-            g.rect(Rect::new(app.x0 + app.pw, 0.0, app.w - app.x0 - app.pw, app.h), rgb(0x16240f));
-        }
+        // your own creature, far back in the dark
+        g.rect(Rect::new(0.0, 0.0, app.w, app.h), SHADE);
+        g.scene(hero_scene(p.hero), Rect::new(app.x0, 0.0, app.pw, app.h), 0.5, 0.3, rgb(0x3a3a3a));
+        g.fade(Rect::new(app.x0, 0.0, app.pw, app.h), SHADE, 0.5, 0.96);
+        crate::title::letterbox(app);
 
         // ---- header ---------------------------------------------------------
         let mut nav = None;
         let top = app.top + 8.0 * u;
         let back = Rect::new(app.x0 + 10.0 * u, top, 46.0 * u, 46.0 * u);
         app.mark("back", back);
-        if app.ui.button(&app.g, &mut app.au, 1, back, BLUE, "", Some(spr::IC_BACK), true) {
+        if app.ui.button(&app.g, &mut app.au, 1, back, GREY, "", Some(spr::IC_BACK), true) {
             nav = Some(Nav::Map);
         }
         let g = &app.g;
-        g.title("THE PACK", cx - 40.0 * u, top + 23.0 * u, 26.0 * u, rgb(0xfff2a8), rgb(0x16240f));
+        g.head("THE PACK", cx - 44.0 * u, top + 23.0 * u, 20.0 * u, 0.5, INK);
         // the two purses
-        for (i, (label, n, color)) in [("skill", p.skill_free(), rgb(0xfff07a)), ("bond", p.bond_free(), rgb(0x9fe0ff))].into_iter().enumerate() {
+        for (i, (label, n, color)) in [("skill", p.skill_free(), GOLD), ("bond", p.bond_free(), FROST)].into_iter().enumerate() {
             let r = Rect::new(app.x0 + app.pw - 148.0 * u + i as f32 * 72.0 * u, top + 2.0 * u, 68.0 * u, 42.0 * u);
-            chip(g, r, 0.9);
-            let pop = if n > 0 { 1.0 + 0.08 * (self.t * 5.0 + i as f32).sin() } else { 1.0 };
-            g.label(&n.to_string(), r.x + r.w / 2.0, r.y + 15.0 * u, 20.0 * u * pop, 0.5, color, Some((alpha(SOIL, 0.8), 1.5 * u)), 0.0);
-            g.label(label, r.x + r.w / 2.0, r.y + 33.0 * u, 10.0 * u, 0.5, alpha(WHITE, 0.8), None, 0.0);
+            chip(g, r, 1.0);
+            g.label(&n.to_string(), r.x + r.w / 2.0, r.y + 15.0 * u, 19.0 * u, 0.5, if n > 0 { color } else { alpha(color, 0.5) }, None, 0.0);
+            g.label(label, r.x + r.w / 2.0, r.y + 32.0 * u, 10.0 * u, 0.5, DIM, None, 0.0);
         }
 
         // ---- who walks with you ---------------------------------------------
@@ -84,7 +77,7 @@ impl Pack {
         let slots: [Option<Cr>; 3] = [p.party[0], Some(p.hero), p.party[1]];
         for (i, slot) in slots.iter().enumerate() {
             let lead = i == 1;
-            let size = (if lead { 100.0 } else { 80.0 }) * u;
+            let size = (if lead { 96.0 } else { 76.0 }) * u;
             let x = cx + (i as f32 - 1.0) * 122.0 * u;
             let y = row + 56.0 * u;
             let r = Rect::new(x - 56.0 * u, row, 112.0 * u, 112.0 * u);
@@ -92,15 +85,11 @@ impl Pack {
             match slot {
                 Some(who) => {
                     let chosen = *who == self.who;
-                    g.spr(spr::NODE, x, y, size * 1.16, size * 1.16, 0.0, if chosen { cr_color(*who) } else { mix(cr_color(*who), rgb(0x1a3324), 0.55) });
-                    if chosen {
-                        g.spr(spr::RING, x, y - 2.0 * u, size * 1.36, size * 1.36, 0.0, alpha(WHITE, 0.9));
-                    }
-                    g.spr_fit(cr_spr(*who), x, y - 5.0 * u, size * 0.9, 0.0, WHITE);
-                    g.label(who.def().name, x, y + size * 0.62, 13.0 * u, 0.5, WHITE, Some((alpha(SOIL, 0.8), 1.3 * u)), 0.0);
+                    portrait(g, cr_face(*who), x, y, size, if chosen { cr_color(*who) } else { alpha(INK, 0.3) }, if chosen { WHITE } else { rgb(0xb0b0b0) });
+                    g.head(&who.def().name.to_uppercase(), x, y + size * 0.5 + 13.0 * u, 11.5 * u, 0.5, if chosen { INK } else { DIM });
                     if self.swapping && !lead {
-                        let bob = (self.t * 6.0).sin().abs() * 5.0 * u;
-                        g.spr_fit(spr::IC_NEXT, x, y - size * 0.75 - bob, 26.0 * u, std::f32::consts::FRAC_PI_2, rgb(0xfff07a));
+                        let bob = (self.t * 4.0).sin().abs() * 5.0 * u;
+                        g.spr_fit(spr::IC_NEXT, x, y - size * 0.62 - bob, 22.0 * u, std::f32::consts::FRAC_PI_2, GOLD);
                     }
                     if app.ui.tapped(r) {
                         if self.swapping && !lead {
@@ -111,9 +100,9 @@ impl Pack {
                     }
                 }
                 None => {
-                    g.spr(spr::NODE, x, y, size * 1.1, size * 1.1, 0.0, alpha(rgb(0x4a6a52), 0.7));
-                    g.label("room", x, y - 8.0 * u, 13.0 * u, 0.5, alpha(WHITE, 0.6), None, 0.0);
-                    g.label("for one", x, y + 8.0 * u, 13.0 * u, 0.5, alpha(WHITE, 0.6), None, 0.0);
+                    g.spr(spr::RIM, x, y, size, size, 0.0, alpha(INK, 0.22));
+                    g.label("room", x, y - 8.0 * u, 12.0 * u, 0.5, DIM, None, 0.0);
+                    g.label("for one", x, y + 8.0 * u, 12.0 * u, 0.5, DIM, None, 0.0);
                 }
             }
             app.mark(&format!("slot{i}"), r);
@@ -123,10 +112,10 @@ impl Pack {
         let home_y = row + 132.0 * u;
         let waiting = p.at_home();
         let g = &app.g;
-        g.label("AT HOME", app.x0 + 14.0 * u, home_y + 22.0 * u, 11.0 * u, 0.0, alpha(WHITE, 0.6), None, 0.0);
+        g.head("AT HOME", app.x0 + 14.0 * u, home_y + 22.0 * u, 9.5 * u, 0.0, DIM);
         if waiting.is_empty() {
             let text = if p.friends == 0 { "Hold a home and whoever lives there may come along." } else { "Everyone you have met is walking with you." };
-            g.label(text, app.x0 + 74.0 * u, home_y + 22.0 * u, 11.5 * u, 0.0, alpha(WHITE, 0.7), None, 0.0);
+            g.write(Face::Text, text, app.x0 + 78.0 * u, home_y + 22.0 * u, 11.5 * u, 0.0, DIM, None, 0.0);
         }
         for (i, who) in waiting.iter().enumerate() {
             let x = app.x0 + 100.0 * u + i as f32 * 62.0 * u;
@@ -134,11 +123,7 @@ impl Pack {
             let chosen = *who == self.who;
             let r = Rect::new(x - 29.0 * u, y - 26.0 * u, 58.0 * u, 54.0 * u);
             let g = &app.g;
-            g.spr(spr::NODE, x, y, 54.0 * u, 54.0 * u, 0.0, if chosen { cr_color(*who) } else { mix(cr_color(*who), rgb(0x1a3324), 0.6) });
-            g.spr_fit(cr_spr(*who), x, y - 3.0 * u, 42.0 * u, 0.0, WHITE);
-            if chosen {
-                g.spr(spr::RING, x, y - 1.0 * u, 62.0 * u, 62.0 * u, 0.0, alpha(WHITE, 0.9));
-            }
+            portrait(g, cr_face(*who), x, y, 46.0 * u, if chosen { cr_color(*who) } else { alpha(INK, 0.3) }, if chosen { WHITE } else { rgb(0xa0a0a0) });
             app.mark(&format!("home{i}"), r);
             if app.ui.tapped(r) {
                 pick = Some(*who);
@@ -167,18 +152,18 @@ impl Pack {
         let info = Rect::new(app.x0 + 8.0 * u, home_y + 54.0 * u, app.pw - 16.0 * u, 86.0 * u);
         panel(&app.g, info, u, WHITE);
         let g = &app.g;
-        g.label(&format!("{} the {}", d.name, d.species), info.x + 16.0 * u, info.y + 20.0 * u, 17.0 * u, 0.0, cr_color(who), Some((BARK, 1.4 * u)), 0.0);
+        g.head(&format!("{} THE {}", d.name.to_uppercase(), d.species.to_uppercase()), info.x + 16.0 * u, info.y + 19.0 * u, 13.5 * u, 0.0, cr_color(who));
         let role = if is_hero { format!("{}  -  you", d.role) } else { d.role.to_string() };
-        g.label(&role, info.x + 16.0 * u, info.y + 39.0 * u, 11.5 * u, 0.0, alpha(BARK, 0.75), None, 0.0);
+        g.label(&role, info.x + 16.0 * u, info.y + 36.0 * u, 11.0 * u, 0.0, DIM, None, 0.0);
         let ability = format!("{}: {}", d.ability_name, d.ability_text);
-        for (i, line) in g.wrap(&ability, 11.0 * u, info.w - 150.0 * u).iter().take(3).enumerate() {
-            g.label(line, info.x + 16.0 * u, info.y + 54.0 * u + i as f32 * 12.5 * u, 11.0 * u, 0.0, BARK, None, 0.0);
+        for (i, line) in g.wrap(&ability, 11.5 * u, info.w - 150.0 * u).iter().take(3).enumerate() {
+            g.write(Face::Text, line, info.x + 16.0 * u, info.y + 52.0 * u + i as f32 * 13.0 * u, 11.5 * u, 0.0, INK, None, 0.0);
         }
         let side = Rect::new(info.x + info.w - 126.0 * u, info.y + 14.0 * u, 114.0 * u, 44.0 * u);
         if !is_hero {
             if walking {
                 app.mark("sendhome", side);
-                if app.ui.button(&app.g, &mut app.au, 5, side, ORANGE, "SEND HOME", None, true) {
+                if app.ui.button(&app.g, &mut app.au, 5, side, RUST, "SEND HOME", None, true) {
                     if let Some(slot) = p.party.iter().position(|s| *s == Some(who)) {
                         app.save.p_mut().dismiss(slot);
                         app.save.store();
@@ -187,11 +172,11 @@ impl Pack {
                     }
                 }
                 let back = spent(who, p.skills_of(who));
-                app.g.label(&format!("gives back {back} bond"), side.x + side.w / 2.0, side.y + 56.0 * u, 10.0 * u, 0.5, alpha(BARK, 0.7), None, 0.0);
+                app.g.label(&format!("gives back {back} bond"), side.x + side.w / 2.0, side.y + 56.0 * u, 10.0 * u, 0.5, DIM, None, 0.0);
             } else {
                 app.mark("bring", side);
                 let label = if self.swapping { "TAP WHO" } else { "BRING ALONG" };
-                if app.ui.button(&app.g, &mut app.au, 6, side, GREEN, label, None, true) {
+                if app.ui.button(&app.g, &mut app.au, 6, side, GO, label, None, true) {
                     match p.free_slot() {
                         Some(slot) => {
                             app.save.p_mut().join(who, slot);
@@ -203,10 +188,10 @@ impl Pack {
                     }
                 }
                 let note = if self.swapping { "tap who goes home" } else if p.free_slot().is_some() { "there is room" } else { "someone goes home" };
-                app.g.label(note, side.x + side.w / 2.0, side.y + 56.0 * u, 10.0 * u, 0.5, alpha(BARK, 0.7), None, 0.0);
+                app.g.label(note, side.x + side.w / 2.0, side.y + 56.0 * u, 10.0 * u, 0.5, DIM, None, 0.0);
             }
         } else {
-            g.spr_fit(ability_icon(who), side.x + side.w / 2.0, side.y + 28.0 * u, 50.0 * u, 0.0, cr_color(who));
+            g.spr_fit(ability_icon(who), side.x + side.w / 2.0, side.y + 28.0 * u, 44.0 * u, 0.0, alpha(cr_color(who), 0.9));
         }
 
         // ---- the tree ------------------------------------------------------------
@@ -224,36 +209,37 @@ impl Pack {
             let color = BRANCH_COLORS[b % 3];
             let br = &d.tree[b];
             let g = &app.g;
-            g.label(br.name, bx, tree_top + 10.0 * u, 15.0 * u, 0.5, color, Some((alpha(SOIL, 0.8), 1.4 * u)), 0.0);
-            g.label(br.about, bx, tree_top + 25.0 * u, 10.0 * u, 0.5, alpha(WHITE, 0.65), None, 0.0);
+            g.head(&br.name.to_uppercase(), bx, tree_top + 10.0 * u, 12.5 * u, 0.5, color);
+            g.label(br.about, bx, tree_top + 25.0 * u, 10.0 * u, 0.5, DIM, None, 0.0);
             for t in 0..tiers {
                 let y = tree_top + 34.0 * u + step * (t as f32 + 0.5);
                 let known = p.knows(who, b, t);
                 let can = p.can_learn(who, b, t);
                 if t + 1 < tiers {
-                    draw_line(bx, y + node * 0.4, bx, y + step - node * 0.4, 5.0 * u, if known && p.knows(who, b, t + 1) { color } else { alpha(rgb(0x0c1408), 0.5) });
+                    draw_line(bx, y + node * 0.4, bx, y + step - node * 0.4, 3.0 * u, if known && p.knows(who, b, t + 1) { color } else { alpha(INK, 0.14) });
                 }
                 let (skill, _) = who.skill(b, t);
                 let chosen = self.skill == Some((b, t));
                 let ready = can.is_ok();
-                let pulse = if ready { 1.0 + 0.05 * (self.t * 5.0 + b as f32).sin() } else { 1.0 };
-                let s = node * pulse * if chosen { 1.12 } else { 1.0 };
+                let s = node * if chosen { 1.1 } else { 1.0 };
                 let g = &app.g;
                 if ready {
-                    g.spr(spr::GLOW, bx, y, s * 1.9, s * 1.9, 0.0, alpha(color, 0.55));
+                    // something to spend a point on
+                    let pulse = 0.5 + 0.5 * (self.t * 3.0 + b as f32).sin();
+                    g.spr(spr::RIM, bx, y, s * (1.18 + 0.1 * pulse), s * (1.18 + 0.1 * pulse), 0.0, alpha(color, 0.9 - 0.5 * pulse));
                 }
-                let fill = if known { color } else if ready { mix(color, rgb(0x2a3a2a), 0.45) } else { rgb(0x4a5a52) };
+                let fill = if known { mix(color, SHADE, 0.15) } else if ready { mix(color, SHADE, 0.62) } else { rgb(0x2a2c28) };
                 g.spr_fit(spr::NODE, bx, y, s, 0.0, fill);
-                g.spr_fit(skill_icon(skill.icon), bx, y - s * 0.04, s * 0.52, 0.0, if known || ready { WHITE } else { alpha(WHITE, 0.45) });
+                g.spr_fit(skill_icon(skill.icon), bx, y, s * 0.5, 0.0, if known { INK } else if ready { alpha(INK, 0.8) } else { alpha(INK, 0.3) });
                 if known {
-                    g.spr_fit(spr::IC_CHECK, bx + s * 0.34, y + s * 0.3, s * 0.34, 0.0, rgb(0xb8ff8a));
+                    g.spr_fit(spr::IC_CHECK, bx + s * 0.36, y + s * 0.32, s * 0.3, 0.0, MOSS);
                 } else {
                     // what it costs
                     let cost = skill_cost(t);
-                    g.label(&cost.to_string(), bx + s * 0.38, y + s * 0.32, 12.0 * u, 0.5, if ready { rgb(0xfff07a) } else { alpha(WHITE, 0.6) }, Some((alpha(SOIL, 0.9), 1.2 * u)), 0.0);
+                    g.label(&cost.to_string(), bx + s * 0.4, y + s * 0.34, 11.5 * u, 0.5, if ready { GOLD } else { alpha(INK, 0.45) }, Some((SHADE, 1.2 * u)), 0.0);
                 }
                 if chosen {
-                    g.spr(spr::RING, bx, y, s * 1.3, s * 1.3, 0.0, WHITE);
+                    g.spr(spr::RIM, bx, y, s * 1.12, s * 1.12, 0.0, INK);
                 }
                 let hit = Rect::new(bx - col_w * 0.42, y - step * 0.48, col_w * 0.84, step * 0.96);
                 app.mark(&format!("skill{b}{t}"), hit);
@@ -278,34 +264,33 @@ impl Pack {
                 } else {
                     "Followers learn with bond points, one earned per stage held. A follower who goes home gives theirs back, to spend on whoever walks with you next."
                 };
-                g.para(text, cx, detail.y + 14.0 * u, 12.0 * u, detail.w - 36.0 * u, BARK);
+                g.para(text, cx, detail.y + 14.0 * u, 12.0 * u, detail.w - 36.0 * u, rgb(0xcfc8b6));
             }
             Some((b, t)) => {
                 let (skill, _) = who.skill(b, t);
                 let color = BRANCH_COLORS[b % 3];
-                g.spr_fit(spr::NODE, detail.x + 34.0 * u, detail.y + 36.0 * u, 48.0 * u, 0.0, color);
-                g.spr_fit(skill_icon(skill.icon), detail.x + 34.0 * u, detail.y + 34.0 * u, 26.0 * u, 0.0, WHITE);
-                g.label(skill.name, detail.x + 66.0 * u, detail.y + 22.0 * u, 17.0 * u, 0.0, BARK, None, 0.0);
+                g.spr_fit(spr::NODE, detail.x + 34.0 * u, detail.y + 36.0 * u, 46.0 * u, 0.0, mix(color, SHADE, 0.15));
+                g.spr_fit(skill_icon(skill.icon), detail.x + 34.0 * u, detail.y + 36.0 * u, 24.0 * u, 0.0, INK);
+                g.head(&skill.name.to_uppercase(), detail.x + 66.0 * u, detail.y + 22.0 * u, 14.0 * u, 0.0, INK);
                 let cost = skill_cost(t);
                 let purse = if is_hero { "skill" } else { "bond" };
-                g.label(&format!("{} {} point{}", cost, purse, if cost == 1 { "" } else { "s" }), detail.x + detail.w - 16.0 * u, detail.y + 22.0 * u, 12.0 * u, 1.0, alpha(BARK, 0.7), None, 0.0);
+                g.label(&format!("{} {} point{}", cost, purse, if cost == 1 { "" } else { "s" }), detail.x + detail.w - 16.0 * u, detail.y + 22.0 * u, 12.0 * u, 1.0, if is_hero { GOLD } else { FROST }, None, 0.0);
                 for (i, line) in g.wrap(skill.text, 12.5 * u, detail.w - 90.0 * u).iter().take(3).enumerate() {
-                    g.label(line, detail.x + 66.0 * u, detail.y + 42.0 * u + i as f32 * 14.5 * u, 12.5 * u, 0.0, BARK, None, 0.0);
+                    g.write(Face::Text, line, detail.x + 66.0 * u, detail.y + 42.0 * u + i as f32 * 14.5 * u, 12.5 * u, 0.0, INK, None, 0.0);
                 }
                 let state = p.can_learn(who, b, t);
                 let btn = Rect::new(detail.x + detail.w - 150.0 * u, detail.y + detail_h - 50.0 * u, 138.0 * u, 42.0 * u);
-                let note = |text: &str| g.label(text, detail.x + 18.0 * u, detail.y + detail_h - 28.0 * u, 12.0 * u, 0.0, alpha(BARK, 0.75), None, 0.0);
+                let note = |text: &str| g.label(text, detail.x + 18.0 * u, detail.y + detail_h - 28.0 * u, 12.0 * u, 0.0, DIM, None, 0.0);
                 match state {
                     Ok(()) => {
                         note(if is_hero { "For keeps." } else { "Comes back if they go home." });
                         app.mark("learn", btn);
-                        if app.ui.button(&app.g, &mut app.au, 9, btn, GREEN, "LEARN", Some(spr::IC_CHECK), true) && app.save.p_mut().learn(who, b, t).is_ok() {
+                        if app.ui.button(&app.g, &mut app.au, 9, btn, GO, "LEARN", Some(spr::IC_CHECK), true) && app.save.p_mut().learn(who, b, t).is_ok() {
                             app.save.store();
                             app.au.play(Sfx::Learn, 0.9);
                             self.learned = 1.0;
                             let bx = app.x0 + 10.0 * u + col_w * (b as f32 + 0.5);
                             let y = tree_top + 34.0 * u + step * (t as f32 + 0.5);
-                            self.fx.sparkle(vec2(bx, y), node * 0.6, 14, 10.0 * u, color);
                             self.fx.ring(vec2(bx, y), node * 0.4, node * 1.4, 0.4, color, 0.0);
                             let p = app.save.p();
                             app.log(&format!("LEARNED {} {} skill free {} bond free {}", who.def().name, skill.name, p.skill_free(), p.bond_free()));

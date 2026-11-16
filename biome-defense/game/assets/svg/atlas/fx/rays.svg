@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
-  <defs>
-    <radialGradient id="f" cx="128" cy="128" r="128" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#fff" stop-opacity="0.95"/><stop offset="0.55" stop-color="#fff" stop-opacity="0.45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <path d="M128 128 L253.2 113.5 L253.2 142.5 Z M128 128 L223.4 169.3 L211.5 190.0 Z M128 128 L203.1 229.2 L178.1 243.6 Z M128 128 L139.9 231.3 L116.1 231.3 Z M128 128 L77.9 243.6 L52.9 229.2 Z M128 128 L44.5 190.0 L32.6 169.3 Z M128 128 L2.8 142.5 L2.8 113.5 Z M128 128 L32.6 86.7 L44.5 66.0 Z M128 128 L52.9 26.8 L77.9 12.4 Z M128 128 L116.1 24.7 L139.9 24.7 Z M128 128 L178.1 12.4 L203.1 26.8 Z M128 128 L211.5 66.0 L223.4 86.7 Z" fill="url(#f)"/>
-</svg>

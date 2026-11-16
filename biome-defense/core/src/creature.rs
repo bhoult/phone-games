@@ -122,7 +122,7 @@ pub enum M {
     Mark(f32, f32),
     /// Attacks knock back this many tiles.
     Shove(f32),
-    /// Shooed invaders drop this fraction more seeds.
+    /// Invaders yield this fraction more seeds.
     Bounty(f32),
     /// Seeds at the start of a stage.
     Seeds(u32),
@@ -216,7 +216,7 @@ static FOX: CreatureDef = CreatureDef {
     name: "Rust",
     species: "fox",
     role: "Skirmisher",
-    blurb: "Quick and sharp. Leaps on the biggest trouble in sight, then darts back.",
+    blurb: "Quick and sharp. Goes for the biggest threat in sight, then falls back.",
     hp: 230.0,
     speed: 3.4,
     dmg: 21.0,
@@ -239,7 +239,7 @@ static FOX: CreatureDef = CreatureDef {
                 sk("Sharp Teeth", "Bites hit 35% harder.", Fang, &[M::Dmg(0.35)]),
                 sk("Quick Paws", "Attacks 30% faster and runs 20% faster.", Paw, &[M::Rate(0.3), M::Speed(0.2)]),
                 sk("Hamstring", "Bites slow the invader by 35% and leave it bleeding.", Fang, &[M::Slow(0.35, 2.0), M::Poison(8.0, 3.0)]),
-                sk("Frenzy", "Every invader Rust shoos makes him bite faster and takes 2s off Pounce.", Flame, &[M::Flag(Flag::Frenzy)]),
+                sk("Frenzy", "Every invader Rust kills makes him bite faster and takes 2s off Pounce.", Flame, &[M::Flag(Flag::Frenzy)]),
             ],
         },
         Branch {
@@ -254,12 +254,12 @@ static FOX: CreatureDef = CreatureDef {
         },
         Branch {
             name: "Forager",
-            about: "seeds and the pack",
+            about: "forage and the pack",
             skills: &[
-                sk("Good Nose", "Shooed invaders drop 15% more seeds.", Seed, &[M::Bounty(0.15)]),
-                sk("Hidden Cache", "Start every stage with 40 extra seeds.", Seed, &[M::Seeds(40)]),
+                sk("Good Nose", "Invaders yield 15% more forage.", Seed, &[M::Bounty(0.15)]),
+                sk("Hidden Cache", "Start every stage with 40 extra forage.", Seed, &[M::Seeds(40)]),
                 sk("Sly Builder", "Structures cost 12% less. Those near Rust work 20% faster.", Hammer, &[M::Cheap(0.12), M::AuraRate(0.2)]),
-                sk("Pack Leader", "The rest of the pack hits 30% harder with 30% more health. The home gets 3 more hearts.", Pack, &[M::PackDmg(0.3), M::PackHp(0.3), M::Hearts(3)]),
+                sk("Pack Leader", "The rest of the pack hits 30% harder with 30% more health. The home can take 3 more breaches.", Pack, &[M::PackDmg(0.3), M::PackHp(0.3), M::Hearts(3)]),
             ],
         },
     ],
@@ -269,7 +269,7 @@ static BADGER: CreatureDef = CreatureDef {
     name: "Brock",
     species: "badger",
     role: "Bruiser",
-    blurb: "Slow, wide and stubborn. Holds three invaders at once and makes them regret it.",
+    blurb: "Slow, wide and stubborn. Holds three invaders at once and makes them pay for it.",
     hp: 360.0,
     speed: 2.3,
     dmg: 27.0,
@@ -364,18 +364,18 @@ static OWL: CreatureDef = CreatureDef {
             skills: &[
                 sk("Night Watch", "Structures near Nyx reach 15% farther.", Eye, &[M::AuraRange(0.15)]),
                 sk("Mark Prey", "Whatever she strikes takes 25% more damage from everything for 4s.", Star, &[M::Mark(0.25, 4.0)]),
-                sk("Guiding Hoot", "Structures near Nyx work 25% faster.", Hammer, &[M::AuraRate(0.25)]),
-                sk("Omen", "Every wave begins with 20 extra seeds, and every structure hits 20% harder.", Seed, &[M::WaveSeeds(20), M::AllDmg(0.2)]),
+                sk("Night Call", "Structures near Nyx work 25% faster.", Hammer, &[M::AuraRate(0.25)]),
+                sk("Omen", "Every wave begins with 20 extra forage, and every structure hits 20% harder.", Seed, &[M::WaveSeeds(20), M::AllDmg(0.2)]),
             ],
         },
     ],
 };
 
 static RABBIT: CreatureDef = CreatureDef {
-    name: "Clover",
-    species: "rabbit",
+    name: "Sorrel",
+    species: "hare",
     role: "Scrapper",
-    blurb: "Small, fast and furious. Kicks twice a second and never stops talking.",
+    blurb: "Small and fast. Kicks twice a second and does not back down.",
     hp: 120.0,
     speed: 3.8,
     dmg: 9.0,
@@ -402,11 +402,11 @@ static RABBIT: CreatureDef = CreatureDef {
         },
         Branch {
             name: "Warren",
-            about: "the family",
+            about: "the warren",
             skills: &[
-                sk("Lucky Foot", "Shooed invaders drop 10% more seeds.", Seed, &[M::Bounty(0.1)]),
+                sk("Gleaner", "Invaders yield 10% more forage.", Seed, &[M::Bounty(0.1)]),
                 sk("Tunnels", "Moves twice as fast and recovers from knockouts 60% sooner.", Bolt, &[M::Speed(1.0), M::Revive(0.6)]),
-                sk("Cousins", "Thump calls two cousins who each hold an invader for 6s.", Pack, &[M::Flag(Flag::Cousins)]),
+                sk("Kin", "Thump calls two of the warren, who each hold an invader for 6s.", Pack, &[M::Flag(Flag::Cousins)]),
             ],
         },
     ],
@@ -416,7 +416,7 @@ static SQUIRREL: CreatureDef = CreatureDef {
     name: "Hazel",
     species: "squirrel",
     role: "Slinger",
-    blurb: "Throws acorns from the branches, where nothing can reach her. Hits fliers.",
+    blurb: "Throws from the branches, where nothing can reach her. Hits fliers.",
     hp: 100.0,
     speed: 3.6,
     dmg: 12.0,
@@ -429,7 +429,7 @@ static SQUIRREL: CreatureDef = CreatureDef {
     look: Look::Acorn,
     ability: Ability::Storm { range: 3.0, count: 8, dmg: 20.0 },
     ability_name: "Acorn Storm",
-    ability_text: "Empties her cheeks: eight acorns rain on invaders in reach.",
+    ability_text: "Empties her cache: eight acorns come down on invaders in reach.",
     cooldown: 11.0,
     tree: &[
         Branch {
@@ -445,19 +445,19 @@ static SQUIRREL: CreatureDef = CreatureDef {
             name: "Hoard",
             about: "the storm",
             skills: &[
-                sk("Stash", "Start every stage with 30 extra seeds.", Seed, &[M::Seeds(30)]),
+                sk("Stash", "Start every stage with 30 extra forage.", Seed, &[M::Seeds(30)]),
                 sk("Bigger Storm", "Acorn Storm drops 5 more acorns and recharges 20% sooner.", Star, &[M::Flag(Flag::BigStorm), M::Cd(0.2)]),
-                sk("Conkers", "Storm acorns burst, hitting everything nearby and stunning for half a second.", Flame, &[M::Flag(Flag::Conkers)]),
+                sk("Shatter", "Storm acorns burst, hitting everything nearby and stunning for half a second.", Flame, &[M::Flag(Flag::Conkers)]),
             ],
         },
     ],
 };
 
 static BEAVER: CreatureDef = CreatureDef {
-    name: "Mudge",
+    name: "Alder",
     species: "beaver",
     role: "Builder",
-    blurb: "Blocks the trail with a dam whenever he likes, and makes structures better just by standing near them.",
+    blurb: "Blocks the trail with a dam when it matters, and makes structures better by standing near them.",
     hp: 260.0,
     speed: 2.1,
     dmg: 17.0,
@@ -487,8 +487,8 @@ static BEAVER: CreatureDef = CreatureDef {
             about: "the structures",
             skills: &[
                 sk("Good Wood", "Structures cost 10% less.", Seed, &[M::Cheap(0.1)]),
-                sk("Fine Joinery", "Structures near Mudge hit 25% harder.", Hammer, &[M::AuraDmg(0.25)]),
-                sk("Master Builder", "Structures near Mudge also work 25% faster. Selling gives every seed back.", Star, &[M::AuraRate(0.25), M::Refund]),
+                sk("Fine Joinery", "Structures near Alder hit 25% harder.", Hammer, &[M::AuraDmg(0.25)]),
+                sk("Master Builder", "Structures near Alder also work 25% faster. Selling returns the full cost.", Star, &[M::AuraRate(0.25), M::Refund]),
             ],
         },
     ],
@@ -529,17 +529,17 @@ static TORTOISE: CreatureDef = CreatureDef {
             skills: &[
                 sk("Slow and Steady", "Hits 30% harder. Walks 25% faster, which is still not fast.", Paw, &[M::Dmg(0.3), M::Speed(0.25)]),
                 sk("Old Stories", "The rest of the pack heals twice as fast and recovers from knockouts 40% sooner.", Pack, &[M::PackRegen(1.0), M::PackRevive(0.4)]),
-                sk("Hundred Summers", "The home gets 3 more hearts and wins one back after every wave.", Heart, &[M::Hearts(3), M::Flag(Flag::Mend)]),
+                sk("Hundred Summers", "The home can take 3 more breaches, and mends one after every wave.", Heart, &[M::Hearts(3), M::Flag(Flag::Mend)]),
             ],
         },
     ],
 };
 
 static MARMOT: CreatureDef = CreatureDef {
-    name: "Pip",
+    name: "Tarn",
     species: "marmot",
     role: "Lookout",
-    blurb: "Keeps watch from a rock and whistles the structures into a hurry. Flicks pebbles at fliers.",
+    blurb: "Keeps watch from a rock and whistles the structures into a hurry. Throws stones at fliers.",
     hp: 100.0,
     speed: 2.9,
     dmg: 9.0,
@@ -568,8 +568,8 @@ static MARMOT: CreatureDef = CreatureDef {
             name: "Lookout",
             about: "the watch",
             skills: &[
-                sk("Sharp Eyes", "Structures near Pip reach 20% farther.", Eye, &[M::AuraRange(0.2)]),
-                sk("Early Warning", "Every wave begins with 12 extra seeds.", Seed, &[M::WaveSeeds(12)]),
+                sk("Sharp Eyes", "Structures near Tarn reach 20% farther.", Eye, &[M::AuraRange(0.2)]),
+                sk("Early Warning", "Every wave begins with 12 extra forage.", Seed, &[M::WaveSeeds(12)]),
                 sk("Sentinel", "Pebbles hit twice as hard, slow by 40% and strike two invaders.", Star, &[M::Dmg(1.0), M::Slow(0.4, 2.0), M::Extra(1)]),
             ],
         },

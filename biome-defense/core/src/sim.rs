@@ -9,7 +9,7 @@
 use crate::creature::{muster, Ability, Cr, Flag, Perks, Stats, AURA_R};
 use crate::defs::{Bonus, Class, Foe, Look, Mode, Perk, Quirk, Rider, Tw, LV_DMG, LV_RANGE, LV_RATE, LV_SLOW, SELL_BACK};
 use crate::level::{waves, Difficulty, LevelDef, Wave, LEVELS};
-use crate::map::{Map, COLS, ROWS};
+use crate::map::{Blocked, Map, COLS, ROWS};
 use crate::rng::Rng;
 use crate::v2::{v2, V2};
 
@@ -29,8 +29,11 @@ const ELBOW: f32 = 0.62;
 const BOSS_HELD: f32 = 1.5;
 const BOSS_LOOSE: f32 = 4.0;
 /// Everything a stage pays out, as a share of what it would cost to build
-/// on every mound and upgrade all of it.
+/// and fully upgrade as many structures as the stage is sized for
+/// (`LevelDef::plots`).
 pub const INCOME_SHARE: f32 = 0.65;
+/// The least room between the middles of two structures.
+pub const FOOTPRINT: f32 = 0.9;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Phase {
@@ -84,7 +87,8 @@ pub enum Ev {
     Burst { at: V2, radius: f32, look: Look },
     /// A creature swung at something.
     Strike { unit: usize, at: V2 },
-    Shooed { at: V2, foe: Foe, seeds: u32 },
+    /// An invader was stopped for good.
+    Down { at: V2, foe: Foe, seeds: u32 },
     /// An invader reached the home.
     Leak { at: V2, foe: Foe, hearts: i32 },
     Cast { unit: usize, who: Cr, at: V2, radius: f32 },
@@ -146,7 +150,7 @@ pub struct Enemy {
     timers: [f32; 2],
     /// Seconds since last hurt; the game flashes it white while small.
     pub hurt_t: f32,
-    /// Seeds it drops when shooed.
+    /// Seeds it yields when stopped.
     seeds: f32,
     /// Its wave's health multiplier, passed on to anything it lets out.
     tough: f32,
@@ -330,7 +334,8 @@ pub struct Sim {
     pub hearts: i32,
     pub max_hearts: i32,
     pub foes: Vec<Enemy>,
-    /// One slot per mound.
+    /// Every structure standing, by the number it was given when built
+    /// (its "spot"). A sold structure leaves a gap that the next one fills.
     pub towers: Vec<Option<Tower>>,
     pub units: Vec<Unit>,
     pub shots: Vec<Shot>,
@@ -347,7 +352,8 @@ pub struct Sim {
     seed_frac: f32,
     rng: Rng,
     next_id: u32,
-    pub shooed: u32,
+    /// Invaders stopped so far.
+    pub stopped: u32,
     /// Seeds earned from invaders, bonuses and early calls.
     pub earned: u32,
     /// Damage done by structures, and by creatures: for the balance tool.
@@ -384,17 +390,16 @@ impl Sim {
             };
             units.push(new_unit(*who, Stats::base(*who), true, pos));
         }
-        let mounds = map.mounds.len();
         // What invaders drop is fixed per stage: with the starting seeds
         // and the wave bonuses it comes to a set share of what it would
-        // cost to build on every mound and upgrade all of it. Each wave
+        // cost to build and fully upgrade `plots` structures. Each wave
         // gets a fixed part of that to share out, so how many invaders a
         // wave has says nothing about how rich it is.
         let waves = waves(s.level);
         let offered = crate::defs::BIOMES[def.biome].towers;
         let full: u32 = offered.iter().map(|t| t.price(1) + t.price(2) + t.price(3)).sum::<u32>() / offered.len() as u32;
         let bonuses: u32 = (1..def.waves as u32).map(|n| 8 + 2 * n).sum();
-        let payout = (INCOME_SHARE * (full * mounds as u32) as f32 - def.seeds as f32 - bonuses as f32).max(50.0);
+        let payout = (INCOME_SHARE * (full * def.plots as u32) as f32 - def.seeds as f32 - bonuses as f32).max(50.0);
         Sim {
             level: s.level,
             def,
@@ -408,7 +413,7 @@ impl Sim {
             hearts: max_hearts,
             max_hearts,
             foes: Vec::new(),
-            towers: vec![None; mounds],
+            towers: Vec::new(),
             units,
             shots: Vec::new(),
             blocks: Vec::new(),
@@ -423,7 +428,7 @@ impl Sim {
             seed_frac: 0.0,
             rng: Rng::new(s.seed),
             next_id: 1,
-            shooed: 0,
+            stopped: 0,
             earned: 0,
             dealt: [0.0; 2],
             leaks: vec![0; def.waves as usize],
@@ -452,22 +457,57 @@ impl Sim {
         ((raw / 5.0).round() * 5.0).max(5.0) as u32
     }
 
-    pub fn build(&mut self, spot: usize, kind: Tw) -> bool {
-        if spot >= self.towers.len() || self.towers[spot].is_some() || !self.playing() {
-            return false;
+    /// Whether a structure could stand at `pos`: open ground, clear of the
+    /// trail, the home and every other structure.
+    pub fn can_build(&self, pos: V2) -> Result<(), Blocked> {
+        self.map.open(pos)?;
+        if self.towers.iter().flatten().any(|t| t.pos.dist(pos) < FOOTPRINT) {
+            return Err(Blocked::Crowded);
+        }
+        Ok(())
+    }
+
+    /// Builds a structure at `pos`. Returns its spot, or None if the ground
+    /// will not take it or there are not the seeds.
+    pub fn build(&mut self, kind: Tw, pos: V2) -> Option<usize> {
+        if !self.playing() || self.can_build(pos).is_err() {
+            return None;
         }
         let cost = self.price(kind, 1);
         if self.seeds < cost {
-            return false;
+            return None;
         }
         self.seeds -= cost;
-        let pos = self.map.mounds[spot];
-        self.towers[spot] = Some(Tower { kind, level: 1, pos, cd: 0.3, jam: 0.0, haste: 0.0, haste_amt: 0.0, pulse: 2.0, scare: 2.0, spent: cost, aim: pos + v2(0.0, -1.0), fired: 9.0 });
+        let tower = Tower { kind, level: 1, pos, cd: 0.3, jam: 0.0, haste: 0.0, haste_amt: 0.0, pulse: 2.0, scare: 2.0, spent: cost, aim: pos + v2(0.0, -1.0), fired: 9.0 };
+        let spot = match self.towers.iter().position(|t| t.is_none()) {
+            Some(i) => {
+                self.towers[i] = Some(tower);
+                i
+            }
+            None => {
+                self.towers.push(Some(tower));
+                self.towers.len() - 1
+            }
+        };
         self.events.push(Ev::Built { spot });
-        true
+        Some(spot)
     }
 
-    /// Cost of the next level of the structure on a mound, if it has one.
+    /// The structure, if any, whose middle is nearest `pos` and within `within`.
+    pub fn tower_at(&self, pos: V2, within: f32) -> Option<usize> {
+        let mut best: Option<(usize, f32)> = None;
+        for (i, t) in self.towers.iter().enumerate() {
+            if let Some(t) = t {
+                let d = t.pos.dist(pos);
+                if d <= within && best.is_none_or(|b| d < b.1) {
+                    best = Some((i, d));
+                }
+            }
+        }
+        best.map(|b| b.0)
+    }
+
+    /// Cost of the next level of a structure, if it has one.
     pub fn upgrade_price(&self, spot: usize) -> Option<u32> {
         let t = self.towers.get(spot)?.as_ref()?;
         (t.level < 3).then(|| self.price(t.kind, t.level + 1))
@@ -486,7 +526,7 @@ impl Sim {
         true
     }
 
-    /// What selling the structure on a mound would give back.
+    /// What selling a structure would give back.
     pub fn sell_value(&self, spot: usize) -> u32 {
         let Some(Some(t)) = self.towers.get(spot) else { return 0 };
         if self.perks.refund {
@@ -507,9 +547,9 @@ impl Sim {
         true
     }
 
-    /// How far the structure on a mound reaches, with any help it is getting.
+    /// How far a structure reaches, with any help it is getting.
     pub fn reach(&self, spot: usize) -> f32 {
-        match &self.towers[spot] {
+        match self.towers.get(spot).and_then(|t| t.as_ref()) {
             Some(t) => t.kind.def().range * LV_RANGE[t.level as usize - 1] * (1.0 + self.aura(t.pos).2),
             None => 0.0,
         }
@@ -1124,7 +1164,7 @@ impl Sim {
         total
     }
 
-    /// Clears away invaders that have been shooed (or got through).
+    /// Clears away invaders that have been stopped (or got through).
     fn reap(&mut self) {
         let mut i = 0;
         while i < self.foes.len() {
@@ -1141,8 +1181,8 @@ impl Sim {
             let seeds = exact.floor() as u32;
             self.seed_frac = exact - seeds as f32;
             self.gain(seeds);
-            self.shooed += 1;
-            self.events.push(Ev::Shooed { at: e.pos, foe: e.foe, seeds });
+            self.stopped += 1;
+            self.events.push(Ev::Down { at: e.pos, foe: e.foe, seeds });
             if let Src::Unit(u) = e.by {
                 let un = &mut self.units[u];
                 if un.st.has(Flag::Frenzy) {
@@ -1804,7 +1844,7 @@ impl Sim {
                                     targets.push(second);
                                 }
                             }
-                            let speed = if def.look == Look::Needle { 13.0 } else { 9.5 };
+                            let speed = if matches!(def.look, Look::Bat | Look::Spine) { 13.0 } else { 9.5 };
                             for ti in targets {
                                 let (id, to) = (self.foes[ti].id, self.foes[ti].pos);
                                 self.shots.push(Shot { look: def.look, from: pos, to, pos, prev: pos, t: 0.0, dur: (pos.dist(to) / speed).max(0.06), lob: false, target: Some(id), hit, src });

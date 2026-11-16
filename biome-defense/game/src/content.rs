@@ -1,6 +1,6 @@
 //! The story, and the other words.
 //!
-//! The font is baked into the build as plain ASCII, so everything here
+//! The fonts are baked into the build as plain ASCII, so everything here
 //! sticks to it: straight quotes, three dots, no dashes wider than a hyphen.
 
 use biome_core::creature::Cr;
@@ -96,128 +96,129 @@ pub fn lines(beat: Beat, hero: Cr) -> Vec<Line> {
     use Cr::*;
     match beat {
         Beat::Intro => vec![
-            n("Last spring, you had a den of your own."),
-            n("Then the yellow machines came. By noon the hill was flat, and the den was a memory."),
+            n("Last spring there was a den on the hill. Yours."),
+            n("The machines came at first light. By noon there was no hill."),
             h(match hero {
-                Fox => "I ran. I am good at running. I am not proud of it.",
-                Badger => "I dug in and held on. It was not enough. Nothing I had was enough.",
-                _ => "I watched all of it from the last tree. Then they took the tree.",
+                Fox => "I ran. I am good at running. Not everyone in that den was.",
+                Badger => "I dug in and held. It made no difference. They do not notice what they bury.",
+                _ => "I watched it from the last tree standing. Then they took the tree.",
             }),
-            n("Now the swarms are on the move. Heading west, into the meadow, eating as they go."),
-            h("Somebody down there is about to lose their home."),
-            h("Not this time."),
+            n("Since then the ground has not stopped moving. Swarms first, driven west ahead of the noise. Whatever is behind them is coming the same way."),
+            h("There is a warren in the meadow. It is next."),
+            h("I could not hold mine. I can help hold theirs."),
         ],
         Beat::Arrive(0) => vec![
-            c(Rabbit, "Ants! Beetles! In the WARREN! Sixty cousins and nowhere to put them!"),
-            c(Rabbit, "You. Stranger. You look like you bite. Do you bite?"),
-            h("When it helps. Show me the trail they come in by."),
+            c(Rabbit, "You are not from here. Good. Everyone from here is underground, and frightened."),
+            c(Rabbit, "Ants on the north trail since dawn. Beetles behind them. They do not stop to feed. They just come."),
+            h("They are not raiding. They are fleeing. It will look the same from your door."),
+            c(Rabbit, "Then show me how to hold a door."),
         ],
         Beat::Held(0) => vec![
-            c(Rabbit, "We did it! The warren stands! Old Mandible is somebody else's problem now!"),
-            h("They never stopped to eat. Did you see? That was not a raid."),
-            c(Rabbit, "...They were running. From something east of here."),
-            h("Then east is where I am going."),
-            c(Rabbit, "Then I am coming with you. Somebody has to carry the snacks."),
+            c(Rabbit, "The warren stands. I counted. Everyone I started the day with."),
+            h("The big one was not leading them. It was running too. Did you see how it kept looking back?"),
+            c(Rabbit, "East. They all came from the east."),
+            h("Then that is where I am going."),
+            c(Rabbit, "Not alone. I know this ground, and I kick harder than I look. The warren can spare me. It cannot spare another spring like this one."),
         ],
         Beat::Arrive(1) => vec![
-            c(Squirrel, "Halt! State your business in the Old Wood!"),
-            c(Rabbit, "We are here to help! Also, hello! I am Clover!"),
-            c(Squirrel, "Hmph. See that vine? It was not here last week. This morning it ate a whole beech."),
+            c(Squirrel, "Far enough. This wood has had its fill of things arriving."),
+            c(Rabbit, "We held the warren. We came to see what drove them at us."),
+            c(Squirrel, "Then look up. That vine was not here ten days ago. It took a beech this morning. It grows where the ground has been opened, and the ground is being opened."),
         ],
         Beat::Held(1) => vec![
-            c(Squirrel, "The oak is safe. I counted the acorns. Twice."),
-            c(Squirrel, "That strangling vine only grows where the ground has been cut. I followed it. It comes from the marsh side."),
-            h("Cut by what?"),
-            c(Squirrel, "That is what I mean to find out. Make room."),
+            c(Squirrel, "The oak holds. Four hundred winters, and it nearly went in a week."),
+            c(Squirrel, "I followed the vine back to where it starts. Cut earth. A straight scar, tree to tree, with orange marks on the trunks left standing."),
+            h("Marks made by what?"),
+            c(Squirrel, "By something that plans. I would like to see it. Make room."),
         ],
         Beat::Arrive(2) => vec![
-            c(Beaver, "Mind the mud. Used to be water. Drops a paw's width every day now."),
-            c(Beaver, "And there are two-legs about. Planting orange sticks. In a line."),
+            c(Beaver, "Mind where you stand. That was water last month. It drops a paw's width every night."),
+            c(Beaver, "There are two-legs on the far bank. They walk in a line and leave stakes behind them. Orange."),
             h("A line to where?"),
-            c(Beaver, "Straight through my lodge, far as I can tell."),
+            c(Beaver, "Through my lodge. Eleven years I have built here. Nobody asked what was in the way."),
         ],
         Beat::Held(2) => vec![
-            c(Beaver, "Well. That is the pump stopped. Water will come back, given time."),
-            c(Beaver, "Those orange sticks, though. I walked the line. Dead straight, east to west. Does not bend for anything."),
-            h("It goes through the meadow."),
-            c(Beaver, "Goes through everything. I would like a word with whoever drew it."),
+            c(Beaver, "The pump is stopped. The water will come back. Slower than it left; it always is."),
+            c(Beaver, "I walked their line of stakes while you slept. East to west, dead straight. It does not bend for water or for rock."),
+            h("It runs through the meadow."),
+            c(Beaver, "It runs through everything. Somebody drew that. I mean to find the paw that drew it."),
         ],
         Beat::Arrive(3) => vec![
-            c(Tortoise, "Visitors. ...Give me a moment. ...There."),
-            c(Tortoise, "I have seen a hundred summers on this rock. Never once a line that straight."),
-            c(Tortoise, "It frightens the scorpions. Everything in front of it runs. You have met them, I think."),
+            c(Tortoise, "Sit. You have walked far, and you will learn nothing from me in a hurry."),
+            c(Tortoise, "A hundred summers on this rock. I have seen fire and I have seen flood. I have never seen a straight line. Nothing that lives makes one."),
+            c(Tortoise, "It is coming up the canyon now. Everything in front of it runs. You have met the scorpions."),
         ],
         Beat::Held(3) => vec![
-            c(Tortoise, "Thank you. I would have managed. ...In a year or two."),
-            c(Tortoise, "The line climbs from here. Up the crag. From the top you can see where it begins."),
+            c(Tortoise, "My thanks. I would have outlasted them. It is what I do. But I would have been alone when it was over."),
+            c(Tortoise, "The line climbs from here, up the crag. From the top you can see where it starts."),
             h("Then that is where we look."),
-            c(Tortoise, "I will come. Do not wait for me. I will catch up."),
+            c(Tortoise, "I will come. Do not wait. I have never once been early, and I have never once failed to arrive."),
         ],
         Beat::Arrive(4) => vec![
-            c(Marmot, "WHO GOES... oh. Sorry. Lookout. Habit. I am Pip."),
-            c(Marmot, "They are cutting a track up my mountain. Machines in the air, too. Nobody asked me."),
-            c(Marmot, "Hold the den with me and I will show you the view. You will want to see the view."),
+            c(Marmot, "Stop there. ...No. You are not theirs. Theirs do not look up."),
+            c(Marmot, "I keep watch on this slope. It used to mean eagles. Now there are machines in the air, and a track cut a little further up the mountain every day."),
+            c(Marmot, "Hold the den with me and I will show you what I have been watching. You will not like it."),
         ],
         Beat::Held(4) => vec![
-            c(Marmot, "There. Look east. No, further. See it?"),
-            n("A gray stripe, ruler straight, from the edge of the town: through the desert, the marsh, the Old Wood. Aimed at the meadow like a thrown stick."),
+            c(Marmot, "There. East, past the desert. Follow the scar back."),
+            n("A grey line, ruler straight, from the edge of the town: through the red rock, the marsh, the Old Wood. Pointed at the meadow."),
             h("A road."),
-            h("And it starts where my den used to be."),
-            c(Marmot, "Then that is where it stops. I am coming. Somebody has to keep watch."),
+            h("It starts where my den was."),
+            c(Marmot, "Then that is where it has to stop. I have watched long enough."),
         ],
         Beat::Arrive(_) => vec![
-            n("Road's End. Stumps, mud and orange cones. Somewhere under all of it, a hill that used to be home."),
-            h("This is where it started."),
-            h("We dig a den. Right here. And this time we hold it."),
+            n("Road's End. Stumps, churned mud, orange cones. Under all of it, somewhere, a hill."),
+            h("This is where it began."),
+            h("We dig in here. On their line. And we do not move."),
         ],
         Beat::Held(_) => vec![],
         Beat::Ending => vec![
-            n("Big Yellow rolled to a stop. For a long moment, nothing moved."),
-            n("Then a small two-legs climbed down from the cab, and looked at the den, and the pack, and the tortoise still arriving."),
-            n("By next morning there was a new sign at Road's End. The line on the map had a bend in it now. A wide one."),
-            c(Rabbit, "It goes AROUND! Around the meadow! Around EVERYTHING!"),
-            c(Tortoise, "...I have arrived. What did I miss?"),
-            h("I came looking for a home."),
-            h("Turns out you build one out of neighbours."),
-            n("THE END. Thank you for defending the biomes."),
+            n("Big Yellow stopped with its blade a length from the den. For a long moment nothing moved."),
+            n("Nobody won, exactly. But a crew that loses a machine a day for a season starts asking whether there is another way round."),
+            n("By the first frost the stakes had been pulled and set again, further south. On the map, the line had a bend in it. A wide one."),
+            c(Rabbit, "It goes around. Around the meadow. Around all of it."),
+            c(Tortoise, "I have arrived. ...I gather it went well."),
+            h("The hill is not coming back. I know that."),
+            h("But there is a den on it again. And this time it has neighbours."),
+            n("THE END"),
         ],
     }
 }
 
 /// One line for each stage's card on the map.
 pub const STAGE_LINES: [&str; 18] = [
-    "Ants on the north trail. Plain ones, for now.",
+    "Ants on the north trail. Only ants, for now.",
     "Two trails, and something with wings.",
-    "They are all following one beetle. Stop him and the rest lose heart.",
-    "A green thing that will not stay shooed.",
-    "The trail splits round the old log. So will they.",
+    "They are all moving with one beetle. Stop it and the rest break.",
+    "A green thing that will not stay cut.",
+    "The trail splits round the deadfall. So will they.",
     "The vine has found the oak.",
-    "The water is low and the mosquitoes are thrilled.",
-    "Two-legs with orange sticks.",
-    "The pump truck is coming for the last of the water.",
+    "The water is low, and the mosquitoes have noticed.",
+    "Two-legs, planting orange stakes.",
+    "The pump truck has come for what is left of the water.",
     "Something is driving the scorpions out of the canyon.",
     "Wind, weeds and wheels.",
     "Mesa is not leaving. Mesa could not if she tried.",
     "They are cutting a track up the mountain.",
     "Machines in the air.",
-    "The den under the boulder, and the thing that flies.",
+    "The den under the boulder, and the thing that hunts it.",
     "Stumps as far as you can see.",
     "They have brought the sprayers.",
     "Big Yellow.",
 ];
 
-/// What each resident says when they offer to come along.
+/// What is said when a resident offers to come along.
 pub fn join_line(who: Cr) -> &'static str {
     match who {
-        Cr::Rabbit => "Clover wants to come with you.",
-        Cr::Squirrel => "Hazel has decided she is coming with you.",
-        Cr::Beaver => "Mudge would like to come along.",
-        Cr::Tortoise => "Mesa will come with you. Eventually.",
-        Cr::Marmot => "Pip is coming with you, to keep watch.",
+        Cr::Rabbit => "Sorrel will walk with you.",
+        Cr::Squirrel => "Hazel is coming, asked or not.",
+        Cr::Beaver => "Alder will come along.",
+        Cr::Tortoise => "Mesa will come. In her own time.",
+        Cr::Marmot => "Tarn is coming, to keep watch.",
         _ => "",
     }
 }
 
-/// Shouted when a stage is won.
-pub const WIN_WORDS: [&str; 6] = ["HELD!", "HOME SAFE!", "SHOOED!", "NOT TODAY!", "STILL STANDING!", "DEFENDED!"];
-pub const LOSE_WORDS: [&str; 3] = ["OVERRUN", "THEY GOT IN", "LOST THE DOOR"];
+/// The heading when a stage is won, or lost.
+pub const WIN_WORDS: [&str; 5] = ["HELD", "THE HOME STANDS", "NOT TODAY", "STILL STANDING", "THEY TURNED BACK"];
+pub const LOSE_WORDS: [&str; 3] = ["OVERRUN", "THEY GOT IN", "THE HOME IS LOST"];

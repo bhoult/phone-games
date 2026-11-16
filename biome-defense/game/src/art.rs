@@ -2,7 +2,7 @@
 
 use crate::gfx::*;
 use biome_core::creature::{Cr, Icon};
-use biome_core::defs::{Look, Mode};
+use biome_core::defs::{Class, Look, Mode};
 use biome_core::level::Mood;
 use biome_core::{Foe, Tw};
 use macroquad::prelude::Color;
@@ -39,28 +39,77 @@ pub fn foe_spr(f: Foe) -> Spr {
     }
 }
 
+/// How an invader's picture was taken, which decides how it is moved.
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub enum Pose {
+    /// From straight above, pointing right: turned to face its heading.
+    Above,
+    /// From the side and above, facing right: mirrored to face its heading.
+    Side,
+    /// From above, with no front: left as it is (or rolled).
+    Round,
+}
+
+pub fn foe_pose(f: Foe) -> Pose {
+    match f {
+        Foe::Surveyor | Foe::Camper | Foe::Trapper | Foe::Worker | Foe::Exterminator => Pose::Side,
+        Foe::Creeper | Foe::SporePod | Foe::Sprout | Foe::Tumbleweed | Foe::Strangler => Pose::Round,
+        _ => Pose::Above,
+    }
+}
+
+/// What becomes of an invader once it is stopped.
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub enum End {
+    /// Lies where it fell and is gone.
+    Dies,
+    /// Turns and runs back the way it came.
+    Flees,
+    /// Stalls, smoking.
+    Stalls,
+}
+
+pub fn foe_end(f: Foe) -> End {
+    match f {
+        Foe::Atv | Foe::Mower | Foe::Drone | Foe::PumpTruck | Foe::Buggy | Foe::Chopper | Foe::BigYellow => End::Stalls,
+        _ if f.def().class == Class::People => End::Flees,
+        _ => End::Dies,
+    }
+}
+
 pub fn tower_spr(t: Tw) -> Spr {
     match t {
-        Tw::Thistle => spr::THISTLE,
+        Tw::Shrike => spr::SHRIKE,
         Tw::Puffball => spr::PUFFBALL,
-        Tw::HoneyPot => spr::HONEY_POT,
-        Tw::Beehive => spr::BEEHIVE,
-        Tw::AcornSling => spr::ACORN_SLING,
-        Tw::NeedlePine => spr::NEEDLE_PINE,
-        Tw::SapTrap => spr::SAP_TRAP,
+        Tw::Bramble => spr::BRAMBLE,
+        Tw::Hive => spr::HIVE,
+        Tw::Rookery => spr::ROOKERY,
+        Tw::BatRoost => spr::BAT_ROOST,
+        Tw::SapRun => spr::SAP_RUN,
         Tw::Woodpecker => spr::WOODPECKER,
-        Tw::Cattail => spr::CATTAIL,
-        Tw::FrogPond => spr::FROG_POND,
+        Tw::Kingfisher => spr::KINGFISHER,
+        Tw::Bullfrog => spr::BULLFROG,
         Tw::MudWallow => spr::MUD_WALLOW,
         Tw::EelPool => spr::EEL_POOL,
-        Tw::Cactus => spr::CACTUS,
-        Tw::RockTumbler => spr::ROCK_TUMBLER,
+        Tw::Cholla => spr::CHOLLA,
+        Tw::Bighorn => spr::BIGHORN,
         Tw::DustDevil => spr::DUST_DEVIL,
         Tw::RattlerDen => spr::RATTLER_DEN,
-        Tw::Icicle => spr::ICICLE,
-        Tw::Snowball => spr::SNOWBALL,
+        Tw::Icefall => spr::ICEFALL,
+        Tw::Cornice => spr::CORNICE,
         Tw::FrostVent => spr::FROST_VENT,
         Tw::Eyrie => spr::EYRIE,
+    }
+}
+
+/// How big a structure is drawn (its longest side, in tiles), and whether
+/// it lies flat on the ground (a pool, a wallow) or stands up from it.
+pub fn tower_shape(t: Tw) -> (f32, bool) {
+    match t {
+        Tw::Bramble | Tw::MudWallow | Tw::EelPool | Tw::Bullfrog | Tw::DustDevil | Tw::SapRun | Tw::FrostVent => (1.12, true),
+        Tw::BatRoost | Tw::Woodpecker | Tw::Rookery | Tw::Eyrie => (1.5, false),
+        Tw::Bighorn | Tw::Shrike | Tw::Kingfisher | Tw::Cholla => (1.35, false),
+        _ => (1.2, false),
     }
 }
 
@@ -70,11 +119,11 @@ pub fn field_color(t: Tw) -> Option<Color> {
         return None;
     }
     Some(match t {
-        Tw::HoneyPot => rgb(0xffc21a),
-        Tw::SapTrap => rgb(0xe08a1a),
-        Tw::MudWallow => rgb(0x6a4424),
-        Tw::DustDevil => rgb(0xe8cf9a),
-        _ => rgb(0xbfe8ff),
+        Tw::Bramble => rgb(0x4a5a2a),
+        Tw::SapRun => rgb(0xc8862a),
+        Tw::MudWallow => rgb(0x4a3420),
+        Tw::DustDevil => rgb(0xd8b88a),
+        _ => rgb(0xbfe0f0),
     })
 }
 
@@ -91,17 +140,54 @@ pub fn cr_spr(c: Cr) -> Spr {
     }
 }
 
-/// A colour of its own for each creature: card backs, rings, name plates.
+/// A creature's portrait: round, for cards and the story.
+pub fn cr_face(c: Cr) -> Spr {
+    match c {
+        Cr::Fox => spr::FACE_FOX,
+        Cr::Badger => spr::FACE_BADGER,
+        Cr::Owl => spr::FACE_OWL,
+        Cr::Rabbit => spr::FACE_RABBIT,
+        Cr::Squirrel => spr::FACE_SQUIRREL,
+        Cr::Beaver => spr::FACE_BEAVER,
+        Cr::Tortoise => spr::FACE_TORTOISE,
+        Cr::Marmot => spr::FACE_MARMOT,
+    }
+}
+
+/// How long a creature is on the field, in tiles.
+pub fn cr_size(c: Cr) -> f32 {
+    match c {
+        Cr::Fox => 1.4,
+        Cr::Badger => 1.35,
+        Cr::Owl => 1.55,
+        Cr::Rabbit => 1.0,
+        Cr::Squirrel => 0.9,
+        Cr::Beaver => 1.25,
+        Cr::Tortoise => 1.05,
+        Cr::Marmot => 0.95,
+    }
+}
+
+/// The full-length picture of each creature you can play as.
+pub fn hero_scene(c: Cr) -> usize {
+    match c {
+        Cr::Badger => scene::HERO_BADGER,
+        Cr::Owl => scene::HERO_OWL,
+        _ => scene::HERO_FOX,
+    }
+}
+
+/// A colour of its own for each creature: rings, name plates.
 pub fn cr_color(c: Cr) -> Color {
     match c {
-        Cr::Fox => rgb(0xf0843a),
-        Cr::Badger => rgb(0x8a94a8),
-        Cr::Owl => rgb(0x7a6ad0),
-        Cr::Rabbit => rgb(0xe8b98a),
-        Cr::Squirrel => rgb(0xd9603a),
-        Cr::Beaver => rgb(0xa8744a),
-        Cr::Tortoise => rgb(0x8fa84a),
-        Cr::Marmot => rgb(0xd9a84a),
+        Cr::Fox => rgb(0xc8743a),
+        Cr::Badger => rgb(0x9a9fa6),
+        Cr::Owl => rgb(0x9488b8),
+        Cr::Rabbit => rgb(0xb89a72),
+        Cr::Squirrel => rgb(0xb8603e),
+        Cr::Beaver => rgb(0x9a7650),
+        Cr::Tortoise => rgb(0x8f9c5e),
+        Cr::Marmot => rgb(0xbfa05a),
     }
 }
 
@@ -136,22 +222,24 @@ pub fn skill_icon(i: Icon) -> Spr {
 }
 
 /// The colour of each branch of a skill tree, left to right.
-pub const BRANCH_COLORS: [Color; 3] = [rgb(0xe8504a), rgb(0x4a9ae8), rgb(0xe8b030)];
+pub const BRANCH_COLORS: [Color; 3] = [rgb(0xb8503e), rgb(0x5a86a8), rgb(0xc09a3e)];
 
-pub fn shot_spr(l: Look) -> Option<Spr> {
+/// What a shot looks like in the air: its picture, its length in tiles,
+/// and whether it tumbles (a stone) or points the way it flies (a bird).
+pub fn shot_spr(l: Look) -> Option<(Spr, f32, bool)> {
     Some(match l {
-        Look::Dart => spr::SHOT_DART,
-        Look::Spore => spr::SHOT_SPORE,
-        Look::Bee => spr::SHOT_BEE,
-        Look::Acorn => spr::SHOT_ACORN,
-        Look::Needle => spr::SHOT_NEEDLE,
-        Look::Reed => spr::SHOT_REED,
-        Look::Rock => spr::SHOT_ROCK,
-        Look::Fang => spr::SHOT_FANG,
-        Look::Icicle => spr::SHOT_ICICLE,
-        Look::Snowball => spr::SHOT_SNOWBALL,
-        Look::Feather => spr::SHOT_FEATHER,
-        Look::Pebble => spr::SHOT_PEBBLE,
+        Look::Shrike => (spr::SHOT_SHRIKE, 0.62, false),
+        Look::Kingfisher => (spr::SHOT_KINGFISHER, 0.58, false),
+        Look::Bat => (spr::SHOT_BAT, 0.5, false),
+        Look::Spore => (spr::SHOT_SPORE, 0.42, true),
+        Look::Bee => (spr::SHOT_BEE, 0.26, false),
+        Look::Stone | Look::Pebble => (spr::SHOT_STONE, 0.3, true),
+        Look::Rock => (spr::SHOT_BOULDER, 0.5, true),
+        Look::Fang | Look::Spine => (spr::SHOT_SPINE, 0.42, false),
+        Look::Icicle => (spr::SHOT_ICICLE, 0.5, false),
+        Look::Snow => (spr::SHOT_SNOW, 0.46, true),
+        Look::Acorn => (spr::SHOT_ACORN, 0.26, true),
+        Look::Feather => (spr::SHOT_FEATHER, 0.42, false),
         Look::Peck | Look::Tongue | Look::Zap | Look::Dive | Look::None => return None,
     })
 }
@@ -159,139 +247,138 @@ pub fn shot_spr(l: Look) -> Option<Spr> {
 /// The colour of the bits that fly when a shot lands.
 pub fn look_color(l: Look) -> Color {
     match l {
-        Look::Dart => rgb(0xd070e8),
-        Look::Spore => rgb(0xf4ecc8),
-        Look::Bee => rgb(0xffd23a),
-        Look::Acorn => rgb(0xb07a3c),
-        Look::Needle => rgb(0x6fc04a),
-        Look::Peck => rgb(0xfff2c0),
-        Look::Reed => rgb(0xa87444),
-        Look::Tongue => rgb(0xff8aa8),
-        Look::Zap => rgb(0xfff07a),
-        Look::Rock => rgb(0xc8703c),
-        Look::Fang => rgb(0x9be04a),
-        Look::Icicle => rgb(0xbfe8ff),
-        Look::Snowball => rgb(0xffffff),
-        Look::Dive => rgb(0xfff2c0),
-        Look::Feather => rgb(0xd9b98a),
-        Look::Pebble => rgb(0xb8bcc4),
-        Look::None => WHITE,
+        Look::Spore => rgb(0xcfc4a4),
+        Look::Bee => rgb(0xd9a520),
+        Look::Tongue => rgb(0xc87888),
+        Look::Zap => rgb(0xcfe8f0),
+        Look::Rock => rgb(0xb06a44),
+        Look::Fang => rgb(0xa8c060),
+        Look::Icicle | Look::Snow => rgb(0xdcecf4),
+        Look::Spine => rgb(0xe0d6b0),
+        Look::Acorn => rgb(0xa07840),
+        Look::Stone | Look::Pebble => rgb(0xa8a8a0),
+        _ => rgb(0xe9e2d0),
     }
 }
 
 /// What drifts through the air in a biome.
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub enum Drift {
-    Petals,
+    Seeds,
     Leaves,
-    Fireflies,
+    Midges,
     Dust,
     Snow,
     Smoke,
 }
 
 pub struct Palette {
-    pub ground: (Color, Color),
-    pub trail: Color,
-    pub trail_edge: Color,
-    pub trail_light: Color,
-    pub water: Color,
-    /// Multiplied into the pale mound art.
-    pub mound: Color,
+    /// The ground and trail photographs (`tex::NAME`).
+    pub ground: usize,
+    pub trail: usize,
+    /// How much to brighten the trail photograph: more where the ground is
+    /// dark enough to lose it.
+    pub trail_gain: f32,
+    /// Multiplied into the ground: each biome's light.
+    pub grade: Color,
+    /// The colour of dust kicked up from the trail.
+    pub dust: Color,
     pub tall: Spr,
     pub rock: Spr,
-    pub tufts: [Spr; 2],
     pub home: Spr,
-    /// The biome's own colour, for buttons, ribbons and the map.
+    /// The biome's own colour, for headings and the map.
     pub accent: Color,
     pub drift: Drift,
+    /// The landscape behind the biome's story, and its stretch of the map.
+    pub backdrop: usize,
+    pub map: usize,
 }
 
 pub fn palette(biome: usize) -> Palette {
     match biome {
         0 => Palette {
-            ground: (rgb(0x9bd95f), rgb(0x74bd4a)),
-            trail: rgb(0xe2c184),
-            trail_edge: rgb(0xa88448),
-            trail_light: rgb(0xf2dba8),
-            water: rgb(0x5cb8e8),
-            mound: rgb(0xd6a868),
+            ground: tex::GROUND_MEADOW,
+            trail: tex::TRAIL_MEADOW,
+            trail_gain: 1.0,
+            grade: rgb(0xf2f0e6),
+            dust: rgb(0x8a6a48),
             tall: spr::DECO_MEADOW_TALL,
             rock: spr::DECO_MEADOW_ROCK,
-            tufts: [spr::TUFT_MEADOW_A, spr::TUFT_MEADOW_B],
             home: spr::HOME_WARREN,
-            accent: rgb(0x6cbf3a),
-            drift: Drift::Petals,
+            accent: rgb(0x9ab060),
+            drift: Drift::Seeds,
+            backdrop: scene::STORY_MEADOW,
+            map: scene::MAP_MEADOW,
         },
         1 => Palette {
-            ground: (rgb(0x6aa850), rgb(0x44833e)),
-            trail: rgb(0xb89264),
-            trail_edge: rgb(0x6f5230),
-            trail_light: rgb(0xd0ae80),
-            water: rgb(0x4a9cc8),
-            mound: rgb(0xa88458),
+            ground: tex::GROUND_FOREST,
+            trail: tex::TRAIL_FOREST,
+            trail_gain: 1.75,
+            grade: rgb(0xf0f2ea),
+            dust: rgb(0x5a4632),
             tall: spr::DECO_FOREST_TALL,
             rock: spr::DECO_FOREST_ROCK,
-            tufts: [spr::TUFT_FOREST_A, spr::TUFT_FOREST_B],
             home: spr::HOME_OAK,
-            accent: rgb(0x3f8f4a),
+            accent: rgb(0x6f9a62),
             drift: Drift::Leaves,
+            backdrop: scene::STORY_FOREST,
+            map: scene::MAP_FOREST,
         },
         2 => Palette {
-            ground: (rgb(0x86c0a0), rgb(0x559a84)),
-            trail: rgb(0xa89670),
-            trail_edge: rgb(0x625640),
-            trail_light: rgb(0xc4b48c),
-            water: rgb(0x3f8fb4),
-            mound: rgb(0x988c68),
+            ground: tex::GROUND_MARSH,
+            trail: tex::TRAIL_MARSH,
+            trail_gain: 1.05,
+            grade: rgb(0xeef0ee),
+            dust: rgb(0x5e5646),
             tall: spr::DECO_MARSH_TALL,
             rock: spr::DECO_MARSH_ROCK,
-            tufts: [spr::TUFT_MARSH_B, spr::TUFT_MARSH_B],
             home: spr::HOME_LODGE,
-            accent: rgb(0x3fa0a8),
-            drift: Drift::Fireflies,
+            accent: rgb(0x6fa0a0),
+            drift: Drift::Midges,
+            backdrop: scene::STORY_MARSH,
+            map: scene::MAP_MARSH,
         },
         3 => Palette {
-            ground: (rgb(0xedb878), rgb(0xd48f50)),
-            trail: rgb(0xf6dcae),
-            trail_edge: rgb(0xb4803e),
-            trail_light: rgb(0xfdeecb),
-            water: rgb(0x6ac0d8),
-            mound: rgb(0xd07840),
+            ground: tex::GROUND_DESERT,
+            trail: tex::TRAIL_DESERT,
+            trail_gain: 1.0,
+            grade: rgb(0xf6efe4),
+            dust: rgb(0xc8a880),
             tall: spr::DECO_DESERT_TALL,
             rock: spr::DECO_DESERT_ROCK,
-            tufts: [spr::TUFT_DESERT_A, spr::TUFT_DESERT_B],
             home: spr::HOME_BURROW,
-            accent: rgb(0xe07a3a),
+            accent: rgb(0xc8804a),
             drift: Drift::Dust,
+            backdrop: scene::STORY_DESERT,
+            map: scene::MAP_DESERT,
         },
         4 => Palette {
-            ground: (rgb(0xeef5fb), rgb(0xbdd3e6)),
-            trail: rgb(0xaab6c6),
-            trail_edge: rgb(0x6c7c92),
-            trail_light: rgb(0xc6d0dc),
-            water: rgb(0x8fd0f0),
-            mound: rgb(0xa4b2c4),
+            ground: tex::GROUND_ALPINE,
+            trail: tex::TRAIL_ALPINE,
+            trail_gain: 0.95,
+            grade: rgb(0xeef2f6),
+            dust: rgb(0x8a8e94),
             tall: spr::DECO_ALPINE_TALL,
             rock: spr::DECO_ALPINE_ROCK,
-            tufts: [spr::TUFT_ALPINE_A, spr::TUFT_ALPINE_B],
             home: spr::HOME_DEN,
-            accent: rgb(0x5a9ae0),
+            accent: rgb(0x8ab0cc),
             drift: Drift::Snow,
+            backdrop: scene::STORY_ALPINE,
+            map: scene::MAP_ALPINE,
         },
         _ => Palette {
-            ground: (rgb(0xbcaa86), rgb(0x8e8264)),
-            trail: rgb(0x7a7672),
-            trail_edge: rgb(0x403c3a),
-            trail_light: rgb(0x94908a),
-            water: rgb(0x6a94a8),
-            mound: rgb(0x96845e),
+            ground: tex::GROUND_ROAD,
+            trail: tex::TRAIL_ROAD,
+            trail_gain: 1.0,
+            grade: rgb(0xf0ece6),
+            dust: rgb(0x7a746c),
             tall: spr::DECO_ROAD_TALL,
             rock: spr::DECO_ROAD_ROCK,
-            tufts: [spr::TUFT_ROAD_A, spr::TUFT_ROAD_B],
             home: spr::HOME_ROADSEND,
-            accent: rgb(0xe8a030),
+            accent: rgb(0xd0a040),
             drift: Drift::Smoke,
+            backdrop: scene::STORY_ROAD,
+            map: scene::MAP_ROAD,
         },
     }
 }
@@ -301,9 +388,9 @@ pub fn palette(biome: usize) -> Palette {
 pub fn mood_wash(mood: Mood) -> Option<(Color, Color)> {
     match mood {
         Mood::Day => None,
-        Mood::Dawn => Some((Color::new(1.0, 0.72, 0.55, 0.22), Color::new(1.0, 0.86, 0.6, 0.06))),
-        Mood::Dusk => Some((Color::new(0.55, 0.3, 0.62, 0.26), Color::new(1.0, 0.55, 0.25, 0.2))),
-        Mood::Night => Some((Color::new(0.07, 0.1, 0.3, 0.5), Color::new(0.1, 0.16, 0.38, 0.42))),
+        Mood::Dawn => Some((Color::new(0.95, 0.66, 0.5, 0.2), Color::new(0.9, 0.78, 0.6, 0.06))),
+        Mood::Dusk => Some((Color::new(0.34, 0.22, 0.42, 0.34), Color::new(0.8, 0.42, 0.2, 0.2))),
+        Mood::Night => Some((Color::new(0.04, 0.07, 0.2, 0.52), Color::new(0.06, 0.1, 0.26, 0.42))),
     }
 }
 

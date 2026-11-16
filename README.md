@@ -8,7 +8,7 @@ handful of static files, and plays with no connection.
 | Game | What it is |
 | --- | --- |
 | [Rufus Crush](rufus-crush/) | A match-3 about the very busy life of one black lab. Rust and WebGL, 1,036 levels, Easy / Normal / Hard. **[Play it](https://bhoult.github.io/phone-games/rufus-crush/)** |
-| [Biome Defense](biome-defense/) | A tower defense about wild creatures holding on to their homes. Rust and WebGL, 18 stages across six biomes, a pack to gather and skill trees to choose between, Easy / Normal / Hard. **[Play it](https://bhoult.github.io/phone-games/biome-defense/)** |
+| [Biome Defense](biome-defense/) | A tower defense for adults about wild creatures holding on to their homes. Photographic art, structures built anywhere, 18 stages across six biomes, a pack to gather and skill trees to choose between, Easy / Normal / Hard. Rust and WebGL. **[Play it](https://bhoult.github.io/phone-games/biome-defense/)** |
 
 **[Play Rufus Crush](https://bhoult.github.io/phone-games/rufus-crush/)** or **[Biome Defense](https://bhoult.github.io/phone-games/biome-defense/)** in your browser, or on your phone: open
 either link and add it to the home screen. After the first visit it plays with
@@ -16,7 +16,7 @@ no connection. All the games are listed at <https://bhoult.github.io/phone-games
 
 [![Rufus Crush: the title screen, a lake level, the pitiful look, and a win](rufus-crush/docs/screens.jpg)](https://bhoult.github.io/phone-games/rufus-crush/)
 
-[![Biome Defense: the title screen, a stage in the Old Wood, the map, and a skill tree](biome-defense/docs/screens.jpg)](https://bhoult.github.io/phone-games/biome-defense/)
+[![Biome Defense: the title screen, a stage in the meadow, the map, and a skill tree](biome-defense/docs/screens.jpg)](https://bhoult.github.io/phone-games/biome-defense/)
 
 ## Licence
 

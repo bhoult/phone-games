@@ -1,12 +1,12 @@
 //! Tests of the rules: the maps, the waves, the points, the save format,
 //! and whole stages played by the stand-in player and by a random one.
 
-use biome_core::bot::{expected_profile, play, Style};
+use biome_core::bot::{expected_profile, plan_spots, play, Style};
 use biome_core::campaign::{Profile, FOLLOWERS};
 use biome_core::creature::{branch_cost, muster, Cr, FRIENDS, HEROES};
 use biome_core::defs::{Foe, Tw, BIOMES, FOE_COUNT, TOWERS};
 use biome_core::level::{is_finale, waves, Difficulty, LEVELS, LEVEL_COUNT, PER_BIOME};
-use biome_core::sim::{Phase, Setup, Sim};
+use biome_core::sim::{Phase, Setup, Sim, FOOTPRINT};
 use biome_core::{v2, Rng};
 
 fn setup(level: usize, hero: Cr, difficulty: Difficulty, seed: u64) -> Setup {
@@ -21,16 +21,31 @@ fn every_map_is_playable() {
     for (i, def) in LEVELS.iter().enumerate() {
         let map = def.map();
         assert!(!map.routes.is_empty(), "stage {i} has no route");
-        assert!(map.mounds.len() >= 6, "stage {i} has only {} mounds", map.mounds.len());
+        assert!(def.plots >= 6, "stage {i} is sized for only {} structures", def.plots);
         for r in &map.routes {
             assert!(r.len > 12.0 && r.len < 50.0, "stage {i}: a route is {} tiles long", r.len);
             let end = r.at(r.len).0;
             assert!(end.dist(map.home) < 0.01, "stage {i}: a route does not end at the home");
         }
-        // a mound that cannot see the trail is a trap for the player
-        for (m, &pos) in map.mounds.iter().enumerate() {
-            let off = map.nearest_trail(pos).2;
-            assert!(off < 1.5, "stage {i}: mound {m} is {off} tiles from the trail");
+        // room to build: several times as much open ground beside the trail
+        // as the stage is sized for
+        let mut beside = 0;
+        for r in 0..26 {
+            for c in 0..18 {
+                let p = v2(c as f32 * 0.5 + 0.25, r as f32 * 0.5 + 0.25);
+                if map.open(p).is_ok() && map.nearest_trail(p).2 < 1.5 {
+                    beside += 1;
+                }
+            }
+        }
+        assert!(beside >= def.plots as usize * 6, "stage {i}: only {beside} half-tiles of open ground beside the trail");
+        // and the stand-in finds a place for everything it means to build
+        let sim = Sim::new(&setup(i, Cr::Fox, Difficulty::Normal, 1));
+        let spots = plan_spots(&sim);
+        assert_eq!(spots.len(), def.plots as usize, "stage {i}: the stand-in ran out of places");
+        for (k, &p) in spots.iter().enumerate() {
+            assert!(sim.can_build(p).is_ok());
+            assert!(map.nearest_trail(p).2 < 1.6, "stage {i}: planned place {k} cannot see the trail");
         }
         assert_eq!(def.biome, i / PER_BIOME);
     }
@@ -239,7 +254,7 @@ fn a_stage_plays_the_same_way_twice() {
     for level in [0, 5, 11, 17] {
         let a = play(Sim::new(&setup(level, Cr::Badger, Difficulty::Hard, 42)), Style::Careful);
         let b = play(Sim::new(&setup(level, Cr::Badger, Difficulty::Hard, 42)), Style::Careful);
-        assert_eq!((a.phase, a.hearts, a.seeds, a.shooed, a.time.to_bits()), (b.phase, b.hearts, b.seeds, b.shooed, b.time.to_bits()));
+        assert_eq!((a.phase, a.hearts, a.seeds, a.stopped, a.time.to_bits()), (b.phase, b.hearts, b.seeds, b.stopped, b.time.to_bits()));
     }
 }
 
@@ -261,7 +276,6 @@ fn random_play_never_breaks_anything() {
             }
             let mut sim = Sim::new(&Setup { level, difficulty: Difficulty::from_index(rng.below(3) as usize), pack: p.pack(), guests: p.guests(level), seed });
             let towers = BIOMES[sim.def.biome].towers;
-            let mounds = sim.towers.len();
             let mut spent = 0i64;
             let start = sim.seeds as i64;
             for tick in 0..60 * 60 * 6 {
@@ -269,14 +283,18 @@ fn random_play_never_breaks_anything() {
                     let before = sim.seeds as i64;
                     match rng.below(8) {
                         0 | 1 | 2 => {
-                            sim.build(rng.below(mounds as u32) as usize, rng.pick(towers));
+                            // anywhere at all, on the map or off it
+                            let at = v2(rng.range(-1.0, 10.0), rng.range(-1.0, 14.0));
+                            let fine = sim.can_build(at).is_ok();
+                            let got = sim.build(rng.pick(towers), at);
+                            assert!(got.is_none() || fine, "stage {level}: built where nothing should stand");
                         }
                         3 | 4 => {
-                            sim.upgrade(rng.below(mounds as u32) as usize);
+                            sim.upgrade(rng.below(sim.towers.len() as u32 + 2) as usize);
                         }
                         5 => {
                             if rng.chance(0.15) {
-                                sim.sell(rng.below(mounds as u32) as usize);
+                                sim.sell(rng.below(sim.towers.len() as u32 + 2) as usize);
                             }
                         }
                         6 => sim.order(rng.below(sim.units.len() as u32) as usize, v2(rng.range(-2.0, 11.0), rng.range(-2.0, 15.0))),
@@ -302,8 +320,13 @@ fn random_play_never_breaks_anything() {
                     assert!(u.hp.is_finite() && u.hp <= u.st.hp + 0.01 && u.pos.x.is_finite());
                     assert!((0.0..=9.0).contains(&u.pos.x) && (0.0..=13.0).contains(&u.pos.y), "stage {level}: a creature left the map");
                 }
-                for t in sim.towers.iter().flatten() {
+                for (a, t) in sim.towers.iter().enumerate() {
+                    let Some(t) = t else { continue };
                     assert!((1..=3).contains(&t.level));
+                    assert!(sim.map.open(t.pos).is_ok(), "stage {level}: a structure is standing somewhere closed");
+                    for u in sim.towers.iter().skip(a + 1).flatten() {
+                        assert!(t.pos.dist(u.pos) >= FOOTPRINT, "stage {level}: two structures on top of each other");
+                    }
                 }
                 assert!(sim.foes.len() < 2000 && sim.shots.len() < 2000 && sim.events.len() < 5000);
                 sim.events.clear();
@@ -326,9 +349,9 @@ fn bare(level: usize) -> Sim {
 fn building_costs_seeds_and_selling_gives_most_back() {
     let mut sim = bare(0);
     let had = sim.seeds;
-    assert!(sim.build(0, Tw::Thistle));
+    let at = plan_spots(&sim)[0];
+    assert_eq!(sim.build(Tw::Shrike, at), Some(0));
     assert_eq!(sim.seeds, had - 50);
-    assert!(!sim.build(0, Tw::Puffball), "one structure per mound");
     assert_eq!(sim.sell_value(0), 35);
     assert!(sim.sell(0));
     assert_eq!(sim.seeds, had - 15);
@@ -336,18 +359,58 @@ fn building_costs_seeds_and_selling_gives_most_back() {
     // Mudge's last Craft skill gives everything back
     let mut sim = Sim::new(&Setup { level: 0, difficulty: Difficulty::Normal, pack: vec![(Cr::Fox, 0), (Cr::Beaver, 0b111_000)], guests: vec![], seed: 1 });
     let had = sim.seeds;
-    assert!(sim.build(0, Tw::Thistle));
-    assert_eq!(sim.price(Tw::Thistle, 1), 45, "Good Wood takes a tenth off");
+    assert_eq!(sim.build(Tw::Shrike, at), Some(0));
+    assert_eq!(sim.price(Tw::Shrike, 1), 45, "Good Wood takes a tenth off");
     assert!(sim.sell(0));
     assert_eq!(sim.seeds, had);
+}
+
+#[test]
+fn structures_go_anywhere_open_and_nowhere_else() {
+    use biome_core::map::Blocked;
+    let mut sim = bare(0);
+    sim.seeds = 10_000;
+    // the first stage: trail down column 4 from the top, a tree at (7, 5),
+    // the home at (4, 11)
+    assert_eq!(sim.can_build(v2(4.5, 2.5)), Err(Blocked::Trail));
+    assert_eq!(sim.can_build(v2(5.1, 2.5)), Err(Blocked::Trail), "too close to the trail's edge");
+    assert_eq!(sim.can_build(v2(7.5, 5.5)), Err(Blocked::Scenery));
+    assert_eq!(sim.can_build(v2(4.5, 12.2)), Err(Blocked::Home));
+    assert_eq!(sim.can_build(v2(-0.5, 3.0)), Err(Blocked::OffMap));
+    assert_eq!(sim.can_build(v2(8.9, 3.0)), Err(Blocked::OffMap));
+    assert!(sim.build(Tw::Shrike, v2(4.5, 2.5)).is_none());
+    // open ground, nowhere special
+    assert_eq!(sim.can_build(v2(6.37, 3.21)), Ok(()));
+    assert_eq!(sim.build(Tw::Shrike, v2(6.37, 3.21)), Some(0));
+    assert_eq!(sim.towers[0].as_ref().unwrap().pos, v2(6.37, 3.21));
+    // not on top of another, but right beside it
+    assert_eq!(sim.can_build(v2(6.6, 3.5)), Err(Blocked::Crowded));
+    assert!(sim.build(Tw::Puffball, v2(6.6, 3.5)).is_none());
+    assert_eq!(sim.build(Tw::Puffball, v2(6.37 + FOOTPRINT + 0.01, 3.21)), Some(1));
+    // a sold structure's number and ground are free again
+    assert!(sim.sell(0));
+    assert_eq!(sim.build(Tw::Hive, v2(6.3, 3.3)), Some(0));
+    assert_eq!(sim.tower_at(v2(6.4, 3.4), 0.5), Some(0));
+    assert_eq!(sim.tower_at(v2(2.0, 9.0), 0.5), None);
+    // the marsh has water in the way
+    let marsh = bare(6);
+    let mut wet = 0;
+    for r in 0..13 {
+        for c in 0..9 {
+            if marsh.can_build(v2(c as f32 + 0.5, r as f32 + 0.5)) == Err(Blocked::Water) {
+                wet += 1;
+            }
+        }
+    }
+    assert!(wet > 0, "no water in the first marsh stage");
 }
 
 #[test]
 fn nothing_can_be_bought_without_the_seeds() {
     let mut sim = bare(0);
     let mut built = 0;
-    for spot in 0..sim.towers.len() {
-        if sim.build(spot, Tw::Beehive) {
+    for at in plan_spots(&sim) {
+        if sim.build(Tw::Hive, at).is_some() {
             built += 1;
         }
     }

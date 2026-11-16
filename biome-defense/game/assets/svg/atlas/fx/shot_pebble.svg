@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 100 100">
-  <defs><radialGradient id="g" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#e6e6e6"/><stop offset="1" stop-color="#8a8c94"/></radialGradient></defs>
-  <!-- a pebble -->
-  <path d="M12 54 C10 32 28 16 50 16 C74 16 90 32 88 54 C86 74 70 84 48 84 C28 84 14 72 12 54 Z" fill="url(#g)" stroke="#4a4c52" stroke-width="6"/>
-  <path d="M28 38 Q36 26 50 25" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
-  <g fill="#6e7078"><circle cx="60" cy="62" r="4"/><circle cx="42" cy="68" r="3"/></g>
-</svg>

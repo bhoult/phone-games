@@ -12,10 +12,20 @@
 //   expect:TEXT           fail unless the console has printed TEXT
 //   waitfor:TEXT[|TEXT][,MS]  wait for the console to print one of them
 //   tapbtn:NAME           touch a button the game reports (play, defend, call, ...)
-//   tapmound:N            touch build mound N of the stage being played
+//   tapspot:N             a quick touch on good building ground N of the stage
+//                         being played (builds, if a structure has been chosen)
+//   dragto:NAME,N[,MS[,hold]]  press on button NAME, slide to building ground
+//                         N (or "low", the lowest on screen), let go: how a
+//                         structure is dragged out of the
+//                         tray. With "hold" the finger stays down (for a
+//                         screenshot of the structure being placed) until
+//   release               lifts it
+//   grab:NAME             like shot, but read straight out of WebGL: works
+//                         with DRIVE_GPU, where a screenshot shows no canvas
+//   taptower:N            touch structure number N
 //   taps:N[,X,Y]          N quick taps at a point (default: the story's text box)
-// The game reports its buttons and mounds on the console when the page has
-// ?debug=1 in its address.
+// The game reports its buttons, good building ground and structures on the
+// console when the page has ?debug=1 in its address.
 // Coordinates are CSS pixels. Console output and page errors are printed.
 
 import { spawn } from "node:child_process";
@@ -41,9 +51,12 @@ const chrome = spawn(
     "--no-first-run",
     "--no-default-browser-check",
     "--disable-extensions",
-    "--use-gl=angle",
-    "--use-angle=swiftshader",
-    "--enable-unsafe-swiftshader",
+    // Chrome's software renderer by default, so runs look the same on any
+    // machine. DRIVE_GPU=vulkan (or gl-egl, ...) uses the real graphics card
+    // through that ANGLE backend instead.
+    ...(process.env.DRIVE_GPU
+      ? ["--use-gl=angle", `--use-angle=${process.env.DRIVE_GPU}`, "--enable-gpu", "--enable-features=Vulkan"]
+      : ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
     "--ignore-gpu-blocklist",
     "--autoplay-policy=no-user-gesture-required",
     "--mute-audio",
@@ -68,7 +81,9 @@ async function browserWs() {
 
 const seen = [];
 const buttons = new Map(); // where the game says its buttons are (needs ?debug=1)
-const mounds = new Map(); // and its build mounds
+const spots = new Map(); // good building ground
+const towers = new Map(); // structures standing
+let cell = 43; // pixels to a tile, as the game reports it
 let nextId = 1;
 const pending = new Map();
 let ws;
@@ -98,10 +113,14 @@ try {
       const text = msg.params.args.map((a) => a.value ?? a.description ?? "").join(" ");
       const btn = text.match(/BIOME BTN (\w+) (-?\d+) (-?\d+)/);
       if (btn) buttons.set(btn[1], { x: Number(btn[2]), y: Number(btn[3]), at: Date.now() });
-      const mound = text.match(/BIOME MOUND (\d+) (-?\d+) (-?\d+)/);
-      if (mound) mounds.set(Number(mound[1]), { x: Number(mound[2]), y: Number(mound[3]), at: Date.now() });
+      const spot = text.match(/BIOME SPOT (\d+) (-?\d+) (-?\d+)/);
+      if (spot) spots.set(Number(spot[1]), { x: Number(spot[2]), y: Number(spot[3]), at: Date.now() });
+      const tower = text.match(/BIOME TOWER (\d+) (-?\d+) (-?\d+)/);
+      if (tower) towers.set(Number(tower[1]), { x: Number(tower[2]), y: Number(tower[3]), at: Date.now() });
+      const grid = text.match(/BIOME GRID ([\d.]+)/);
+      if (grid) cell = Number(grid[1]);
       // the chatter (where things are, how the stage stands) is for this tool, not the reader
-      if (!/BIOME (BTN|MOUND|STATE)/.test(text) || process.env.DRIVE_VERBOSE) console.log(`[console.${msg.params.type}] ${text}`);
+      if (!/BIOME (BTN|SPOT|TOWER|GRID|STATE)/.test(text) || process.env.DRIVE_VERBOSE) console.log(`[console.${msg.params.type}] ${text}`);
       seen.push(text);
     } else if (msg.method === "Runtime.exceptionThrown") {
       const d = msg.params.exceptionDetails;
@@ -206,19 +225,82 @@ try {
       await sleep(120);
       buttons.delete(arg);
       console.log(`[tapbtn] ${arg} at ${b.x},${b.y}`);
-    } else if (cmd === "tapmound") {
-      // tapmound:N: a real touch on a build mound of the stage being played
+    } else if (cmd === "tapspot" || cmd === "taptower") {
+      // a real touch on building ground, or on a structure, of the stage being played
+      const from = cmd === "tapspot" ? spots : towers;
       const until = Date.now() + 8000;
       let m;
-      while (!((m = mounds.get(Number(arg))) && Date.now() - m.at < 1500)) {
-        if (Date.now() > until) throw new Error(`mound not on screen: ${arg}`);
+      while (!((m = from.get(Number(arg))) && Date.now() - m.at < 1500)) {
+        if (Date.now() > until) throw new Error(`${cmd}: not on screen: ${arg}`);
         await sleep(50);
       }
       await touch("touchStart", [[m.x, m.y]]);
-      await sleep(60);
+      await sleep(40);
       await touch("touchEnd", []);
       await sleep(250);
-      console.log(`[tapmound] ${arg} at ${m.x},${m.y}`);
+      console.log(`[${cmd}] ${arg} at ${m.x},${m.y}`);
+    } else if (cmd === "dragto") {
+      // dragto:NAME,N[,MS]: press a tray button, slide onto the field, let go.
+      // A structure being slid floats 1.15 tiles above the finger, so the
+      // finger stops that far below where it should stand.
+      const [name, n, ms = "600", hold] = arg.split(",");
+      const until = Date.now() + 8000;
+      let b, m;
+      // N can be "low": whichever building ground is nearest the bottom of the field
+      const pick = () => (n === "low" ? [...spots.values()].sort((p, q) => q.y - p.y)[0] : spots.get(Number(n)));
+      while (!((b = buttons.get(name)) && Date.now() - b.at < 700 && (m = pick()) && Date.now() - m.at < 1500)) {
+        if (Date.now() > until) throw new Error(`dragto: not on screen: ${arg}`);
+        await sleep(50);
+      }
+      const [x2, y2] = [m.x, m.y + 1.15 * cell];
+      await touch("touchStart", [[b.x, b.y]]);
+      const steps = 12;
+      for (let k = 1; k <= steps; k++) {
+        await sleep(Number(ms) / steps);
+        await touch("touchMove", [[b.x + ((x2 - b.x) * k) / steps, b.y + ((y2 - b.y) * k) / steps]]);
+      }
+      await sleep(120);
+      if (!hold) {
+        await touch("touchEnd", []);
+        await sleep(250);
+      }
+      console.log(`[dragto] ${name} to spot ${n} at ${x2},${y2.toFixed(0)}`);
+    } else if (cmd === "grab") {
+      // grab:NAME: the frame as the game drew it, read straight back out of
+      // WebGL at the end of its next frame. A screenshot does not include
+      // the canvas when Chrome is drawing with the real graphics card.
+      const { result, exceptionDetails } = await send("Runtime.evaluate", {
+        awaitPromise: true,
+        returnByValue: true,
+        expression: `new Promise((resolve) => {
+          const orig = window.requestAnimationFrame;
+          window.requestAnimationFrame = function (cb) {
+            return orig.call(window, function (t) {
+              cb(t);
+              window.requestAnimationFrame = orig;
+              const c = document.querySelector("canvas");
+              const gl = c.getContext("webgl") || c.getContext("webgl2") || c.getContext("experimental-webgl");
+              const w = c.width, h = c.height, px = new Uint8Array(w * h * 4);
+              gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+              const o = document.createElement("canvas");
+              o.width = w; o.height = h;
+              const ctx = o.getContext("2d"), img = ctx.createImageData(w, h);
+              for (let y = 0; y < h; y++) img.data.set(px.subarray((h - 1 - y) * w * 4, (h - y) * w * 4), y * w * 4);
+              for (let i = 3; i < img.data.length; i += 4) img.data[i] = 255;
+              ctx.putImageData(img, 0, 0);
+              resolve(o.toDataURL("image/png") + "|" + gl.getError());
+            });
+          };
+        })`,
+      });
+      if (exceptionDetails) throw new Error("grab: " + JSON.stringify(exceptionDetails.exception || exceptionDetails));
+      const [dataUrl, glError] = result.value.split("|");
+      const file = join(outdir, `${arg}.png`);
+      writeFileSync(file, Buffer.from(dataUrl.split(",")[1], "base64"));
+      console.log(`[grab] ${file} (GL error ${glError})`);
+    } else if (cmd === "release") {
+      await touch("touchEnd", []);
+      await sleep(250);
     } else if (cmd === "taps") {
       // taps:N[,X,Y]: N quick taps, for paging through the story
       const [n, x = 195, y = 740] = nums;

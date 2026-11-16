@@ -1,19 +1,26 @@
 //! A stand-in player, for testing stages and setting how tough they are.
-//! It plays sensibly but plainly: builds on the mounds that see the most
-//! trail, upgrades once the mounds are full, parks the pack near the home
-//! and uses abilities when there is a crowd. It never calls a wave early.
+//! It plays sensibly but plainly: picks as many places to build as the
+//! stage is sized for, each where it sees the most trail that nothing else
+//! is already watching, builds on them, then upgrades. It parks the pack
+//! beside the first of them and uses abilities when there is a crowd. It
+//! never calls a wave early, never sells, and never squeezes extra
+//! structures in: a person who places well should do better than it does.
 
 use crate::campaign::{Profile, FOLLOWERS};
 use crate::creature::{Cr, FRIENDS};
 use crate::defs::{Mode, Tw, BIOMES};
 use crate::level::{is_finale, PER_BIOME};
-use crate::sim::{Phase, Sim};
-use crate::v2::V2;
+use crate::sim::{Phase, Sim, FOOTPRINT};
+use crate::v2::{v2, V2};
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Style {
     /// Builds, upgrades, uses abilities.
     Careful,
+    /// Never upgrades: spends everything on more structures, wherever one
+    /// will fit. Not how anyone is meant to play; it is here to check that
+    /// carpeting the trail is not simply better than tending what is built.
+    Carpet,
     /// Watches. Every stage should be lost this way.
     Idle,
 }
@@ -22,14 +29,13 @@ pub struct Bot {
     pub style: Style,
     think: f32,
     placed: bool,
-    built: usize,
-    /// Mounds, best first.
-    order: Vec<usize>,
+    /// Where it means to build, in order.
+    spots: Vec<V2>,
 }
 
 impl Bot {
     pub fn new(style: Style) -> Bot {
-        Bot { style, think: 0.0, placed: false, built: 0, order: Vec::new() }
+        Bot { style, think: 0.0, placed: false, spots: Vec::new() }
     }
 
     /// Call once per tick.
@@ -47,11 +53,11 @@ impl Bot {
         self.think = 0.35;
         if !self.placed {
             self.placed = true;
-            self.order = rank_mounds(sim);
-            // The pack stands where the best mound is looking: fighters on
-            // the trail in front of it, one behind the other, and anyone
-            // perched just beside it.
-            let best = sim.map.mounds[self.order[0]];
+            self.spots = if self.style == Style::Carpet { plan(sim, 60) } else { plan_spots(sim) };
+            // The pack stands where the first structure will be looking:
+            // fighters on the trail in front of it, one behind the other,
+            // and anyone perched just beside it.
+            let best = self.spots.first().copied().unwrap_or(sim.map.home);
             let (route, along, _) = sim.map.nearest_trail(best);
             let n = sim.units.iter().filter(|u| !u.guest).count();
             let mut line = 0.0;
@@ -67,18 +73,17 @@ impl Bot {
         }
         // spend
         loop {
-            let empty = self.order.iter().copied().find(|&s| sim.towers[s].is_none());
-            if let Some(spot) = empty {
-                let kind = choose(sim, sim.map.nearest_trail(sim.map.mounds[spot]).2 <= 1.2);
-                if sim.build(spot, kind) {
-                    self.built += 1;
+            let built = sim.towers.iter().flatten().count();
+            if let Some(&pos) = self.spots.get(built) {
+                let kind = choose(sim, sim.map.nearest_trail(pos).2 <= 1.2);
+                if sim.build(kind, pos).is_some() {
                     continue;
                 }
-                // with mounds still empty, only upgrade what is cheap
-                if !self.upgrade(sim, sim.price(kind, 1) / 2) {
+                // with places still empty, only upgrade what is cheap
+                if self.style == Style::Carpet || !self.upgrade(sim, sim.price(kind, 1) / 2) {
                     break;
                 }
-            } else if !self.upgrade(sim, u32::MAX) {
+            } else if self.style == Style::Carpet || !self.upgrade(sim, u32::MAX) {
                 break;
             }
         }
@@ -177,31 +182,67 @@ fn choose(sim: &Sim, close: bool) -> Tw {
     best.0
 }
 
-/// Mounds ordered by how much trail each can see, best first.
-fn rank_mounds(sim: &Sim) -> Vec<usize> {
-    let mut scored: Vec<(usize, f32)> = sim
-        .map
-        .mounds
-        .iter()
-        .enumerate()
-        .map(|(i, &m)| {
+/// Where to build: as many places as the stage is sized for, picked one at
+/// a time from a half-tile grid. Each pick takes the open ground that sees
+/// the most trail, counting trail that an earlier pick already watches for
+/// less, so the defence spreads along the trail instead of piling up at
+/// one bend.
+pub fn plan_spots(sim: &Sim) -> Vec<V2> {
+    plan(sim, sim.def.plots as usize)
+}
+
+/// The same, for any number of places.
+pub fn plan(sim: &Sim, count: usize) -> Vec<V2> {
+    const SEES: f32 = 2.1;
+    let map = &sim.map;
+    // points along every route, with how much each matters
+    let mut trail: Vec<(V2, f32)> = Vec::new();
+    for route in &map.routes {
+        let mut d = 0.0;
+        while d < route.len {
+            // trail nearer the home matters a little more
+            trail.push((route.at(d).0, (0.6 + 0.4 * d / route.len) / map.routes.len() as f32));
+            d += 0.25;
+        }
+    }
+    let mut open: Vec<V2> = Vec::new();
+    for r in 0..crate::map::ROWS * 2 {
+        for c in 0..crate::map::COLS * 2 {
+            let p = v2(c as f32 * 0.5 + 0.25, r as f32 * 0.5 + 0.25);
+            if map.open(p).is_ok() {
+                open.push(p);
+            }
+        }
+    }
+    let mut watched = vec![0u32; trail.len()];
+    let mut picks: Vec<V2> = Vec::new();
+    for _ in 0..count {
+        let mut best: Option<(V2, f32)> = None;
+        for &p in &open {
+            if picks.iter().any(|q| q.dist(p) < FOOTPRINT) {
+                continue;
+            }
             let mut score = 0.0;
-            for route in &sim.map.routes {
-                let mut d = 0.0;
-                while d < route.len {
-                    let p = route.at(d).0;
-                    if p.dist(m) <= 2.1 {
-                        // trail nearer the home matters a little more
-                        score += (0.6 + 0.4 * d / route.len) / sim.map.routes.len() as f32;
-                    }
-                    d += 0.25;
+            for (i, &(t, w)) in trail.iter().enumerate() {
+                if t.dist(p) <= SEES {
+                    score += w / (1 + watched[i]) as f32;
                 }
             }
-            (i, score)
-        })
-        .collect();
-    scored.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap().then(a.0.cmp(&b.0)));
-    scored.into_iter().map(|s| s.0).collect()
+            // nearer the trail is better: slowing ground only reaches so far
+            score *= 1.0 - 0.12 * map.nearest_trail(p).2;
+            if best.is_none_or(|b| score > b.1 + 1e-6) {
+                best = Some((p, score));
+            }
+        }
+        let Some((p, _)) = best else { break };
+        for (i, &(t, _)) in trail.iter().enumerate() {
+            if t.dist(p) <= SEES {
+                watched[i] += 1;
+            }
+        }
+        picks.push(p);
+    }
+    picks
 }
 
 /// The state a player would plausibly be in on reaching a stage: every

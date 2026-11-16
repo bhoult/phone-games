@@ -2,13 +2,15 @@
 //! the routes invaders walk. Maps are drawn as 13 rows of 9 characters:
 //!
 //! ```text
-//!   .  open ground        #  trail            o  a mound to build on
+//!   .  open ground        #  trail
 //!   A  B  where invaders come in              H  the home being defended
 //!   ~  water              T  something tall   r  a rock
 //! ```
 //!
-//! Water, tall things and rocks are scenery: nothing walks the map except
-//! along the trail, and the pack can stand anywhere.
+//! Structures can be built anywhere on open ground that is clear of the
+//! trail and the home. Water, tall things and rocks are in the way of
+//! building; nothing walks the map except along the trail, and the pack
+//! can stand anywhere.
 
 use crate::v2::{v2, V2};
 
@@ -19,7 +21,6 @@ pub const ROWS: usize = 13;
 pub enum Tile {
     Ground,
     Trail,
-    Mound,
     Spawn(u8),
     Home,
     Water,
@@ -85,9 +86,27 @@ pub struct Map {
     pub tiles: [[Tile; COLS]; ROWS],
     pub home: V2,
     pub spawns: Vec<V2>,
-    /// Centres of the build mounds, in reading order.
-    pub mounds: Vec<V2>,
     pub routes: Vec<Route>,
+}
+
+/// The nearest the middle of a structure can be to the middle of the trail.
+pub const TRAIL_CLEAR: f32 = 0.8;
+/// And to the home.
+pub const HOME_CLEAR: f32 = 1.05;
+/// And to the edge of the map.
+pub const EDGE_CLEAR: f32 = 0.35;
+
+/// Why a structure cannot stand somewhere.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum Blocked {
+    OffMap,
+    Trail,
+    Home,
+    Water,
+    /// A tree, a rock: something already standing there.
+    Scenery,
+    /// Too close to another structure.
+    Crowded,
 }
 
 fn centre(c: usize, r: usize) -> V2 {
@@ -101,17 +120,12 @@ impl Map {
         let mut tiles = [[Tile::Ground; COLS]; ROWS];
         let mut home = None;
         let mut spawns: Vec<(u8, usize, usize)> = Vec::new();
-        let mut mounds = Vec::new();
         for (r, row) in rows.iter().enumerate() {
             assert_eq!(row.len(), COLS, "map row {r} is not {COLS} wide: {row:?}");
             for (c, ch) in row.bytes().enumerate() {
                 tiles[r][c] = match ch {
                     b'.' => Tile::Ground,
                     b'#' => Tile::Trail,
-                    b'o' => {
-                        mounds.push(centre(c, r));
-                        Tile::Mound
-                    }
                     b'A' | b'B' => {
                         spawns.push((ch - b'A', c, r));
                         Tile::Spawn(ch - b'A')
@@ -188,7 +202,7 @@ impl Map {
                 routes.push(Route::new(id, round_corners(&pts)));
             }
         }
-        Map { tiles, home: centre(hc, hr), spawns: spawns.iter().map(|&(_, c, r)| centre(c, r)).collect(), mounds, routes }
+        Map { tiles, home: centre(hc, hr), spawns: spawns.iter().map(|&(_, c, r)| centre(c, r)).collect(), routes }
     }
 
     pub fn tile(&self, c: i32, r: i32) -> Tile {
@@ -197,6 +211,26 @@ impl Map {
         } else {
             self.tiles[r as usize][c as usize]
         }
+    }
+
+    /// Whether the ground at `p` would take a structure (other structures
+    /// aside: the stage being played knows about those).
+    pub fn open(&self, p: V2) -> Result<(), Blocked> {
+        if p.x < EDGE_CLEAR || p.y < EDGE_CLEAR || p.x > COLS as f32 - EDGE_CLEAR || p.y > ROWS as f32 - EDGE_CLEAR {
+            return Err(Blocked::OffMap);
+        }
+        match self.tile(p.x.floor() as i32, p.y.floor() as i32) {
+            Tile::Water => return Err(Blocked::Water),
+            Tile::Tall | Tile::Rock => return Err(Blocked::Scenery),
+            _ => {}
+        }
+        if p.dist(self.home) < HOME_CLEAR {
+            return Err(Blocked::Home);
+        }
+        if self.nearest_trail(p).2 < TRAIL_CLEAR {
+            return Err(Blocked::Trail);
+        }
+        Ok(())
     }
 
     /// The point on any route nearest to `p`: (route, distance along, how far off).

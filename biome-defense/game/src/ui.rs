@@ -70,6 +70,11 @@ impl Pointer {
         }
     }
 
+    /// Whether a finger (not a mouse) is doing the pointing.
+    pub fn is_touch(&self) -> bool {
+        self.touch.is_some() || get_time() < self.quiet_until
+    }
+
     fn press(&mut self) {
         self.pressed = true;
         self.down = true;
@@ -94,11 +99,12 @@ pub struct Ui {
     pub u: f32,
 }
 
-pub const GREEN: Color = rgb(0x58c93a);
-pub const ORANGE: Color = rgb(0xff9a2e);
-pub const BLUE: Color = rgb(0x3f9be8);
-pub const GREY: Color = rgb(0x9aa3b5);
-pub const PURPLE: Color = rgb(0xa86fe8);
+/// Button colours. Go ahead; look here; an ordinary action; nothing doing.
+pub const GO: Color = rgb(0x5f7d3a);
+pub const EMBER: Color = rgb(0xb5722c);
+pub const STEEL: Color = rgb(0x4d626c);
+pub const GREY: Color = rgb(0x474a45);
+pub const RUST: Color = rgb(0x8c4334);
 
 impl Ui {
     pub fn new() -> Ui {
@@ -142,27 +148,40 @@ impl Ui {
         (mine && over && self.ptr.down, clicked)
     }
 
-    /// A chunky pill button with a label and/or icon. Returns true on click.
+    /// A flat button with a label and/or icon. Returns true on click.
     #[allow(clippy::too_many_arguments)]
     pub fn button(&mut self, g: &Gfx, au: &mut Audio, id: u32, r: Rect, color: Color, label: &str, icon: Option<Spr>, enabled: bool) -> bool {
         let (held, clicked) = self.press(id, r, enabled);
-        let dy = if held { r.h * 0.045 } else { 0.0 };
-        let tint = if held { mix(color, rgb(0x000000), 0.14) } else { color };
+        let dy = if held { r.h * 0.03 } else { 0.0 };
+        let tint = if held { mix(color, BLACK, 0.28) } else { color };
         let body = Rect::new(r.x, r.y + dy, r.w, r.h);
-        g.nine(spr::BTN, body, 32.0, (r.h * 0.46).min(r.w * 0.5), tint);
-        let cy = body.y + body.h * 0.455;
-        let size = (r.h * 0.44).min(30.0 * self.u);
+        g.nine(spr::BTN, body, 32.0, (9.0 * self.u).min(r.h * 0.3), tint);
+        let cy = body.y + body.h * 0.5;
+        let ink = crate::widgets::INK;
+        let mut size = (r.h * 0.36).min(19.0 * self.u);
         match (icon, label.is_empty()) {
-            (Some(ic), true) => g.spr_fit(ic, body.x + body.w / 2.0, cy, r.h * 0.56, 0.0, WHITE),
+            (Some(ic), true) => g.spr_fit(ic, body.x + body.w / 2.0, cy, r.h * 0.5, 0.0, ink),
             (Some(ic), false) => {
-                let tw = g.text_w(label, size);
-                let iw = r.h * 0.5;
-                let total = tw + iw + 6.0 * self.u;
+                let iw = r.h * 0.42;
+                let room = body.w - iw - 22.0 * self.u;
+                let tw = g.text_w_in(Face::Head, label, size);
+                if tw > room {
+                    size *= room / tw;
+                }
+                let tw = g.text_w_in(Face::Head, label, size);
+                let total = tw + iw + 7.0 * self.u;
                 let x0 = body.x + (body.w - total) / 2.0;
-                g.spr_fit(ic, x0 + iw / 2.0, cy, iw, 0.0, WHITE);
-                g.label(label, x0 + iw + 6.0 * self.u, cy, size, 0.0, WHITE, Some((alpha(NAVY, 0.55), size * 0.07)), 0.0);
+                g.spr_fit(ic, x0 + iw / 2.0, cy, iw, 0.0, ink);
+                g.head(label, x0 + iw + 7.0 * self.u, cy, size, 0.0, ink);
             }
-            (None, _) => g.label(label, body.x + body.w / 2.0, cy, size, 0.5, WHITE, Some((alpha(NAVY, 0.55), size * 0.07)), 0.0),
+            (None, _) => {
+                let room = body.w - 14.0 * self.u;
+                let tw = g.text_w_in(Face::Head, label, size);
+                if tw > room {
+                    size *= room / tw;
+                }
+                g.head(label, body.x + body.w / 2.0, cy, size, 0.5, ink);
+            }
         }
         if clicked {
             au.play(Sfx::Click, 0.8);

@@ -61,7 +61,7 @@ pub const FOE_COUNT: usize = 27;
 pub enum Quirk {
     /// Grows back this fraction of its health every second.
     Regen(f32),
-    /// Bursts into this many of something smaller when shooed.
+    /// Bursts into this many of something smaller when it is stopped.
     Split(Foe, u8),
     /// Rolls or drives: cannot be held up by the pack, a dam or a decoy.
     Roll,
@@ -82,7 +82,7 @@ pub struct FoeDef {
     pub armor: f32,
     /// Damage per second to whoever is holding it up.
     pub bite: f32,
-    /// Hearts the home loses if it gets through.
+    /// How much of the home's strength it costs if it gets through.
     pub hearts: u8,
     pub flying: bool,
     pub boss: bool,
@@ -112,33 +112,33 @@ const fn boss(mut d: FoeDef) -> FoeDef {
 use Class::*;
 
 pub static FOES: [FoeDef; FOE_COUNT] = [
-    foe("Ant", Insect, 22.0, 1.0, 0.0, 4.0, 0.5, &[], "Plain, plentiful, and in a hurry."),
-    foe("Beetle", Insect, 70.0, 0.62, 3.0, 8.0, 0.68, &[], "Armored. Light hits bounce off."),
-    foe("Locust", Insect, 30.0, 1.7, 0.0, 5.0, 0.55, &[], "Fast. Gone before slow structures notice."),
-    flier(foe("Wasp", Insect, 26.0, 1.3, 0.0, 0.0, 0.5, &[], "Flies over the pack. Needs something that hits the air.")),
-    flier(foe("Moth", Insect, 46.0, 1.0, 0.0, 0.0, 0.6, &[], "A big soft flier.")),
+    foe("Ant", Insect, 22.0, 1.0, 0.0, 4.0, 0.5, &[], "Driven ahead of everything else. Weak alone; never alone."),
+    foe("Beetle", Insect, 70.0, 0.62, 3.0, 8.0, 0.68, &[], "Armored. Light hits glance off."),
+    foe("Locust", Insect, 30.0, 1.7, 0.0, 5.0, 0.55, &[], "Fast. Past a slow defence before it wakes."),
+    flier(foe("Wasp", Insect, 26.0, 1.3, 0.0, 0.0, 0.5, &[], "Flies over the pack. Only what reaches the air can touch it.")),
+    flier(foe("Hawk Moth", Insect, 46.0, 1.0, 0.0, 0.0, 0.6, &[], "A big soft flier. Takes some killing.")),
     flier(foe("Mosquito", Insect, 13.0, 1.9, 0.0, 0.0, 0.4, &[], "Tiny, fast, and never alone.")),
-    hearts(foe("Slug", Insect, 170.0, 0.45, 0.0, 6.0, 0.75, &[], "Slow and very hard to discourage."), 2),
-    foe("Fire Ant", Insect, 40.0, 1.5, 0.0, 6.0, 0.48, &[], "Angry, quick, and there are always more."),
-    hearts(foe("Scorpion", Insect, 185.0, 0.75, 5.0, 16.0, 0.75, &[], "Thick shell, mean sting."), 2),
-    foe("Creeper", Plant, 62.0, 0.8, 0.0, 6.0, 0.62, &[Quirk::Regen(0.04)], "Grows back unless it is shooed quickly."),
-    foe("Spore Pod", Plant, 95.0, 0.55, 0.0, 5.0, 0.7, &[Quirk::Split(Foe::Sprout, 3)], "Bursts into three sprouts."),
-    foe("Sprout", Plant, 16.0, 1.5, 0.0, 3.0, 0.4, &[], "Small, quick, freshly sprouted."),
-    foe("Tumbleweed", Plant, 60.0, 2.1, 0.0, 0.0, 0.62, &[Quirk::Roll], "Rolls straight past anyone in the way."),
-    foe("Surveyor", People, 115.0, 0.8, 1.0, 10.0, 0.62, &[], "Carries orange stakes. Not easily scared."),
-    foe("Camper", People, 125.0, 0.9, 0.0, 8.0, 0.62, &[], "Loud, lost, and dropping wrappers."),
-    hearts(foe("Trapper", People, 165.0, 0.7, 2.0, 14.0, 0.66, &[], "Heavy boots, heavy pack."), 2),
-    foe("Worker", People, 145.0, 0.85, 2.0, 12.0, 0.64, &[], "Hard hat. Harder to turn around."),
+    hearts(foe("Slug", Insect, 170.0, 0.45, 0.0, 6.0, 0.75, &[], "Slow, and very hard to stop."), 2),
+    foe("Fire Ant", Insect, 40.0, 1.5, 0.0, 6.0, 0.48, &[], "Quick, vicious, and there are always more."),
+    hearts(foe("Scorpion", Insect, 185.0, 0.75, 5.0, 16.0, 0.75, &[], "Thick shell, bad sting."), 2),
+    foe("Kudzu", Plant, 62.0, 0.8, 0.0, 6.0, 0.62, &[Quirk::Regen(0.04)], "Grows back as fast as it is cut. Kill it quickly, or poison it."),
+    foe("Seed Pod", Plant, 95.0, 0.55, 0.0, 5.0, 0.7, &[Quirk::Split(Foe::Sprout, 3)], "Bursts into three runners when it dies."),
+    foe("Runner", Plant, 16.0, 1.5, 0.0, 3.0, 0.4, &[], "A fresh shoot. Small and quick."),
+    foe("Tumbleweed", Plant, 60.0, 2.1, 0.0, 0.0, 0.62, &[Quirk::Roll], "Rolls straight past anyone standing in the way."),
+    foe("Surveyor", People, 115.0, 0.8, 1.0, 10.0, 0.62, &[], "Carries the orange stakes. Does not scare easily."),
+    foe("Hiker", People, 125.0, 0.9, 0.0, 8.0, 0.62, &[], "Lost, loud, and heading straight for the den."),
+    hearts(foe("Trapper", People, 165.0, 0.7, 2.0, 14.0, 0.66, &[], "Heavy boots, steel traps."), 2),
+    foe("Worker", People, 145.0, 0.85, 2.0, 12.0, 0.64, &[], "Hard hat and a chainsaw. Hard to turn around."),
     hearts(foe("Exterminator", People, 185.0, 0.7, 1.0, 10.0, 0.66, &[Quirk::Jam { radius: 1.7, every: 7.0, secs: 2.5 }], "Sprays nearby structures out of action."), 2),
-    hearts(foe("Quad Bike", People, 95.0, 1.7, 2.0, 0.0, 0.8, &[Quirk::Roll], "Fast, armored, and cannot be held up."), 2),
-    hearts(foe("Mower", People, 270.0, 1.1, 6.0, 20.0, 0.8, &[], "Armored, quick, and chews through whoever holds it."), 2),
-    flier(foe("Drone", People, 72.0, 1.5, 1.0, 0.0, 0.55, &[], "Buzzes over everything on the ground.")),
-    boss(foe("Old Mandible", Insect, 900.0, 0.42, 6.0, 30.0, 1.25, &[], "The stag beetle the others are following.")),
+    hearts(foe("Quad Bike", People, 95.0, 1.7, 2.0, 0.0, 0.8, &[Quirk::Roll], "Fast, armored, and cannot be held."), 2),
+    hearts(foe("Brush Mower", People, 270.0, 1.1, 6.0, 20.0, 0.8, &[], "Armored and quick. Chews through whoever holds it."), 2),
+    flier(foe("Drone", People, 72.0, 1.5, 1.0, 0.0, 0.55, &[], "Flies over everything on the ground.")),
+    boss(foe("Old Mandible", Insect, 900.0, 0.42, 6.0, 30.0, 1.25, &[], "The stag beetle the swarm travels with.")),
     boss(foe("The Strangler", Plant, 1500.0, 0.38, 2.0, 25.0, 1.4, &[Quirk::Regen(0.012), Quirk::Brood { what: Foe::Sprout, every: 5.0, n: 2 }], "A knot of vine that keeps growing.")),
     boss(foe("The Drainer", People, 2400.0, 0.4, 8.0, 30.0, 1.5, &[], "A pump truck with the marsh in its tank.")),
-    boss(foe("Sandblaster", People, 2100.0, 0.75, 6.0, 0.0, 1.5, &[Quirk::Roll], "A dune buggy. Nothing can hold it up.")),
+    boss(foe("Sandblaster", People, 2100.0, 0.75, 6.0, 0.0, 1.5, &[Quirk::Roll], "A dune buggy at full throttle. Nothing can hold it.")),
     boss(flier(foe("The Chopper", People, 2700.0, 0.5, 4.0, 0.0, 1.6, &[Quirk::Brood { what: Foe::Drone, every: 6.0, n: 2 }], "Flies, and brings drones."))),
-    boss(foe("Big Yellow", People, 6000.0, 0.3, 10.0, 60.0, 1.8, &[Quirk::Brood { what: Foe::Worker, every: 7.0, n: 2 }, Quirk::Jam { radius: 2.0, every: 9.0, secs: 2.5 }], "The machine that flattened a den.")),
+    boss(foe("Big Yellow", People, 6000.0, 0.3, 10.0, 60.0, 1.8, &[Quirk::Brood { what: Foe::Worker, every: 7.0, n: 2 }, Quirk::Jam { radius: 2.0, every: 9.0, secs: 2.5 }], "The machine that took the first den.")),
 ];
 
 impl Foe {
@@ -192,24 +192,24 @@ impl Foe {
 #[repr(u8)]
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub enum Tw {
-    Thistle,
+    Shrike,
     Puffball,
-    HoneyPot,
-    Beehive,
-    AcornSling,
-    NeedlePine,
-    SapTrap,
+    Bramble,
+    Hive,
+    Rookery,
+    BatRoost,
+    SapRun,
     Woodpecker,
-    Cattail,
-    FrogPond,
+    Kingfisher,
+    Bullfrog,
     MudWallow,
     EelPool,
-    Cactus,
-    RockTumbler,
+    Cholla,
+    Bighorn,
     DustDevil,
     RattlerDen,
-    Icicle,
-    Snowball,
+    Icefall,
+    Cornice,
     FrostVent,
     Eyrie,
 }
@@ -291,20 +291,25 @@ pub enum Perk {
 /// What a shot looks like in flight; the game layer picks art from this.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Look {
-    Dart,
+    /// A shrike, out and back.
+    Shrike,
     Spore,
     Bee,
-    Acorn,
-    Needle,
+    /// A stone dropped by a crow.
+    Stone,
+    Bat,
     Peck,
-    Reed,
+    Kingfisher,
     Tongue,
     Zap,
     Rock,
     Fang,
     Icicle,
-    Snowball,
+    Snow,
     Dive,
+    /// A cactus spine.
+    Spine,
+    Acorn,
     Feather,
     Pebble,
     None,
@@ -339,7 +344,7 @@ pub const LV_RATE: [f32; 3] = [1.0, 1.1, 1.2];
 /// A slowing field gets this much stronger per level.
 pub const LV_SLOW: f32 = 0.07;
 /// What levels 2 and 3 cost, as a share of the building price.
-pub const LV_COST: [f32; 3] = [1.0, 0.75, 1.25];
+pub const LV_COST: [f32; 3] = [1.0, 0.7, 1.1];
 /// Share of everything spent that selling gives back.
 pub const SELL_BACK: f32 = 0.7;
 
@@ -375,29 +380,29 @@ const fn piercing(mut d: TowerDef) -> TowerDef {
 
 pub static TOWERS: [TowerDef; TOWER_COUNT] = [
     // ---- the meadow ----
-    tw("Thistle Shooter", "quick darts, hits air", "Flicks thistle darts at one invader at a time.", 50, Mode::Shot, 2.3, 1.4, 9.0, true, Look::Dart, Perk::Pierce, "Darts carry on into a second invader."),
-    tw("Puffball", "bursts over a crowd", "Lobs a puffball that bursts over everything near where it lands.", 70, Mode::Lob { splash: 0.9 }, 2.2, 0.55, 16.0, false, Look::Spore, Perk::Linger, "Spores linger: 6 damage a second for 3s."),
-    tw("Honey Pot", "slows the ground", "Sticky ground. Everything walking past slows right down.", 45, Mode::Field { slow: 0.35 }, 1.5, 0.0, 0.0, false, Look::None, Perk::SlowAir, "Sticky enough to slow fliers too."),
-    vs(tw("Beehive", "many stings, hits air", "Sends a bee at each of three invaders. Fliers hate it.", 80, Mode::Swarm { targets: 3 }, 1.9, 1.0, 6.0, true, Look::Bee, Perk::More(2), "Two more bees."), Bonus::VsAir(1.5)),
+    tw("Shrike Thorn", "fast strikes, hits air", "A shrike works from the thorn: one invader at a time, quick and exact.", 50, Mode::Shot, 2.3, 1.4, 9.0, true, Look::Shrike, Perk::Pierce, "Each strike carries through into a second invader."),
+    tw("Puffball Ring", "bursts over a crowd", "A ripe puffball bursts over everything near where it lands.", 70, Mode::Lob { splash: 0.9 }, 2.2, 0.55, 16.0, false, Look::Spore, Perk::Linger, "Spores linger: 6 damage a second for 3s."),
+    tw("Bramble", "slows the ground", "A snare of thorn. Everything on foot drags through it.", 45, Mode::Field { slow: 0.35 }, 1.5, 0.0, 0.0, false, Look::None, Perk::SlowAir, "Grown tall enough to snag fliers too."),
+    vs(tw("Wild Hive", "many stings, hits air", "Three bees to three invaders. Half again as much to anything that flies.", 80, Mode::Swarm { targets: 3 }, 1.9, 1.0, 6.0, true, Look::Bee, Perk::More(2), "Two more bees."), Bonus::VsAir(1.5)),
     // ---- the old wood ----
-    tw("Acorn Sling", "bursts over a crowd", "Flings an acorn that cracks over everything nearby.", 70, Mode::Lob { splash: 0.85 }, 2.4, 0.6, 18.0, false, Look::Acorn, Perk::Stun(0.4), "Acorns leave invaders dizzy for a moment."),
-    tw("Needle Pine", "very fast, hits air", "A hail of light needles. Weak against armor.", 55, Mode::Shot, 2.1, 2.6, 5.0, true, Look::Needle, Perk::Double, "Rakes two invaders at once."),
-    tw("Sap Trap", "slows the ground", "Dripping sap gums up everything that walks through.", 45, Mode::Field { slow: 0.4 }, 1.5, 0.0, 0.0, false, Look::None, Perk::Root, "Every 5s, roots hold everything in reach for 0.8s."),
-    vs(piercing(tw("Woodpecker Roost", "far, hard, ignores armor", "One hard peck from a long way off. Armor does not help.", 90, Mode::Snipe, 3.3, 0.45, 42.0, true, Look::Peck, Perk::Stun(0.6), "A solid peck stuns for 0.6s.")), Bonus::Vs(Insect, 1.5)),
+    tw("Rookery", "bursts over a crowd", "Crows drop stones that crack over everything nearby.", 70, Mode::Lob { splash: 0.85 }, 2.4, 0.6, 18.0, false, Look::Stone, Perk::Stun(0.4), "Stones leave invaders stunned for a moment."),
+    tw("Bat Roost", "very fast, hits air", "Bats harry whatever passes. Many light hits; armor shrugs them off.", 55, Mode::Shot, 2.1, 2.6, 5.0, true, Look::Bat, Perk::Double, "Harries two invaders at once."),
+    tw("Sap Run", "slows the ground", "Resin bleeding from a wounded pine. Whatever walks through it sticks.", 45, Mode::Field { slow: 0.4 }, 1.5, 0.0, 0.0, false, Look::None, Perk::Root, "Every 5s it sets hard: everything in reach is held for 0.8s."),
+    vs(piercing(tw("Woodpecker Snag", "far, hard, ignores armor", "One hard strike from a long way off. Armor does not help. Half again as much to insects.", 90, Mode::Snipe, 3.3, 0.45, 42.0, true, Look::Peck, Perk::Stun(0.6), "A solid strike stuns for 0.6s.")), Bonus::Vs(Insect, 1.5)),
     // ---- the marsh ----
-    tw("Cattail Darts", "quick darts, hits air", "Reed darts at one invader at a time.", 50, Mode::Shot, 2.4, 1.3, 10.0, true, Look::Reed, Perk::Pierce, "Darts carry on into a second invader."),
-    vs(tw("Frog Pond", "eats insects, hits air", "A long tongue. Double damage to insects.", 80, Mode::Snipe, 1.9, 0.8, 20.0, true, Look::Tongue, Perk::Execute(0.3), "Swallows insects below 30% health whole."), Bonus::Vs(Insect, 2.0)),
-    with(tw("Mud Wallow", "slows, softens armor", "Deep mud. Slows the ground and strips 3 armor.", 55, Mode::Field { slow: 0.35 }, 1.5, 0.0, 0.0, false, Look::None, Perk::Deep, "Thicker mud: strips twice the armor."), &[Rider::Shred(3.0, 1.0)]),
+    tw("Kingfisher Perch", "fast strikes, hits air", "A kingfisher dives at one invader at a time.", 50, Mode::Shot, 2.4, 1.3, 10.0, true, Look::Kingfisher, Perk::Pierce, "Each dive carries through into a second invader."),
+    vs(tw("Bullfrog Pool", "eats insects, hits air", "A long tongue. Double damage to insects.", 80, Mode::Snipe, 1.9, 0.8, 20.0, true, Look::Tongue, Perk::Execute(0.3), "Swallows insects below 30% health whole."), Bonus::Vs(Insect, 2.0)),
+    with(tw("Mud Wallow", "slows, softens armor", "Deep mud. Slows the ground and strips 3 armor.", 55, Mode::Field { slow: 0.35 }, 1.5, 0.0, 0.0, false, Look::None, Perk::Deep, "Deeper mud: strips twice the armor."), &[Rider::Shred(3.0, 1.0)]),
     piercing(tw("Eel Pool", "jumps between invaders", "A jolt that leaps to two more invaders. Ignores armor.", 95, Mode::Chain { jumps: 2 }, 2.2, 0.7, 16.0, true, Look::Zap, Perk::Jumps(2), "Leaps to two more.")),
     // ---- red rock ----
-    tw("Cactus Spitter", "very fast, hits air", "Sprays spines. Weak against armor.", 55, Mode::Shot, 2.2, 2.4, 6.0, true, Look::Needle, Perk::Bleed, "Spines stick: 5 damage a second for 3s."),
-    tw("Rock Tumbler", "heavy burst", "Rolls a boulder that crashes through a crowd.", 85, Mode::Lob { splash: 0.95 }, 2.5, 0.45, 30.0, false, Look::Rock, Perk::Stun(0.5), "Boulders stun for half a second."),
-    tw("Dust Devil", "slows ground and air", "A whirl of grit that slows everything, fliers included, and stings a little.", 60, Mode::Field { slow: 0.3 }, 1.6, 0.0, 3.0, true, Look::None, Perk::Shred(3.0), "Sandblasts 3 armor off whatever is inside."),
-    vs(with(tw("Rattler Den", "scares people off", "A venomous bite, and a rattle that sends people running.", 90, Mode::Shot, 2.0, 0.9, 14.0, false, Look::Fang, Perk::Dread, "The rattle lasts longer and scares everything but bosses."), &[Rider::Poison(6.0, 3.0), Rider::Fear { every: 6.0, secs: 1.6 }]), Bonus::Vs(People, 1.5)),
+    tw("Jumping Cholla", "very fast, hits air", "Barbed joints that let go at a touch. Many light hits; armor shrugs them off.", 55, Mode::Shot, 2.2, 2.4, 6.0, true, Look::Spine, Perk::Bleed, "Spines stay in: 5 damage a second for 3s."),
+    tw("Bighorn Ledge", "heavy burst", "A ram on the rocks sends boulders down through a crowd.", 85, Mode::Lob { splash: 0.95 }, 2.5, 0.45, 30.0, false, Look::Rock, Perk::Stun(0.5), "Boulders stun for half a second."),
+    tw("Dust Devil", "slows ground and air", "A whirl of grit that slows everything, fliers included, and scours a little.", 60, Mode::Field { slow: 0.3 }, 1.6, 0.0, 3.0, true, Look::None, Perk::Shred(3.0), "Scours 3 armor off whatever is inside."),
+    vs(with(tw("Rattler Den", "venom, turns people back", "A venomous strike, and a rattle that turns people around.", 90, Mode::Shot, 2.0, 0.9, 14.0, false, Look::Fang, Perk::Dread, "The rattle lasts longer and turns everything but bosses."), &[Rider::Poison(6.0, 3.0), Rider::Fear { every: 6.0, secs: 1.6 }]), Bonus::Vs(People, 1.5)),
     // ---- high crag ----
-    with(tw("Icicle Thrower", "chills, hits air", "Icicles that slow what they hit.", 60, Mode::Shot, 2.4, 1.1, 12.0, true, Look::Icicle, Perk::DeepChill, "A much deeper chill."), &[Rider::Chill(0.25, 1.5)]),
-    with(tw("Snowball Stack", "chilly burst", "Snowballs that burst over a crowd and chill it.", 75, Mode::Lob { splash: 1.0 }, 2.3, 0.6, 19.0, false, Look::Snowball, Perk::Wide, "Bigger snowballs, wider burst."), &[Rider::Chill(0.2, 1.5)]),
-    tw("Frost Vent", "slows the ground", "Cold air pours out. Everything nearby slows to a trudge.", 60, Mode::Field { slow: 0.42 }, 1.5, 0.0, 0.0, false, Look::None, Perk::Root, "Every 5s, freezes everything in reach for 0.8s."),
+    with(tw("Icefall", "chills, hits air", "Falling ice that slows what it hits.", 60, Mode::Shot, 2.4, 1.1, 12.0, true, Look::Icicle, Perk::DeepChill, "A much deeper chill."), &[Rider::Chill(0.25, 1.5)]),
+    with(tw("Snow Cornice", "chilling burst", "A slab of snow lets go over a crowd and chills it.", 75, Mode::Lob { splash: 1.0 }, 2.3, 0.6, 19.0, false, Look::Snow, Perk::Wide, "A bigger slab, a wider burst."), &[Rider::Chill(0.2, 1.5)]),
+    tw("Frost Vent", "slows the ground", "Cold air pours from the rock. Everything nearby slows to a trudge.", 60, Mode::Field { slow: 0.42 }, 1.5, 0.0, 0.0, false, Look::None, Perk::Root, "Every 5s, freezes everything in reach for 0.8s."),
     vs(piercing(tw("Eagle Eyrie", "far, hard, hits air", "An eagle stoops from a long way off. Double damage to fliers.", 100, Mode::Snipe, 3.5, 0.5, 46.0, true, Look::Dive, Perk::Double, "A second eagle: strikes two at once.")), Bonus::VsAir(2.0)),
 ];
 
@@ -426,11 +431,11 @@ pub struct BiomeDef {
 pub const BIOME_COUNT: usize = 6;
 
 pub static BIOMES: [BiomeDef; BIOME_COUNT] = [
-    BiomeDef { name: "The Meadow", home: "warren", resident: Some(Cr::Rabbit), towers: &[Tw::Thistle, Tw::Puffball, Tw::HoneyPot, Tw::Beehive] },
-    BiomeDef { name: "The Old Wood", home: "oak", resident: Some(Cr::Squirrel), towers: &[Tw::NeedlePine, Tw::AcornSling, Tw::SapTrap, Tw::Woodpecker] },
-    BiomeDef { name: "Reedmere", home: "lodge", resident: Some(Cr::Beaver), towers: &[Tw::Cattail, Tw::FrogPond, Tw::MudWallow, Tw::EelPool] },
-    BiomeDef { name: "Red Rock", home: "burrow", resident: Some(Cr::Tortoise), towers: &[Tw::Cactus, Tw::RockTumbler, Tw::DustDevil, Tw::RattlerDen] },
-    BiomeDef { name: "High Crag", home: "den", resident: Some(Cr::Marmot), towers: &[Tw::Icicle, Tw::Snowball, Tw::FrostVent, Tw::Eyrie] },
+    BiomeDef { name: "The Meadow", home: "warren", resident: Some(Cr::Rabbit), towers: &[Tw::Shrike, Tw::Puffball, Tw::Bramble, Tw::Hive] },
+    BiomeDef { name: "The Old Wood", home: "oak", resident: Some(Cr::Squirrel), towers: &[Tw::BatRoost, Tw::Rookery, Tw::SapRun, Tw::Woodpecker] },
+    BiomeDef { name: "Reedmere", home: "lodge", resident: Some(Cr::Beaver), towers: &[Tw::Kingfisher, Tw::Bullfrog, Tw::MudWallow, Tw::EelPool] },
+    BiomeDef { name: "Red Rock", home: "burrow", resident: Some(Cr::Tortoise), towers: &[Tw::Cholla, Tw::Bighorn, Tw::DustDevil, Tw::RattlerDen] },
+    BiomeDef { name: "High Crag", home: "den", resident: Some(Cr::Marmot), towers: &[Tw::Icefall, Tw::Cornice, Tw::FrostVent, Tw::Eyrie] },
     // The last stand borrows one structure from each friend's home.
-    BiomeDef { name: "Road's End", home: "den", resident: None, towers: &[Tw::Beehive, Tw::AcornSling, Tw::MudWallow, Tw::RattlerDen, Tw::Eyrie] },
+    BiomeDef { name: "Road's End", home: "den", resident: None, towers: &[Tw::Hive, Tw::Rookery, Tw::MudWallow, Tw::RattlerDen, Tw::Eyrie] },
 ];

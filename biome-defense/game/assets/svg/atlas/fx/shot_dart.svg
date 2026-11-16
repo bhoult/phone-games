@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 100 100">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f59af5"/><stop offset="1" stop-color="#a23fc0"/></linearGradient></defs>
-  <!-- a thistle dart: purple spike, green bulb behind -->
-  <path d="M28 26 L92 50 L28 74 L36 50 Z" fill="url(#g)" stroke="#6a1f86" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M46 43 L70 49" fill="none" stroke="#ffd6ff" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
-  <path d="M8 50 C8 34 28 32 36 42 L40 50 L36 58 C28 68 8 66 8 50 Z" fill="#5fb845" stroke="#22561a" stroke-width="6" stroke-linejoin="round"/>
-</svg>

@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 100 100">
-  <!-- a pine needle -->
-  <path d="M10 50 L26 32 L92 50 L26 68 Z" fill="#4fbf6e" stroke="#0e3a22" stroke-width="6" stroke-linejoin="round"/>
-  <path d="M34 44 L68 49" fill="none" stroke="#c4f5cc" stroke-width="4.5" stroke-linecap="round"/>
-  <path d="M8 50 L20 37 L30 50 L20 63 Z" fill="#8a5a34" stroke="#3a220e" stroke-width="5" stroke-linejoin="round"/>
-</svg>

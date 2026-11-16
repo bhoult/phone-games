@@ -1,12 +1,12 @@
-//! The ground a stage is played on: the biome's earth, the trail, water,
-//! and the scenery scattered round them. Everything here is still; what
-//! moves on top is drawn by `play`.
+//! The ground a stage is played on: the biome's earth with the trail and
+//! any water worked into it, and the scenery standing on it. Everything
+//! here is still; what moves on top is drawn by `play`.
 
 use crate::art::Palette;
 use crate::gfx::*;
 use biome_core::map::{Map, Tile, COLS, ROWS};
 use biome_core::{v2, Rng, V2};
-use macroquad::prelude::{draw_circle, draw_rectangle, vec2, Rect, Vec2};
+use macroquad::prelude::{draw_circle, draw_line, vec2, Color, FilterMode, Rect, Texture2D, Vec2};
 
 /// Where the map sits on screen: tile coordinates to pixels and back.
 #[derive(Clone, Copy)]
@@ -37,148 +37,149 @@ impl View {
 pub struct Prop {
     pub pos: V2,
     pub spr: Spr,
-    /// Height in tiles.
+    /// Longest side, in tiles.
     pub size: f32,
     pub flip: bool,
 }
 
 /// The fixed dressing of one stage, worked out once from its map.
 pub struct Scenery {
-    /// Small things lying flat on the ground: tufts, flowers, pebbles.
-    tufts: Vec<Prop>,
-    /// Darker flecks along the trail.
-    flecks: Vec<(V2, f32)>,
+    /// What the ground shader paints from.
+    pub look: GroundLook,
     /// Things with height: trees, rocks.
     pub props: Vec<Prop>,
+    /// The trail as plain lines, for devices without the shader.
+    lines: Vec<(V2, V2)>,
+    dust: Color,
+}
+
+// The mask covers the map and a margin all round it (the trail runs on off
+// the edge where invaders come in, and tall screens show ground above and
+// below the map).
+const MASK_X: f32 = -1.5;
+const MASK_Y: f32 = -6.0;
+const MASK_W: f32 = COLS as f32 + 3.0;
+const MASK_H: f32 = ROWS as f32 + 12.0;
+/// Mask pixels per tile. It holds smooth ramps, so it needs very few.
+const MASK_PX: f32 = 8.0;
+
+fn seg_dist(p: V2, a: V2, b: V2) -> f32 {
+    let ab = b - a;
+    let l2 = ab.x * ab.x + ab.y * ab.y;
+    let t = if l2 > 1e-9 { (((p.x - a.x) * ab.x + (p.y - a.y) * ab.y) / l2).clamp(0.0, 1.0) } else { 0.0 };
+    a.lerp(b, t).dist(p)
 }
 
 impl Scenery {
-    pub fn new(map: &Map, pal: &Palette, seed: u64) -> Scenery {
+    pub fn new(map: &Map, pal: &Palette, level: usize, seed: u64) -> Scenery {
         let mut rng = Rng::new(seed);
-        let mut tufts = Vec::new();
         let mut props = Vec::new();
         // a few tiles beyond the map on every side, so tall screens are not bare
-        for r in -3..ROWS as i32 + 3 {
+        for r in -4..ROWS as i32 + 5 {
             for c in -2..COLS as i32 + 2 {
                 let inside = c >= 0 && r >= 0 && c < COLS as i32 && r < ROWS as i32;
                 let centre = v2(c as f32 + 0.5, r as f32 + 0.5);
-                match map.tile(c, r) {
-                    Tile::Tall if inside => props.push(Prop { pos: centre + v2(0.0, 0.3), spr: pal.tall, size: 1.5, flip: rng.chance(0.5) }),
-                    Tile::Rock if inside => props.push(Prop { pos: centre + v2(0.0, 0.25), spr: pal.rock, size: 0.95, flip: rng.chance(0.5) }),
-                    Tile::Water if inside => {
-                        if rng.chance(0.45) {
-                            tufts.push(Prop { pos: centre + v2(rng.range(-0.2, 0.2), rng.range(-0.15, 0.15)), spr: spr::TUFT_MARSH_A, size: rng.range(0.5, 0.65), flip: rng.chance(0.5) });
-                        }
+                if inside {
+                    match map.tile(c, r) {
+                        Tile::Tall => props.push(Prop { pos: centre + v2(0.0, 0.32), spr: pal.tall, size: 1.75, flip: rng.chance(0.5) }),
+                        Tile::Rock => props.push(Prop { pos: centre + v2(0.0, 0.22), spr: pal.rock, size: 1.0, flip: rng.chance(0.5) }),
+                        _ => {}
                     }
-                    Tile::Ground => {
-                        // keep clear of the trail and of mounds next door
-                        let crowded = (-1..=1).any(|dr| (-1..=1).any(|dc| matches!(map.tile(c + dc, r + dr), Tile::Trail | Tile::Mound | Tile::Home | Tile::Spawn(_))));
-                        let roll = rng.unit();
-                        if !inside && r >= 0 && roll < 0.11 {
-                            props.push(Prop { pos: centre + v2(rng.range(-0.3, 0.3), 0.3), spr: if rng.chance(0.6) { pal.tall } else { pal.rock }, size: rng.range(0.9, 1.3), flip: rng.chance(0.5) });
-                        } else if inside && !crowded && roll < 0.07 {
-                            props.push(Prop { pos: centre + v2(rng.range(-0.2, 0.2), 0.25), spr: if rng.chance(0.5) { pal.tall } else { pal.rock }, size: rng.range(0.8, 1.15), flip: rng.chance(0.5) });
-                        } else if roll < 0.55 {
-                            // mostly the plain tuft, now and then the fancy one
-                            let spr = pal.tufts[if rng.chance(0.25) { 1 } else { 0 }];
-                            tufts.push(Prop { pos: centre + v2(rng.range(-0.32, 0.32), rng.range(-0.32, 0.32)), spr, size: rng.range(0.34, 0.56), flip: rng.chance(0.5) });
-                        }
+                } else if rng.chance(0.13) {
+                    // off the map nothing is ever built, so anything can stand there
+                    let tall = rng.chance(0.6);
+                    let pos = centre + v2(rng.range(-0.3, 0.3), 0.3);
+                    if map.nearest_trail(pos).2 > 1.4 {
+                        props.push(Prop { pos, spr: if tall { pal.tall } else { pal.rock }, size: if tall { rng.range(1.4, 1.9) } else { rng.range(0.8, 1.1) }, flip: rng.chance(0.5) });
                     }
-                    _ => {}
                 }
             }
         }
-        let mut flecks = Vec::new();
+
+        // every stretch of trail as a line, each route run on off the map
+        // from where it starts
+        let mut lines: Vec<(V2, V2)> = Vec::new();
         for route in &map.routes {
-            let mut d = 0.3;
-            while d < route.len {
-                let (p, dir) = route.at(d);
-                flecks.push((p + dir.perp() * rng.range(-0.28, 0.28), rng.range(0.04, 0.09)));
-                d += rng.range(0.35, 0.8);
-            }
-        }
-        Scenery { tufts, flecks, props }
-    }
-}
-
-fn trailish(t: Tile) -> bool {
-    matches!(t, Tile::Trail | Tile::Spawn(_) | Tile::Home)
-}
-
-/// Draws a band through every tile of a kind, with round joints, so a run
-/// of tiles reads as one winding strip rather than as squares.
-fn strip(v: &View, map: &Map, want: impl Fn(Tile) -> bool, half: f32, color: macroquad::prelude::Color) {
-    let r = half * v.cell;
-    for row in 0..ROWS as i32 {
-        for col in 0..COLS as i32 {
-            if !want(map.tile(col, row)) {
-                continue;
-            }
-            let c = v.at(v2(col as f32 + 0.5, row as f32 + 0.5));
-            draw_circle(c.x, c.y, r, color);
-            if col + 1 < COLS as i32 && want(map.tile(col + 1, row)) {
-                draw_rectangle(c.x, c.y - r, v.cell, 2.0 * r, color);
-            }
-            if row + 1 < ROWS as i32 && want(map.tile(col, row + 1)) {
-                draw_rectangle(c.x - r, c.y, 2.0 * r, v.cell, color);
-            }
-            // where invaders come in, the trail runs on off the edge of the map
-            if let Tile::Spawn(_) = map.tile(col, row) {
-                let far = v.cell * 6.0;
-                if row == 0 {
-                    draw_rectangle(c.x - r, c.y - far, 2.0 * r, far, color);
-                } else if row == ROWS as i32 - 1 {
-                    draw_rectangle(c.x - r, c.y, 2.0 * r, far, color);
-                } else if col == 0 {
-                    draw_rectangle(c.x - far, c.y - r, far, 2.0 * r, color);
-                } else if col == COLS as i32 - 1 {
-                    draw_rectangle(c.x, c.y - r, far, 2.0 * r, color);
+            let first = route.pts[0];
+            let out = (first - route.pts[1]).norm();
+            lines.push((first + out * 9.0, first));
+            for w in route.pts.windows(2) {
+                if !lines.iter().any(|l| l.0 == w[0] && l.1 == w[1]) {
+                    lines.push((w[0], w[1]));
                 }
             }
         }
+        let mut water: Vec<V2> = Vec::new();
+        for r in 0..ROWS {
+            for c in 0..COLS {
+                if map.tiles[r][c] == Tile::Water {
+                    water.push(v2(c as f32 + 0.5, r as f32 + 0.5));
+                }
+            }
+        }
+
+        let (mw, mh) = ((MASK_W * MASK_PX) as usize, (MASK_H * MASK_PX) as usize);
+        let mut px = vec![0u8; mw * mh * 4];
+        for y in 0..mh {
+            for x in 0..mw {
+                let p = v2(MASK_X + (x as f32 + 0.5) / MASK_PX, MASK_Y + (y as f32 + 0.5) / MASK_PX);
+                let mut d = f32::MAX;
+                for &(a, b) in &lines {
+                    // most of the trail is nowhere near: skip it cheaply
+                    if (p.x - a.x).abs().min((p.x - b.x).abs()) > 2.2 && (p.y - a.y).abs().min((p.y - b.y).abs()) > 2.2 {
+                        continue;
+                    }
+                    d = d.min(seg_dist(p, a, b));
+                }
+                // how much water is near: every water tile adds a soft round
+                // pool, and neighbouring pools run together into one
+                let mut wet = 0.0f32;
+                for w in &water {
+                    let d = p.dist(*w);
+                    if d < 2.0 {
+                        wet += (-d * d / 0.353).exp();
+                    }
+                }
+                let i = (y * mw + x) * 4;
+                px[i] = ((1.0 - d).clamp(0.0, 1.0) * 255.0) as u8;
+                // scaled so a lone pool keeps just inside its own tile
+                px[i + 1] = ((wet * 1.038).clamp(0.0, 1.0) * 255.0) as u8;
+                px[i + 3] = 255;
+            }
+        }
+        let mask = Texture2D::from_rgba8(mw as u16, mh as u16, &px);
+        mask.set_filter(FilterMode::Linear);
+        // each stage of a biome sees the same photograph a different way round
+        let k = level % 3;
+        let look = GroundLook {
+            ground: pal.ground,
+            trail: pal.trail,
+            water: tex::WATER,
+            mask,
+            mask_at: [MASK_X, MASK_Y, MASK_W, MASK_H],
+            flip: (k == 1, k == 2),
+            trail_gain: pal.trail_gain,
+            grade: pal.grade,
+            vignette: 0.42,
+        };
+        Scenery { look, props, lines, dust: pal.dust }
     }
 }
 
 /// The ground, water and trail. `full` is everything that needs covering
 /// (the whole play column), `t` a clock for the water.
-pub fn draw_ground(g: &Gfx, v: &View, map: &Map, pal: &Palette, sc: &Scenery, full: Rect, t: f32) {
-    g.vgrad(full, pal.ground.0, pal.ground.1);
-    // a faint chequer, so distances can be judged
-    for row in 0..ROWS {
-        for col in 0..COLS {
-            if (row + col) % 2 == 0 {
-                let p = v.at(v2(col as f32, row as f32));
-                draw_rectangle(p.x, p.y, v.cell, v.cell, alpha(WHITE, 0.045));
-            }
+pub fn draw_ground(g: &Gfx, v: &View, sc: &Scenery, full: Rect, t: f32) {
+    let at = v.tile(vec2(full.x, full.y));
+    if g.ground(&sc.look, full, vec2(at.x, at.y), v.cell, t) {
+        return;
+    }
+    // no shader: the same photograph, and the trail as a plain band
+    g.tiled(sc.look.ground, full, v.cell * 9.0, sc.look.grade);
+    for (half, col) in [(0.5, alpha(BLACK, 0.3)), (0.42, sc.dust)] {
+        for &(a, b) in &sc.lines {
+            let (pa, pb) = (v.at(a), v.at(b));
+            draw_line(pa.x, pa.y, pb.x, pb.y, half * 2.0 * v.cell, col);
+            draw_circle(pb.x, pb.y, half * v.cell, col);
         }
-    }
-    // water: a dark rim, the pool, a lighter middle
-    let water = |tile: Tile| tile == Tile::Water;
-    strip(v, map, water, 0.6, mix(pal.water, rgb(0x1a3a52), 0.45));
-    strip(v, map, water, 0.52, pal.water);
-    strip(v, map, water, 0.36, mix(pal.water, WHITE, 0.16));
-    for row in 0..ROWS as i32 {
-        for col in 0..COLS as i32 {
-            if map.tile(col, row) == Tile::Water {
-                // slow glints sliding across
-                let c = v.at(v2(col as f32 + 0.5, row as f32 + 0.5));
-                let k = (t * 0.5 + col as f32 * 0.37 + row as f32 * 0.61).fract();
-                let a = (k * std::f32::consts::PI).sin() * 0.5;
-                g.spr(spr::STREAK, c.x + (k - 0.5) * v.cell * 0.6, c.y - v.cell * 0.12, v.cell * 0.34, v.cell * 0.07, 0.0, alpha(WHITE, a));
-            }
-        }
-    }
-    for p in &sc.tufts {
-        let c = v.at(p.pos);
-        let s = p.size * v.cell;
-        g.spr_ex(p.spr, c.x, c.y, s, s * p.spr.h / p.spr.w, 0.0, WHITE, p.flip);
-    }
-    // the trail: a darker edge, the trodden middle, a pale crown
-    strip(v, map, trailish, 0.47, pal.trail_edge);
-    strip(v, map, trailish, 0.4, pal.trail);
-    strip(v, map, trailish, 0.2, alpha(pal.trail_light, 0.45));
-    for &(p, r) in &sc.flecks {
-        let c = v.at(p);
-        draw_circle(c.x, c.y, r * v.cell, alpha(pal.trail_edge, 0.28));
     }
 }
