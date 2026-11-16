@@ -57,6 +57,11 @@ chapters ask more.
 
 Each level is rated one to three paws. Progress is saved on the device.
 
+**Rufus's story.** Rufus is a real dog, and the game tells how he got here: a
+scrapbook that opens a page after the first level and another at the end of
+each chapter, 23 pages in all. New pages turn up on the way to the next
+level; the book so far can be read again from the title screen.
+
 After the first day the game does not keep getting harder: every later
 chapter opens gently and closes about as hard as Night Patrol does, on
 whichever setting you picked.
@@ -113,6 +118,7 @@ game/     everything you see and hear (macroquad -> WebGL).
   src/rufus.rs    Rufus, assembled from parts so he can wag, bark and sulk
   src/synth.rs    every sound, synthesised at startup
   src/content.rs  the jokes
+  src/story.rs    the scrapbook: Rufus's story, its pages and its screen
   src/ambient.rs  clouds, butterflies, rain, fireflies: what moves in the backdrops
   src/gfx.rs      sprite drawing, plus the two shaders (added light, and the gleam)
   assets/svg/     all the art, as SVG
@@ -179,6 +185,14 @@ one coordinate space (300 x 330), and each part's `viewBox` says where it sits.
 
 **Jokes** are in `game/src/content.rs`.
 
+**The story** is the `PAGES` table in `game/src/story.rs`: a title and a few
+lines for each page, and how its picture is staged (which backdrop, in what
+light, Rufus's mood, and any props, which are the sprites in
+`game/assets/svg/atlas/story/`). `PAGE_EVERY` in the same file is how many
+levels there are between pages. Which pages a player has opened is worked out
+from the levels they have finished, so changing the spacing never loses
+anybody's place.
+
 ## Testing
 
 ```
@@ -204,6 +218,7 @@ progress or settings (`unlock`, `mute`, `difficulty`) never writes to saved data
 | --- | --- |
 | `level=7` | start in that level |
 | `screen=map` | start on the map |
+| `screen=story` | start in Rufus's scrapbook (with `unlock=1`, every page) |
 | `auto=1` | the game plays itself (`auto=2` also moves on to the next level) |
 | `speed=3` | run time faster |
 | `seed=42` | same board every time |

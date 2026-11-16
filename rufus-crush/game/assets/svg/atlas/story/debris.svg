@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="160" viewBox="0 0 160 100">
+  <defs>
+    <linearGradient id="w" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9966c"/>
+      <stop offset="1" stop-color="#8d6b47"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="80" cy="90" rx="72" ry="6" fill="#000" opacity="0.18"/>
+  <!-- bent sheet of corrugated roofing, behind the heap -->
+  <g stroke="#3f4852" stroke-width="3.5" stroke-linejoin="round">
+    <path d="M107 31 q4 -4.2 8 -1.2 q4 -4.2 8 -1.2 q4 -4.2 8 -1.2 q4 -4.2 8 -1.2 q4 -4.2 8 -1.2 L141 51 L100 58 Z" fill="#bcc4cd"/>
+    <path d="M100 58 L141 51 L152 87 L110 90 Z" fill="#8f98a3"/>
+  </g>
+  <path d="M115 29.8 L108.2 56.6 L118.4 89.4 M123 28.6 L116.4 55.2 L126.8 88.8 M131 27.4 L124.6 53.8 L135.2 88.2 M139 26.2 L132.8 52.4 L143.6 87.6" fill="none" stroke="#5d6672" stroke-width="2" stroke-linejoin="round" opacity="0.75"/>
+  <path d="M103.5 57.4 L138 51.5" fill="none" stroke="#e6ebf0" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
+  <!-- plank standing at the back -->
+  <g transform="translate(27 82) rotate(-66)">
+    <path d="M0 0 H43 l4 3 l-6 3 l7 3 l-5 4 H3 l-3 -5 l4 -3 Z" fill="#9a7a56" stroke="#4a3622" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M8 6.5 H24 M30 9 H38" fill="none" stroke="#6f5436" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+  </g>
+  <!-- weathered plank sloping down to the right -->
+  <g transform="translate(66 51) rotate(22)">
+    <path d="M0 0 H59 l4 3 l-6 3 l7 3 l-5 3 H3 l-3 -4 l4 -3 Z" fill="#a39180" stroke="#4a3d30" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M10 5.5 H30 M36 8 H52" fill="none" stroke="#6e6052" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+  </g>
+  <!-- the long plank across the heap -->
+  <g transform="translate(8 73) rotate(-22)">
+    <path d="M0 0 H91 l4 3 l-6 3 l7 3 l-5 4 H3 l-3 -5 l4 -3 Z" fill="url(#w)" stroke="#4a3622" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M7 2.8 H84" fill="none" stroke="#dcc199" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+    <path d="M14 7.5 H40 M48 9.5 H76" fill="none" stroke="#6f5436" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+  </g>
+  <!-- plank lying in front -->
+  <g transform="translate(30 76) rotate(2)">
+    <path d="M0 0 H69 l4 3 l-6 3 l7 3 l-5 4 H3 l-3 -5 l4 -3 Z" fill="url(#w)" stroke="#4a3622" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M7 2.8 H62" fill="none" stroke="#dcc199" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+    <path d="M12 7.5 H34 M42 9 H60" fill="none" stroke="#6f5436" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+  </g>
+  <!-- bricks -->
+  <g stroke="#5a2a1e" stroke-width="3" stroke-linejoin="round" fill="#b3654e">
+    <rect x="0" y="0" width="20" height="11" rx="1.5" transform="translate(13 79) rotate(-6)"/>
+    <rect x="0" y="0" width="20" height="11" rx="1.5" transform="translate(126 77) rotate(8)"/>
+    <path d="M0 0 H12 l-2 3.5 l3 3 l-2 3.5 H0 Z" transform="translate(103 81) rotate(-8)"/>
+  </g>
+  <g fill="none" stroke="#d6917a" stroke-width="2" stroke-linecap="round" opacity="0.85">
+    <path d="M3 3 H17" transform="translate(13 79) rotate(-6)"/>
+    <path d="M3 3 H17" transform="translate(126 77) rotate(8)"/>
+    <path d="M2.5 3 H8" transform="translate(103 81) rotate(-8)"/>
+  </g>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 100 75">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4554a"/>
+      <stop offset="1" stop-color="#c9281f"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="50" cy="66" rx="44" ry="5" fill="#000" opacity="0.18"/>
+  <!-- bowl -->
+  <path d="M17 35 L10 61 Q9 66 15 66 H85 Q91 66 90 61 L83 35 Z" fill="url(#g)" stroke="#7a1410" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M19.5 46 L16 59" fill="none" stroke="#ff9a8e" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+  <!-- paw print -->
+  <g fill="#ffe4de" opacity="0.95">
+    <ellipse cx="50" cy="57" rx="6.5" ry="5"/>
+    <circle cx="43" cy="50.6" r="2.5"/><circle cx="47.6" cy="48" r="2.5"/><circle cx="52.6" cy="48" r="2.5"/><circle cx="57" cy="50.6" r="2.5"/>
+  </g>
+  <!-- rim and the dark inside -->
+  <ellipse cx="50" cy="34" rx="35" ry="8" fill="#ff7a6c" stroke="#7a1410" stroke-width="3.5"/>
+  <ellipse cx="50" cy="34" rx="28.5" ry="5" fill="#7a1410"/>
+  <!-- kibble: dark underlay, then the pieces -->
+  <g fill="#5a3312" stroke="#5a3312" stroke-width="6.5">
+    <circle cx="29" cy="30" r="5.5"/><circle cx="37.5" cy="30" r="5.5"/><circle cx="46" cy="30" r="5.5"/><circle cx="54.5" cy="30" r="5.5"/><circle cx="63" cy="30" r="5.5"/><circle cx="71" cy="30" r="5.5"/>
+    <circle cx="33.5" cy="23.5" r="5.5"/><circle cx="42" cy="23.5" r="5.5"/><circle cx="50.5" cy="23.5" r="5.5"/><circle cx="59" cy="23.5" r="5.5"/><circle cx="67" cy="23.5" r="5.5"/>
+    <circle cx="41.5" cy="17.5" r="5.5"/><circle cx="50" cy="17.5" r="5.5"/><circle cx="58.5" cy="17.5" r="5.5"/>
+  </g>
+  <g stroke="#7d4b1c" stroke-width="1.3">
+    <circle cx="41.5" cy="17.5" r="5.5" fill="#c98a45"/><circle cx="50" cy="17.5" r="5.5" fill="#dba05c"/><circle cx="58.5" cy="17.5" r="5.5" fill="#b3722f"/>
+    <circle cx="33.5" cy="23.5" r="5.5" fill="#b3722f"/><circle cx="42" cy="23.5" r="5.5" fill="#dba05c"/><circle cx="50.5" cy="23.5" r="5.5" fill="#c98a45"/><circle cx="59" cy="23.5" r="5.5" fill="#dba05c"/><circle cx="67" cy="23.5" r="5.5" fill="#c98a45"/>
+    <circle cx="29" cy="30" r="5.5" fill="#c98a45"/><circle cx="37.5" cy="30" r="5.5" fill="#b3722f"/><circle cx="46" cy="30" r="5.5" fill="#c98a45"/><circle cx="54.5" cy="30" r="5.5" fill="#b3722f"/><circle cx="63" cy="30" r="5.5" fill="#c98a45"/><circle cx="71" cy="30" r="5.5" fill="#b3722f"/>
+  </g>
+  <!-- near side of the rim, over the kibble -->
+  <path d="M15 34 A35 8 0 0 0 85 34 L78.5 34 A28.5 5 0 0 1 21.5 34 Z" fill="#ff7a6c"/>
+  <path d="M15 34 A35 8 0 0 0 85 34" fill="none" stroke="#7a1410" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M26 38.5 Q38 41 50 41" fill="none" stroke="#ffc2b8" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+</svg>

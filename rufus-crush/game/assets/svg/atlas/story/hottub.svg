@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="208" viewBox="0 0 180 130">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e9a566"/>
+      <stop offset="0.55" stop-color="#d0803f"/>
+      <stop offset="1" stop-color="#a85a2a"/>
+    </linearGradient>
+    <linearGradient id="w" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8af5ea"/>
+      <stop offset="1" stop-color="#1fbfc6"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="90" cy="118.5" rx="80" ry="6.5" fill="#000" opacity="0.18"/>
+  <!-- cedar tub -->
+  <path d="M27 56 L33 106 Q90 124 147 106 L153 56 Z" fill="url(#g)" stroke="#5a2c0e" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M45 66 L48.6 111 M62 70 L64.2 114 M80 72 L80.8 116 M100 72 L99.2 116 M118 70 L115.8 114 M135 66 L131.4 111" fill="none" stroke="#8a4a1e" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+  <path d="M35 66 L38 100" fill="none" stroke="#f6cf9c" stroke-width="2.6" stroke-linecap="round" opacity="0.8"/>
+  <!-- metal hoops -->
+  <path d="M29 75 Q90 95 151 75 M31.5 95 Q90 114 148.5 95" fill="none" stroke="#3b4656" stroke-width="6.6"/>
+  <path d="M29 75 Q90 95 151 75 M31.5 95 Q90 114 148.5 95" fill="none" stroke="#b4c1d2" stroke-width="3.4"/>
+  <path d="M27 56 L33 106 Q90 124 147 106 L153 56 Z" fill="none" stroke="#5a2c0e" stroke-width="3.4" stroke-linejoin="round"/>
+  <!-- rim and water -->
+  <ellipse cx="90" cy="56" rx="63" ry="17" fill="#f2ba7e" stroke="#5a2c0e" stroke-width="3.4"/>
+  <ellipse cx="90" cy="57.5" rx="53" ry="11.5" fill="url(#w)" stroke="#5a2c0e" stroke-width="3"/>
+  <path d="M58 56 q8 -3 16 0 M96 62.5 q9 3 18 0 M110 53 q6 -2 12 0 M72 63 q4 1.5 8 0" fill="none" stroke="#ecfffd" stroke-width="2.2" stroke-linecap="round" opacity="0.95"/>
+  <!-- snow on the rim -->
+  <g fill="#86a3c2" stroke="#86a3c2" stroke-width="4.4" stroke-linejoin="round">
+    <ellipse cx="40" cy="46.5" rx="9" ry="4.5"/><ellipse cx="52" cy="42.5" rx="9" ry="4.5"/><ellipse cx="30.5" cy="51.5" rx="6" ry="4"/>
+    <ellipse cx="122" cy="69.5" rx="8" ry="4"/><ellipse cx="134" cy="66.5" rx="8" ry="4.5"/><ellipse cx="144.5" cy="62" rx="6" ry="4"/>
+    <ellipse cx="47" cy="67.5" rx="7" ry="3.5"/><ellipse cx="57" cy="70" rx="6" ry="3"/>
+    <ellipse cx="130" cy="44" rx="8" ry="3.5"/>
+  </g>
+  <g fill="#ffffff">
+    <ellipse cx="40" cy="46.5" rx="9" ry="4.5"/><ellipse cx="52" cy="42.5" rx="9" ry="4.5"/><ellipse cx="30.5" cy="51.5" rx="6" ry="4"/>
+    <ellipse cx="122" cy="69.5" rx="8" ry="4"/><ellipse cx="134" cy="66.5" rx="8" ry="4.5"/><ellipse cx="144.5" cy="62" rx="6" ry="4"/>
+    <ellipse cx="47" cy="67.5" rx="7" ry="3.5"/><ellipse cx="57" cy="70" rx="6" ry="3"/>
+    <ellipse cx="130" cy="44" rx="8" ry="3.5"/>
+  </g>
+  <!-- snow piled at the base -->
+  <g fill="#86a3c2" stroke="#86a3c2" stroke-width="4.4" stroke-linejoin="round">
+    <ellipse cx="29" cy="109" rx="18" ry="9"/><ellipse cx="50" cy="113" rx="17" ry="7"/>
+    <ellipse cx="151" cy="109" rx="18" ry="9"/><ellipse cx="130" cy="113" rx="17" ry="7"/>
+    <ellipse cx="90" cy="116" rx="36" ry="5.5"/>
+  </g>
+  <g fill="#ffffff">
+    <ellipse cx="29" cy="109" rx="18" ry="9"/><ellipse cx="50" cy="113" rx="17" ry="7"/>
+    <ellipse cx="151" cy="109" rx="18" ry="9"/><ellipse cx="130" cy="113" rx="17" ry="7"/>
+    <ellipse cx="90" cy="116" rx="36" ry="5.5"/>
+  </g>
+  <path d="M18 113 Q30 119 46 117 M134 117 Q150 119 162 113 M70 119 H110" fill="none" stroke="#d3e2f2" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- steam -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M69 47 C61 41 77 35 69 28 C62 22 73 17 71 11.5 M93 44 C85 37.5 101 32 93 25 C86 18.5 97 14 95 8.5 M117 47 C109 41 125 35 117 28 C110 22 121 17 119 11.5" stroke="#9db6d0" stroke-width="6.6"/>
+    <path d="M69 47 C61 41 77 35 69 28 C62 22 73 17 71 11.5 M93 44 C85 37.5 101 32 93 25 C86 18.5 97 14 95 8.5 M117 47 C109 41 125 35 117 28 C110 22 121 17 119 11.5" stroke="#ffffff" stroke-width="3.6"/>
+  </g>
+</svg>

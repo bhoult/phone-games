@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="240" viewBox="0 0 200 125">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe54f"/>
+      <stop offset="1" stop-color="#ffc014"/>
+    </linearGradient>
+    <linearGradient id="w" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#dcf4ff"/>
+      <stop offset="1" stop-color="#8fd2f4"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="101" cy="115" rx="91" ry="6" fill="#000" opacity="0.18"/>
+  <!-- roof vent -->
+  <path d="M26 17 V12.5 Q26 8.5 31 8.5 H47 Q52 8.5 52 12.5 V17 Z" fill="#f4f6fa" stroke="#5a6272" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M31 12.5 H47" stroke="#aeb6c6" stroke-width="2" stroke-linecap="round"/>
+  <!-- body: high roof, short nose -->
+  <path d="M12 91 L12 28 Q12 17 24 17 L138 17 Q148 17 151 24 L157 37 L171 60 Q186 63 189 76 L190 90 Q190 97 183 97 L18 97 Q12 97 12 91 Z" fill="url(#g)" stroke="#7d5200" stroke-width="3.4" stroke-linejoin="round"/>
+  <!-- light along the roof -->
+  <path d="M22 22 H52 M134 22 H140 Q145 22 147 26" fill="none" stroke="#fff8c0" stroke-width="2.6" stroke-linecap="round" opacity="0.9"/>
+  <!-- bumpers and sill -->
+  <path d="M175 86 H190 V90 Q190 97 183 97 H175 Z" fill="#4b4f5e"/>
+  <path d="M12 86 H19 V97 H18 Q12 97 12 91 Z" fill="#4b4f5e"/>
+  <path d="M71 94.5 H143" stroke="#4b4f5e" stroke-width="5"/>
+  <!-- cheerful side stripe -->
+  <path d="M21 71 H108" stroke="#fffbe6" stroke-width="4" stroke-linecap="round"/>
+  <path d="M21 77.5 H97" stroke="#19bfb1" stroke-width="3.4" stroke-linecap="round"/>
+  <!-- door seams and handles -->
+  <path d="M66 26 V94 M114 26 V94 M156.5 62 V82" fill="none" stroke="#c98a00" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M119 65 H127 M102 65 H109" stroke="#7d5200" stroke-width="3" stroke-linecap="round"/>
+  <!-- side window with curtains -->
+  <rect x="72" y="36" width="36" height="23" rx="4" fill="url(#w)" stroke="#2f4a63" stroke-width="2.4"/>
+  <path d="M73.5 37.5 H84 Q83 49 73.5 54 Z" fill="#ff7d6b"/>
+  <path d="M106.5 37.5 H96 Q97 49 106.5 54 Z" fill="#ff7d6b"/>
+  <path d="M88 55 L95 40" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity="0.7"/>
+  <rect x="72" y="36" width="36" height="23" rx="4" fill="none" stroke="#2f4a63" stroke-width="2.4"/>
+  <!-- cab door window and windscreen -->
+  <path d="M120 38 H141.5 L152.5 59 H120 Z" fill="url(#w)" stroke="#2f4a63" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M125.5 54 L133 41.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity="0.7"/>
+  <path d="M147 37 H154.5 L167.5 59 H158.5 Z" fill="url(#w)" stroke="#2f4a63" stroke-width="2.4" stroke-linejoin="round"/>
+  <!-- mirror -->
+  <rect x="159.5" y="51" width="6.5" height="11.5" rx="2.8" fill="#3a3d4a" stroke="#1c1e26" stroke-width="1.8"/>
+  <!-- lights -->
+  <path d="M178 65.5 Q186 66.5 188 74.5 H181 Q178 71.5 178 65.5 Z" fill="#fffbe0" stroke="#7d5200" stroke-width="1.8" stroke-linejoin="round"/>
+  <rect x="12.6" y="58" width="4.4" height="15" rx="1.6" fill="#ef3340" stroke="#7d0f1b" stroke-width="1.4"/>
+  <!-- body outline again, over the details -->
+  <path d="M12 91 L12 28 Q12 17 24 17 L138 17 Q148 17 151 24 L157 37 L171 60 Q186 63 189 76 L190 90 Q190 97 183 97 L18 97 Q12 97 12 91 Z" fill="none" stroke="#7d5200" stroke-width="3.4" stroke-linejoin="round"/>
+  <!-- awning rail on the roof edge -->
+  <rect x="58" y="13.5" width="70" height="8" rx="4" fill="#eef1f6" stroke="#5a6272" stroke-width="2.4"/>
+  <path d="M64.5 14 V21 M121.5 14 V21" stroke="#5a6272" stroke-width="2"/>
+  <path d="M69 16.5 H117" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- wheel arches and wheels -->
+  <path d="M37.2 97 A17 17 0 0 1 70.8 97 Z M143.2 97 A17 17 0 0 1 176.8 97 Z" fill="#5b3b00" stroke="#7d5200" stroke-width="2.4" stroke-linejoin="round"/>
+  <g stroke-width="3">
+    <circle cx="54" cy="100.5" r="13.5" fill="#2c2e38" stroke="#0f1014"/>
+    <circle cx="160" cy="100.5" r="13.5" fill="#2c2e38" stroke="#0f1014"/>
+  </g>
+  <circle cx="54" cy="100.5" r="6" fill="#d5dae4" stroke="#5a6272" stroke-width="2"/>
+  <circle cx="160" cy="100.5" r="6" fill="#d5dae4" stroke="#5a6272" stroke-width="2"/>
+  <circle cx="54" cy="100.5" r="1.9" fill="#7b8496"/>
+  <circle cx="160" cy="100.5" r="1.9" fill="#7b8496"/>
+</svg>

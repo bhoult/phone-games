@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="128" viewBox="0 0 150 100">
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="0" y1="-13" x2="0" y2="14">
+      <stop offset="0.5" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#c3d2e3"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(96 43.5) rotate(-17) scale(0.95)">
+    <!-- contrail -->
+    <path d="M-61 3 H-96" stroke="#7f9cba" stroke-width="7.4" stroke-linecap="round" stroke-dasharray="6 9"/>
+    <path d="M-61 3 H-96" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round" stroke-dasharray="6 9"/>
+    <!-- far wing -->
+    <path d="M-3 -10 L-17 -31 L-6 -31 L17 -10 Z" fill="#b9c8da" stroke="#34495f" stroke-width="3.6" stroke-linejoin="round"/>
+    <!-- tail fin -->
+    <path d="M-50 -6 L-58 -37 L-44 -37 L-25 -9 Z" fill="#ff5a3c" stroke="#8a2413" stroke-width="3.6" stroke-linejoin="round"/>
+    <path d="M-52.5 -28 L-39.5 -28" stroke="#ffd23a" stroke-width="4"/>
+    <path d="M-50 -6 L-58 -37 L-44 -37 L-25 -9 Z" fill="none" stroke="#8a2413" stroke-width="3.6" stroke-linejoin="round"/>
+    <!-- fuselage -->
+    <path d="M-51 -7 L18 -13 Q40 -13 50 1 Q40 14 18 14 L-18 14 Q-38 11 -51 -7 Z" fill="url(#g)" stroke="#34495f" stroke-width="3.6" stroke-linejoin="round"/>
+    <!-- stripe, windows, cockpit -->
+    <path d="M-36 5.5 H41" stroke="#ff5a3c" stroke-width="3" stroke-linecap="round"/>
+    <g fill="#2f6fa8">
+      <circle cx="-30" cy="-2.6" r="2.4"/><circle cx="-22" cy="-3.2" r="2.4"/><circle cx="-14" cy="-3.8" r="2.4"/><circle cx="-6" cy="-4.4" r="2.4"/><circle cx="2" cy="-5" r="2.4"/><circle cx="10" cy="-5.6" r="2.4"/><circle cx="18" cy="-6" r="2.4"/><circle cx="26" cy="-6" r="2.4"/>
+    </g>
+    <path d="M32 -9.5 Q40 -8 45 -2.5 L37 -1.5 Q33 -4.5 32 -9.5 Z" fill="#2f6fa8" stroke="#34495f" stroke-width="1.8" stroke-linejoin="round"/>
+    <!-- tailplane -->
+    <path d="M-45 -1 L-60 7 L-48 7 L-31 1 Z" fill="#eef3f9" stroke="#34495f" stroke-width="3.2" stroke-linejoin="round"/>
+    <!-- engine and near wing -->
+    <rect x="-10" y="14" width="19" height="10.5" rx="5.2" fill="#6d84a1" stroke="#34495f" stroke-width="3"/>
+    <path d="M-6 7 L-28 36 L-14 36 L20 8 Z" fill="#f4f8fc" stroke="#34495f" stroke-width="3.6" stroke-linejoin="round"/>
+    <path d="M-18 30 L9 10" stroke="#c5d2e2" stroke-width="2.6" stroke-linecap="round"/>
+  </g>
+</svg>

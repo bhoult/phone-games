@@ -207,6 +207,12 @@ impl MapScreen {
             } else {
                 g.spr_fit(spr::IC_LOCK, p.x, p.y - size * 0.05, size * 0.44, 0.0, alpha(WHITE, 0.9));
             }
+            // a page of Rufus's story is waiting behind this level
+            if paws == 0 && crate::story::page_at(level).is_some() {
+                let bob = (self.t * 3.0 + level as f32).sin() * 2.0 * u;
+                g.spr(spr::P_DOT, p.x - size * 0.5, p.y - size * 0.46 + bob, 27.0 * u, 27.0 * u, 0.0, rgb(0xff9a2e));
+                g.spr_fit(spr::IC_BOOK, p.x - size * 0.5, p.y - size * 0.46 + bob, 19.0 * u, 0.0, WHITE);
+            }
             if current {
                 // Rufus marks the spot
                 let hop = (self.t * 4.0).sin().abs() * 9.0 * u;

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="333" height="285" viewBox="46 150 208 178">
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="150" y1="190" x2="150" y2="262">
+      <stop offset="0" stop-color="#34dccb"/>
+      <stop offset="1" stop-color="#10a498"/>
+    </linearGradient>
+  </defs>
+  <!-- tails of the knot, behind everything -->
+  <g stroke-linejoin="round">
+    <path d="M200 181 L231 187 L225 207 Z" fill="#19bfb1" stroke="#0a5a55" stroke-width="3"/>
+    <path d="M222 188 L217.5 203" stroke="#ffd23a" stroke-width="4.5"/>
+    <path d="M200 181 L231 187 L225 207 Z" fill="none" stroke="#0a5a55" stroke-width="3"/>
+    <path d="M198 186 L216 215 L197 221 Z" fill="#19bfb1" stroke="#0a5a55" stroke-width="3"/>
+    <path d="M210.5 208 L197.5 212" stroke="#ff6fa8" stroke-width="4.5"/>
+    <path d="M198 186 L216 215 L197 221 Z" fill="none" stroke="#0a5a55" stroke-width="3"/>
+  </g>
+  <!-- the hanging cloth -->
+  <path d="M96 178 Q150 206 204 178 Q193 229 150 263 Q107 229 96 178 Z" fill="url(#g)" stroke="#0a5a55" stroke-width="3" stroke-linejoin="round"/>
+  <!-- stripes that follow the edges -->
+  <path d="M106.8 178 Q115.6 218.8 150 246 Q184.4 218.8 193.2 178" fill="none" stroke="#ffd23a" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M118.7 178 Q125.1 207.6 150 227.3 Q174.9 207.6 181.3 178" fill="none" stroke="#ff6fa8" stroke-width="7" stroke-linejoin="round"/>
+  <circle cx="150" cy="209" r="3.6" fill="#fff8d8"/>
+  <path d="M96 178 Q150 206 204 178 Q193 229 150 263 Q107 229 96 178 Z" fill="none" stroke="#0a5a55" stroke-width="3" stroke-linejoin="round"/>
+  <!-- the band round the neck, over the collar -->
+  <path d="M98 166 Q150 196 202 166 L205 186 Q150 216 95 186 Z" fill="#34dccb" stroke="#0a5a55" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M105 173.5 Q150 198.5 195 173.5" fill="none" stroke="#b4fff4" stroke-width="2.8" stroke-linecap="round" opacity="0.85"/>
+  <!-- knot -->
+  <ellipse cx="201" cy="179" rx="10.5" ry="12.5" transform="rotate(-18 201 179)" fill="#19bfb1" stroke="#0a5a55" stroke-width="3"/>
+  <path d="M197 172.5 q4.5 5.5 3.5 13" fill="none" stroke="#0a5a55" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+  <path d="M204.5 171 q2.5 3 2.5 7" fill="none" stroke="#b4fff4" stroke-width="2.2" stroke-linecap="round" opacity="0.8"/>
+</svg>

@@ -14,6 +14,7 @@ mod platform;
 mod play;
 mod rufus;
 mod save;
+mod story;
 mod synth;
 mod title;
 mod ui;
@@ -70,12 +71,15 @@ pub enum Nav {
     /// The map, scrolled to this level if given.
     Map(Option<usize>),
     Play(usize),
+    /// Rufus's scrapbook, and then on to wherever was next.
+    Story(story::Then),
 }
 
 enum Screen {
     Title(title::Title),
     Map(map::MapScreen),
     Play(Box<play::Play>),
+    Story(Box<story::Story>),
 }
 
 fn open(app: &mut App, nav: Nav) -> Screen {
@@ -83,6 +87,7 @@ fn open(app: &mut App, nav: Nav) -> Screen {
         Nav::Title => Screen::Title(title::Title::new(app)),
         Nav::Map(focus) => Screen::Map(map::MapScreen::new(app, focus)),
         Nav::Play(level) => Screen::Play(Box::new(play::Play::new(app, level.min(LEVELS.len() - 1)))),
+        Nav::Story(then) => Screen::Story(Box::new(story::Story::new(app, then))),
     }
 }
 
@@ -140,6 +145,7 @@ async fn main() {
     let first = match (app.q.num("level"), app.q.get("screen")) {
         (Some(n), _) => Nav::Play((n as usize).saturating_sub(1)),
         (None, Some("map")) => Nav::Map(None),
+        (None, Some("story")) => Nav::Story(story::Then::Title),
         _ => Nav::Title,
     };
     measure(&mut app);
@@ -168,11 +174,20 @@ async fn main() {
         let nav = match &mut screen {
             Screen::Title(s) => s.frame(&mut app),
             Screen::Map(s) => s.frame(&mut app),
-            Screen::Play(s) => s.frame(&mut app).map(|go| match go {
-                play::Go::Map => Nav::Map(Some(s.level)),
-                play::Go::Next => Nav::Play(s.level + 1),
-                play::Go::Retry => Nav::Play(s.level),
-            }),
+            Screen::Play(s) => {
+                let go = s.frame(&mut app);
+                // Finishing a level can open a page of Rufus's story. It is
+                // shown on the way to wherever the player was going next.
+                let new_pages = story::unseen(&app.save) > 0;
+                go.map(|go| match (go, new_pages) {
+                    (play::Go::Retry, _) => Nav::Play(s.level),
+                    (play::Go::Map, false) => Nav::Map(Some(s.level)),
+                    (play::Go::Next, false) => Nav::Play(s.level + 1),
+                    (play::Go::Map, true) => Nav::Story(story::Then::Map(Some(s.level))),
+                    (play::Go::Next, true) => Nav::Story(story::Then::Play(s.level + 1)),
+                })
+            }
+            Screen::Story(s) => s.frame(&mut app),
         };
         if leaving.is_none() {
             if let Some(n) = nav {

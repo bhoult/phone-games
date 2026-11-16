@@ -2081,6 +2081,11 @@ app.mark("go", br);
                 let pop = ease_back(((t - 1.6) / 0.3).min(1.0));
                 g.label("NEW BEST!", cx + 92.0 * u, y + 4.0 * u, 13.0 * u * pop, 0.5, rgb(0xe8323c), None, 0.2);
             }
+            // this win opened a page of Rufus's story: it is shown on the way out
+            if crate::story::unseen(&app.save) > 0 && t > 1.9 {
+                let pop = ease_back(((t - 1.9) / 0.3).min(1.0));
+                g.label("STORY PAGE!", cx - 94.0 * u, y + 4.0 * u, 13.0 * u * pop, 0.5, rgb(0xd2701f), None, -0.2);
+            }
             y += 34.0 * u;
         } else {
             y += 4.0 * u;

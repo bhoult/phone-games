@@ -1,5 +1,7 @@
 //! Progress and settings, kept in the browser's localStorage as one short
-//! line of text: `v2|sfx|music|paws per level|boops|difficulty`.
+//! line of text: `v2|sfx|music|paws per level|boops|difficulty|story pages seen`.
+//! Fields were added at the end over time, and a save that stops early is
+//! still read: whatever is missing starts from its default.
 //!
 //! `v1` saves are from before The Lake was added as the third chapter. They
 //! are still read: the levels after the gap move along to make room.
@@ -21,13 +23,16 @@ pub struct Save {
     pub boops: u32,
     /// Easy, Normal or Hard: how many moves each level gives.
     pub difficulty: Difficulty,
+    /// How many pages of Rufus's story have been looked at. Which pages are
+    /// open is not stored: that follows from the levels finished.
+    pub story_seen: u32,
     /// Set when a test switch faked this state: it is then never written.
     pub ephemeral: bool,
 }
 
 impl Default for Save {
     fn default() -> Save {
-        Save { paws: vec![0; LEVELS.len()], sfx: true, music: true, boops: 0, difficulty: Difficulty::Normal, ephemeral: false }
+        Save { paws: vec![0; LEVELS.len()], sfx: true, music: true, boops: 0, difficulty: Difficulty::Normal, story_seen: 0, ephemeral: false }
     }
 }
 
@@ -53,7 +58,8 @@ impl Save {
         let boops = parts.next().and_then(|b| b.parse().ok()).unwrap_or(0);
         // saves from before the setting existed carry on at Normal
         let difficulty = parts.next().and_then(|d| d.parse().ok()).map(Difficulty::from_index).unwrap_or_default();
-        Some(Save { paws, sfx, music, boops, difficulty, ephemeral: false })
+        let story_seen = parts.next().and_then(|n| n.parse().ok()).unwrap_or(0);
+        Some(Save { paws, sfx, music, boops, difficulty, story_seen, ephemeral: false })
     }
 
     pub fn store(&self) {
@@ -61,7 +67,7 @@ impl Save {
             return;
         }
         let paws: String = self.paws.iter().map(|p| (b'0' + p) as char).collect();
-        platform::save(&format!("v2|{}|{}|{}|{}|{}", self.sfx as u8, self.music as u8, paws, self.boops, self.difficulty.index()));
+        platform::save(&format!("v2|{}|{}|{}|{}|{}|{}", self.sfx as u8, self.music as u8, paws, self.boops, self.difficulty.index(), self.story_seen));
     }
 
     /// Index of the furthest level that can be played.

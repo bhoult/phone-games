@@ -48,6 +48,9 @@ pub struct Rufus {
     ear: f32,
     ear_vel: f32,
     holding: Option<Spr>,
+    /// Something worn over the body and under the chin: the scarf. It is
+    /// drawn exactly where the body is, so its art shares the body's frame.
+    pub wear: Option<Spr>,
     hold_left: f32,
     bubble: Option<Bubble>,
     zzz_in: f32,
@@ -89,6 +92,7 @@ impl Rufus {
             ear: 0.0,
             ear_vel: 0.0,
             holding: None,
+            wear: None,
             hold_left: 0.0,
             bubble: None,
             zzz_in: 1.0,
@@ -279,6 +283,11 @@ impl Rufus {
         let bc = centre(spr::RUFUS_BODY);
         let body_bottom = spr::RUFUS_BODY.vy + spr::RUFUS_BODY.vh;
         part(spr::RUFUS_BODY, vec2(bc.x, body_bottom - (body_bottom - bc.y) * (1.0 + breath)), 0.0, false, 1.0, 1.0 + breath);
+        if let Some(worn) = self.wear {
+            let wc = centre(worn);
+            let bottom = worn.vy + worn.vh;
+            part(worn, vec2(wc.x, bottom - (bottom - wc.y) * (1.0 + breath)), 0.0, false, 1.0, 1.0 + breath);
+        }
 
         // head group: everything rotates about the neck
         let jolt = if self.bark > 0.0 { (self.bark / 0.21 * std::f32::consts::PI).sin() } else { 0.0 };

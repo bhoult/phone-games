@@ -169,6 +169,25 @@ impl Title {
         }
         let ty = (by + 106.0 * u).min(app.h - app.bot - 70.0 * u);
         sound_toggles(app, cx, ty, 2);
+        // Rufus's scrapbook, once it has a page in it, with a count of any
+        // pages not looked at yet
+        if crate::story::unlocked(&app.save) > 0 {
+            // bottom left, clear of the logo
+            let book = Rect::new(app.x0 + 12.0 * u, app.h - app.bot - 84.0 * u, 52.0 * u, 52.0 * u);
+            app.mark("story", book);
+            if app.ui.button(&app.g, &mut app.au, 9, book, ORANGE, "", Some(spr::IC_BOOK), self.t > 0.4) {
+                nav = Some(Nav::Story(crate::story::Then::Title));
+            }
+            let g = &app.g;
+            g.label("STORY", book.x + book.w / 2.0, book.y + book.h + 9.0 * u, 11.0 * u, 0.5, WHITE, Some((alpha(NAVY, 0.6), 1.2 * u)), 0.0);
+            let new_pages = crate::story::unseen(&app.save);
+            if new_pages > 0 {
+                let (bx, by) = (book.x + book.w - 4.0 * u, book.y + 5.0 * u);
+                let pulse = 1.0 + 0.08 * (self.t * 5.0).sin();
+                g.spr(spr::P_DOT, bx, by, 24.0 * u * pulse, 24.0 * u * pulse, 0.0, rgb(0xff4433));
+                g.label(&new_pages.to_string(), bx, by, 13.0 * u, 0.5, WHITE, None, 0.0);
+            }
+        }
         app.g.label(difficulty_blurb(app.save.difficulty), cx, ty + 58.0 * u, 12.5 * u, 0.5, WHITE, Some((alpha(NAVY, 0.6), 1.2 * u)), 0.0);
         nav
     }

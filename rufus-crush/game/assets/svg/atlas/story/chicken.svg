@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6b758"/>
+      <stop offset="1" stop-color="#bf6a1f"/>
+    </linearGradient>
+  </defs>
+  <!-- steam -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M51 27 q-5.5 -4 0 -8 q5.5 -4 0 -8 M68 25 q-5.5 -4 0 -8 q5.5 -4 0 -8" stroke="#6f7f9c" stroke-width="6.5" opacity="0.4"/>
+    <path d="M51 27 q-5.5 -4 0 -8 q5.5 -4 0 -8 M68 25 q-5.5 -4 0 -8 q5.5 -4 0 -8" stroke="#ffffff" stroke-width="3.4"/>
+  </g>
+  <g transform="translate(20 85) rotate(-35) scale(0.88)">
+    <!-- bone end -->
+    <g fill="#8b6427" stroke="#8b6427" stroke-width="7.5" stroke-linejoin="round">
+      <rect x="4" y="-4.5" width="30" height="9" rx="3"/>
+      <circle cx="5" cy="-5.5" r="6.5"/><circle cx="5" cy="5.5" r="6.5"/>
+    </g>
+    <g fill="#fff8e6">
+      <rect x="4" y="-4.5" width="30" height="9" rx="3"/>
+      <circle cx="5" cy="-5.5" r="6.5"/><circle cx="5" cy="5.5" r="6.5"/>
+    </g>
+    <circle cx="3.5" cy="-7.5" r="2" fill="#fff"/>
+    <!-- meat -->
+    <path d="M24 0 C24 -9 36 -21 54 -23 C72 -25 84 -13 84 0 C84 13 72 25 54 23 C36 21 24 9 24 0 Z" fill="url(#g)" stroke="#6a3410" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M41 -12 Q53 -19.5 67 -16" fill="none" stroke="#ffe3a6" stroke-width="3.8" stroke-linecap="round" opacity="0.9"/>
+    <path d="M50 5 q5 3 10 0 M63 11 q4 2 8 -1 M43 12 q3 2 6 1" fill="none" stroke="#9a4e14" stroke-width="2.6" stroke-linecap="round" opacity="0.75"/>
+    <path d="M30.5 -7 Q34 0 30.5 7" fill="none" stroke="#6a3410" stroke-width="2.2" stroke-linecap="round" opacity="0.6"/>
+  </g>
+</svg>

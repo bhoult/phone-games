@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="128" viewBox="0 0 150 100">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff5560"/>
+      <stop offset="1" stop-color="#e3202e"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="75" cy="90.5" rx="64" ry="5.5" fill="#000" opacity="0.18"/>
+  <g transform="translate(73 15) rotate(7 32 71) scale(1.04)">
+    <!-- sole -->
+    <path d="M3 57 H57 Q62 57 62 62 Q62 71 53 71 H10 Q3 71 3 64 Z" fill="#a4acba" stroke="#474e5d" stroke-width="3.6" stroke-linejoin="round"/>
+    <path d="M14 71 V66 M25 71 V66 M36 71 V66 M47 71 V66" stroke="#474e5d" stroke-width="2.6" stroke-linecap="round"/>
+    <!-- upper -->
+    <path d="M6 9 L6 50 Q6 60 16 60 L50 60 Q59 60 59 50 Q59 38 45 35 Q35 33 35 24 L35 9 Z" fill="url(#g)" stroke="#7d0f1b" stroke-width="3.6" stroke-linejoin="round"/>
+    <path d="M12 16 V22 M12 42 V49" stroke="#ff9a9f" stroke-width="3.2" stroke-linecap="round" opacity="0.9"/>
+    <path d="M44 42 Q51 43 53 49" fill="none" stroke="#ff9a9f" stroke-width="3.2" stroke-linecap="round" opacity="0.9"/>
+    <!-- opening -->
+    <ellipse cx="20.5" cy="9" rx="14.5" ry="5" fill="#8f1420" stroke="#7d0f1b" stroke-width="3.6"/>
+    <!-- strap -->
+    <path d="M3 27 H38 V37.5 H3 Z" fill="#eef1f6" stroke="#474e5d" stroke-width="3.2" stroke-linejoin="round"/>
+    <path d="M27 27 V37.5" stroke="#474e5d" stroke-width="2.4"/>
+    <path d="M8 32.2 H21" stroke="#b9c0cd" stroke-width="2.6" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(8 16) rotate(-4 32 71) scale(1.04)">
+    <!-- sole -->
+    <path d="M3 57 H57 Q62 57 62 62 Q62 71 53 71 H10 Q3 71 3 64 Z" fill="#a4acba" stroke="#474e5d" stroke-width="3.6" stroke-linejoin="round"/>
+    <path d="M14 71 V66 M25 71 V66 M36 71 V66 M47 71 V66" stroke="#474e5d" stroke-width="2.6" stroke-linecap="round"/>
+    <!-- upper -->
+    <path d="M6 9 L6 50 Q6 60 16 60 L50 60 Q59 60 59 50 Q59 38 45 35 Q35 33 35 24 L35 9 Z" fill="url(#g)" stroke="#7d0f1b" stroke-width="3.6" stroke-linejoin="round"/>
+    <path d="M12 16 V22 M12 42 V49" stroke="#ff9a9f" stroke-width="3.2" stroke-linecap="round" opacity="0.9"/>
+    <path d="M44 42 Q51 43 53 49" fill="none" stroke="#ff9a9f" stroke-width="3.2" stroke-linecap="round" opacity="0.9"/>
+    <!-- opening -->
+    <ellipse cx="20.5" cy="9" rx="14.5" ry="5" fill="#8f1420" stroke="#7d0f1b" stroke-width="3.6"/>
+    <!-- strap -->
+    <path d="M3 27 H38 V37.5 H3 Z" fill="#eef1f6" stroke="#474e5d" stroke-width="3.2" stroke-linejoin="round"/>
+    <path d="M27 27 V37.5" stroke="#474e5d" stroke-width="2.4"/>
+    <path d="M8 32.2 H21" stroke="#b9c0cd" stroke-width="2.6" stroke-linecap="round"/>
+  </g>
+</svg>
