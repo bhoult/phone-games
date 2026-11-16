@@ -7,7 +7,7 @@ handful of static files, and plays with no connection.
 
 | Game | What it is |
 | --- | --- |
-| [Rufus Crush](rufus-crush/) | A match-3 about the very busy life of one black lab. Rust and WebGL, 36 levels, Easy / Normal / Hard. **[Play it](https://bhoult.github.io/phone-games/rufus-crush/)** |
+| [Rufus Crush](rufus-crush/) | A match-3 about the very busy life of one black lab. Rust and WebGL, 1,036 levels, Easy / Normal / Hard. **[Play it](https://bhoult.github.io/phone-games/rufus-crush/)** |
 | [Biome Defense](biome-defense/) | A tower defense about wild creatures holding on to their homes. Rust and WebGL, 18 stages across six biomes, a pack to gather and skill trees to choose between, Easy / Normal / Hard. **[Play it](https://bhoult.github.io/phone-games/biome-defense/)** |
 
 **[Play Rufus Crush](https://bhoult.github.io/phone-games/rufus-crush/)** or **[Biome Defense](https://bhoult.github.io/phone-games/biome-defense/)** in your browser, or on your phone: open

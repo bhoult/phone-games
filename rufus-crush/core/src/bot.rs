@@ -83,10 +83,13 @@ pub fn play(level: usize, seed: u64, cfg: &BotCfg) -> Outcome {
 
 /// Like [`play`], but with a different move budget than the level's own.
 pub fn play_with_moves(level: usize, seed: u64, cfg: &BotCfg, moves: Option<u32>) -> Outcome {
-    let mut s = Session::new(level, seed);
-    if let Some(m) = moves {
-        s.moves_left = m;
-    }
+    let def = &LEVELS[level];
+    play_def(def, seed, cfg, moves.unwrap_or(def.moves[Difficulty::Normal.index()]))
+}
+
+/// Plays any level definition, in [`LEVELS`] or not, with this many moves.
+pub fn play_def(def: &'static LevelDef, seed: u64, cfg: &BotCfg, moves: u32) -> Outcome {
+    let mut s = Session::of(def, 0, seed, moves);
     let mut rng = Rng::new(seed ^ 0xB07);
     let mut shuffles = 0;
     let mut moves_used = 0;

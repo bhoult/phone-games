@@ -51,6 +51,7 @@ impl Difficulty {
     }
 }
 
+#[derive(Clone, Copy)]
 pub struct LevelDef {
     pub title: &'static str,
     /// One line for the level card: teaches the new thing, or is just a joke.
@@ -65,8 +66,7 @@ pub struct LevelDef {
     pub paws: [u32; 2],
 }
 
-pub const CHAPTER_LEN: usize = 6;
-pub const CHAPTERS: [&str; 6] = ["The Backyard", "The Dog Park", "The Lake", "Mud Season", "Delivery Day", "Night Patrol"];
+pub use crate::chapters::{Chapter, Place, CHAPTERS, CHAPTER_LEN};
 
 use Goal::*;
 
@@ -78,7 +78,43 @@ const K5_FETCH: &[u8] = &[BALL, SQUIRREL, CAT, POODLE, STICK];
 const K5_LAKE: &[u8] = &[BALL, SQUIRREL, POODLE, TOY, STICK];
 const K6: &[u8] = &[BALL, SQUIRREL, CAT, SOCK, POODLE, TOY];
 
-pub static LEVELS: [LevelDef; 36] = [
+/// The first day: the levels drawn by hand.
+pub const HAND_MADE: usize = 36;
+
+/// Every level. The first [`HAND_MADE`] are the ones below; the rest were
+/// designed by `examples/mklevels.rs` and live in `later.rs`.
+pub static LEVELS: [LevelDef; HAND_MADE + crate::later::COUNT] = all_levels();
+
+const fn all_levels() -> [LevelDef; HAND_MADE + crate::later::COUNT] {
+    let mut out = [HAND[0]; HAND_MADE + crate::later::COUNT];
+    let mut i = 0;
+    while i < HAND_MADE {
+        out[i] = HAND[i];
+        i += 1;
+    }
+    while i < out.len() {
+        out[i] = crate::later::LATER[i - HAND_MADE];
+        i += 1;
+    }
+    out
+}
+
+/// How many chapters there are. The last one may be short.
+pub fn chapter_count() -> usize {
+    LEVELS.len().div_ceil(CHAPTER_LEN)
+}
+
+/// The levels of a chapter.
+pub fn chapter_levels(chapter: usize) -> std::ops::Range<usize> {
+    chapter * CHAPTER_LEN..((chapter + 1) * CHAPTER_LEN).min(LEVELS.len())
+}
+
+/// Where a level takes place.
+pub fn place_of(level: usize) -> Place {
+    CHAPTERS[(level / CHAPTER_LEN).min(CHAPTERS.len() - 1)].place
+}
+
+const HAND: [LevelDef; HAND_MADE] = [
     // ---- The Backyard: learning the ropes ---------------------------------
     LevelDef {
         title: "Good Morning, Rufus",
@@ -800,6 +836,7 @@ impl GoalItem {
 #[derive(Clone)]
 pub struct Session {
     pub level: usize,
+    def: &'static LevelDef,
     pub board: Board,
     pub moves_left: u32,
     mud_total: u32,
@@ -828,6 +865,13 @@ impl Session {
 
     pub fn with(level: usize, seed: u64, difficulty: Difficulty) -> Session {
         let def = &LEVELS[level];
+        Session::of(def, level, seed, def.moves[difficulty.index()])
+    }
+
+    /// An attempt at any level definition, with any move budget. `level` is
+    /// only a label here: this is how the level designer tries out levels
+    /// that are not in [`LEVELS`] yet.
+    pub fn of(def: &'static LevelDef, level: usize, seed: u64, moves: u32) -> Session {
         let mut board = Board::from_rows(&def.rows, def.kinds, seed);
         let bones_wanted: u32 = def
             .goals
@@ -838,17 +882,18 @@ impl Session {
         board.bones_cap = board.bones_on_board().max(2);
         Session {
             level,
+            def,
             mud_total: board.mud_left(),
             box_total: board.boxes_left(),
             board,
-            moves_left: def.moves[difficulty.index()],
+            moves_left: moves,
             bonus_planted: 0,
             begged: false,
         }
     }
 
     pub fn def(&self) -> &'static LevelDef {
-        &LEVELS[self.level]
+        self.def
     }
 
     /// The player's move. Spends a move only if the swap does something.

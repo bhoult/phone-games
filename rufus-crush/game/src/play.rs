@@ -332,7 +332,7 @@ impl Play {
             land_cd: 0.0,
             banner: None,
             woof: None,
-            lake: level / CHAPTER_LEN == LAKE,
+            lake: is_lake(level),
             shook: false,
             beg_line: "",
             hurry: false,
@@ -923,7 +923,7 @@ impl Play {
         self.result_line = if self.level + 1 == LEVELS.len() {
             FINALE
         } else if (self.level + 1) % CHAPTER_LEN == 0 {
-            CHAPTER_DONE[self.level / CHAPTER_LEN]
+            chapter_done(self.level / CHAPTER_LEN)
         } else {
             WIN_LINES[self.rng.below(WIN_LINES.len() as u32) as usize]
         };
@@ -1390,7 +1390,7 @@ impl Play {
         }
         crate::ambient::pools(g, Rect::new(app.x0, l.stage.h, app.pw, app.h - l.stage.h), self.t, u, mix(self.theme.top, WHITE, 0.45));
         g.vgrad(Rect::new(app.x0, app.h - 170.0 * u, app.pw, 170.0 * u), alpha(rgb(0x000000), 0.0), alpha(rgb(0x000000), 0.24));
-        g.scene(self.theme.scene, l.stage, WHITE);
+        g.scene(self.theme.scene, l.stage, self.theme.light);
         crate::ambient::draw(g, self.theme.scene, l.stage, self.t, u);
         // soft edge where the scene meets the play area
         g.vgrad(Rect::new(l.stage.x, l.stage.y + l.stage.h - 1.0, l.stage.w, 14.0 * u), alpha(rgb(0x000000), 0.22), alpha(rgb(0x000000), 0.0));
@@ -2103,8 +2103,9 @@ app.mark("go", br);
         g.rect(Rect::new(r.x + 28.0 * u, y, w - 56.0 * u, 1.5 * u), alpha(rgb(0x9a6a3a), 0.3));
         y += 9.0 * u;
         if won {
-            let chapter_end = (self.level + 1) % CHAPTER_LEN == 0;
-            let heading = if chapter_end { format!("CHAPTER COMPLETE: {}", CHAPTERS[self.level / CHAPTER_LEN].to_uppercase()) } else { "THE RUFUS REPORT".to_string() };
+            // the very last chapter is a short one, so its last level counts too
+            let chapter_end = (self.level + 1) % CHAPTER_LEN == 0 || self.level + 1 == LEVELS.len();
+            let heading = if chapter_end { format!("CHAPTER COMPLETE: {}", CHAPTERS[self.level / CHAPTER_LEN].name.to_uppercase()) } else { "THE RUFUS REPORT".to_string() };
             g.text_c(&heading, cx, y + 6.0 * u, 10.5 * u, if chapter_end { rgb(0xd2401f) } else { rgb(0xb98a5a) });
             y += 16.0 * u;
         }
@@ -2123,7 +2124,9 @@ app.mark("go", br);
             if ready {
                 app.mark("home", Rect::new(x, y, small, bh));
                 app.mark("retry", Rect::new(x + small + 10.0 * u, y, small, bh));
-                app.mark("next", Rect::new(x + (small + 10.0 * u) * 2.0, y, big, bh));
+                if !last {
+                    app.mark("next", Rect::new(x + (small + 10.0 * u) * 2.0, y, big, bh));
+                }
             }
             if app.ui.button(&app.g, &mut app.au, 30, Rect::new(x, y, small, bh), BLUE, "", Some(spr::IC_HOME), ready) {
                 go = Some(Go::Map);

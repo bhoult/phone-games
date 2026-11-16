@@ -157,8 +157,12 @@ impl Title {
             g.label("Tap Rufus. Go on.", cx, by + 84.0 * u, 14.0 * u, 0.5, WHITE, Some((alpha(NAVY, 0.6), 1.3 * u)), 0.0);
         } else {
             let done = app.save.paws.iter().filter(|&&p| p > 0).count();
-            g.spr_fit(spr::PAW_GOLD, cx - 78.0 * u, by + 84.0 * u, 20.0 * u, 0.0, WHITE);
-            g.label(&format!("{} of {} paws   level {} of {}", app.save.total_paws(), LEVELS.len() * 3, (done + 1).min(LEVELS.len()), LEVELS.len()), cx - 64.0 * u, by + 84.0 * u, 14.0 * u, 0.0, WHITE, Some((alpha(NAVY, 0.6), 1.3 * u)), 0.0);
+            // centred as one line, paw and all: the numbers run to four digits
+            let text = format!("{} of {} paws   level {} of {}", app.save.total_paws(), LEVELS.len() * 3, (done + 1).min(LEVELS.len()), LEVELS.len());
+            let size = (14.0 * u).min(14.0 * u * (app.pw - 60.0 * u) / g.text_w(&text, 14.0 * u).max(1.0));
+            let left = cx - (g.text_w(&text, size) + 26.0 * u) / 2.0;
+            g.spr_fit(spr::PAW_GOLD, left + 10.0 * u, by + 84.0 * u, 20.0 * u, 0.0, WHITE);
+            g.label(&text, left + 26.0 * u, by + 84.0 * u, size, 0.0, WHITE, Some((alpha(NAVY, 0.6), 1.3 * u)), 0.0);
         }
         if app.save.boops > 0 {
             g.label(&format!("boops: {}", app.save.boops), app.x0 + app.pw - 12.0 * u, app.h - app.bot - 16.0 * u, 11.0 * u, 1.0, alpha(WHITE, 0.75), None, 0.0);

@@ -1,4 +1,4 @@
-//! The level map: Rufus's day, top to bottom, one chapter after another.
+//! The level map: Rufus's days, top to bottom, one chapter after another.
 
 use crate::audio::Sfx;
 use crate::content::*;
@@ -8,7 +8,8 @@ use crate::rufus::{Mood, Rufus};
 use crate::ui::*;
 use crate::{App, Nav};
 use macroquad::prelude::{vec2, Rect, Vec2};
-use rufus_core::level::{CHAPTERS, CHAPTER_LEN};
+use rufus_core::chapters::day_of;
+use rufus_core::level::{chapter_count, chapter_levels, CHAPTERS, CHAPTER_LEN};
 use rufus_core::LEVELS;
 
 const BANNER_H: f32 = 132.0;
@@ -67,7 +68,7 @@ impl MapScreen {
         let u = app.u;
         self.t += dt;
         let header = app.top + HEADER * u;
-        let chapters = LEVELS.len() / CHAPTER_LEN;
+        let chapters = chapter_count();
         let content_h = (chapters as f32 * CHAPTER_H + TAIL) * u;
         let view_h = app.h - header;
         let max_scroll = (content_h - view_h).max(0.0);
@@ -75,10 +76,18 @@ impl MapScreen {
             self.placed = true;
             self.scroll = (Self::node(app, self.focus).y - view_h * 0.5).clamp(0.0, max_scroll);
         }
+        let frontier = app.save.frontier();
+        let cx = app.x0 + app.pw / 2.0;
+
+        // The map is a long way from top to bottom now. Whenever the level
+        // you're up to is out of sight, a button takes you back to it.
+        let here = Self::node(app, frontier).y + header - self.scroll;
+        let jump = (here < header - 30.0 * u || here > app.h + 30.0 * u).then(|| Rect::new(cx - 84.0 * u, app.h - app.bot - 62.0 * u, 168.0 * u, 46.0 * u));
+        let on_jump = |p: Vec2| jump.is_some_and(|r| r.contains(p));
 
         // drag to scroll, with a bit of glide after letting go
         let ptr = &app.ui.ptr;
-        if ptr.pressed && ptr.pos.y > header {
+        if ptr.pressed && ptr.pos.y > header && !on_jump(ptr.pos) {
             self.dragging = true;
             self.vel = 0.0;
             self.last_y = ptr.pos.y;
@@ -100,12 +109,10 @@ impl MapScreen {
             self.vel = 0.0;
         }
 
-        let tap = ptr.released && ptr.travel < 12.0 * u && ptr.pos.y > header;
+        let tap = ptr.released && ptr.travel < 12.0 * u && ptr.pos.y > header && !on_jump(ptr.pos);
         let tap_pos = ptr.pos;
         let g = &app.g;
         let oy = header - self.scroll;
-        let frontier = app.save.frontier();
-        let cx = app.x0 + app.pw / 2.0;
         let mut nav = None;
 
         // each chapter gets its own colours and its backdrop as a banner
@@ -124,15 +131,24 @@ impl MapScreen {
                 g.spr(spr::P_PAW, app.x0 + fx * app.pw, top + BANNER_H * u + fy * (h - BANNER_H * u), 28.0 * u, 28.0 * u, k as f32 * 1.7, alpha(WHITE, 0.06));
             }
             let banner = Rect::new(app.x0, top, app.pw, BANNER_H * u);
-            g.scene(th.scene, banner, WHITE);
+            g.scene(th.scene, banner, th.light);
             g.vgrad(Rect::new(banner.x, banner.y + banner.h - 2.0, banner.w, 12.0 * u), alpha(rgb(0x000000), 0.2), alpha(rgb(0x000000), 0.0));
             let rw = 268.0 * u;
             g.spr(spr::RIBBON, cx, banner.y + banner.h - 6.0 * u, rw, rw * 0.28, 0.0, WHITE);
-            g.label(CHAPTERS[c], cx, banner.y + banner.h - 15.0 * u, 19.0 * u, 0.5, WHITE, Some((rgb(0x7d0f1b), 1.6 * u)), 0.0);
-            let earned: u32 = (0..CHAPTER_LEN).map(|i| app.save.paws[c * CHAPTER_LEN + i] as u32).sum();
+            // long names shrink to stay on the ribbon
+            let name = CHAPTERS[c].name;
+            let name_size = (19.0 * u).min(19.0 * u * (rw * 0.8) / g.text_w(name, 19.0 * u).max(1.0));
+            g.label(name, cx, banner.y + banner.h - 15.0 * u, name_size, 0.5, WHITE, Some((rgb(0x7d0f1b), 1.6 * u)), 0.0);
+            let levels = chapter_levels(c);
+            let in_chapter = levels.len();
+            let earned: u32 = levels.map(|i| app.save.paws[i] as u32).sum();
             g.nine(spr::CHIP, Rect::new(banner.x + 10.0 * u, banner.y + 10.0 * u, 74.0 * u, 26.0 * u), 22.0, 11.0 * u, WHITE);
             g.spr_fit(spr::PAW_GOLD, banner.x + 25.0 * u, banner.y + 23.0 * u, 17.0 * u, 0.0, WHITE);
-            g.label(&format!("{earned}/{}", CHAPTER_LEN * 3), banner.x + 37.0 * u, banner.y + 23.0 * u, 13.0 * u, 0.0, WHITE, None, 0.0);
+            g.label(&format!("{earned}/{}", in_chapter * 3), banner.x + 37.0 * u, banner.y + 23.0 * u, 13.0 * u, 0.0, WHITE, None, 0.0);
+            // which day of Rufus's life this is
+            let day = Rect::new(banner.x + banner.w - 78.0 * u, banner.y + 10.0 * u, 68.0 * u, 26.0 * u);
+            g.nine(spr::CHIP, day, 22.0, 11.0 * u, WHITE);
+            g.label(&format!("DAY {}", day_of(c)), day.x + day.w / 2.0, day.y + day.h / 2.0, 13.0 * u, 0.5, WHITE, None, 0.0);
         }
         if app.x0 > 1.0 {
             g.rect(Rect::new(0.0, 0.0, app.x0, app.h), alpha(rgb(0x000000), 0.28));
@@ -177,7 +193,10 @@ impl MapScreen {
             }
             g.spr(spr::NODE, p.x, p.y, size, size, 0.0, color);
             if open {
-                g.label(&(level + 1).to_string(), p.x, p.y - size * 0.055, size * 0.42, 0.5, WHITE, Some((alpha(NAVY, 0.6), size * 0.03)), 0.0);
+                // four digits have to fit where one used to
+                let number = (level + 1).to_string();
+                let digits = [0.42, 0.42, 0.36, 0.29][number.len().clamp(1, 4) - 1];
+                g.label(&number, p.x, p.y - size * 0.055, size * digits, 0.5, WHITE, Some((alpha(NAVY, 0.6), size * 0.03)), 0.0);
                 if paws > 0 {
                     for i in 0..3 {
                         let x = p.x + (i as f32 - 1.0) * 17.0 * u;
@@ -198,7 +217,10 @@ impl MapScreen {
                 let title = LEVELS[level].title;
                 let left = p.x < cx;
                 let tx = if left { p.x + size * 0.62 + if current { 30.0 * u } else { 0.0 } } else { p.x - size * 0.62 };
-                g.label(title, tx, p.y + 2.0 * u, 14.5 * u, if left { 0.0 } else { 1.0 }, WHITE, Some((alpha(NAVY, 0.75), 1.5 * u)), 0.0);
+                // shrink a long title rather than let it run off the edge
+                let room = if left { app.x0 + app.pw - 8.0 * u - tx } else { tx - app.x0 - 8.0 * u };
+                let title_size = (14.5 * u).min(14.5 * u * room / g.text_w(title, 14.5 * u).max(1.0));
+                g.label(title, tx, p.y + 2.0 * u, title_size, if left { 0.0 } else { 1.0 }, WHITE, Some((alpha(NAVY, 0.75), 1.5 * u)), 0.0);
             }
             if level == frontier {
                 app.mark("node", Rect::new(p.x - 1.0, p.y - 1.0, 2.0, 2.0));
@@ -228,7 +250,7 @@ impl MapScreen {
             self.rufus.update(dt, &mut self.fx);
             self.rufus.draw(g, cx, end_y + 40.0 * u, 120.0 * u);
             let all = app.save.paws.iter().all(|&p| p > 0);
-            let line = if all { "A full day of being a very good dog." } else { "The day ends here. Eventually." };
+            let line = if all { "Every single day of being a very good dog." } else { "The last bedtime is down here. Eventually." };
             g.label(line, cx, end_y + 66.0 * u, 15.0 * u, 0.5, WHITE, Some((alpha(NAVY, 0.7), 1.4 * u)), 0.0);
         }
         self.fx.update(dt);
@@ -238,15 +260,28 @@ impl MapScreen {
         // header bar
         g.rect(Rect::new(0.0, 0.0, app.w, header), rgb(0x24407a));
         g.vgrad(Rect::new(0.0, header, app.w, 8.0 * u), alpha(rgb(0x000000), 0.25), alpha(rgb(0x000000), 0.0));
-        g.label("Rufus's Big Day", cx, app.top + HEADER * u * 0.5, 22.0 * u, 0.5, WHITE, Some((alpha(NAVY, 0.7), 1.6 * u)), 0.0);
-        let chip = Rect::new(app.x0 + app.pw - 84.0 * u, app.top + 15.0 * u, 76.0 * u, 28.0 * u);
+
+        // as wide as its numbers: the total runs to four digits now
+        let tally = format!("{}/{}", app.save.total_paws(), LEVELS.len() * 3);
+        let chip_w = (39.0 * u + g.text_w(&tally, 13.5 * u)).max(76.0 * u);
+        let chip = Rect::new(app.x0 + app.pw - 8.0 * u - chip_w, app.top + 15.0 * u, chip_w, 28.0 * u);
         g.nine(spr::CHIP, chip, 22.0, 12.0 * u, WHITE);
         g.spr_fit(spr::PAW_GOLD, chip.x + 16.0 * u, chip.y + chip.h * 0.5, 18.0 * u, 0.0, WHITE);
-        g.label(&format!("{}/{}", app.save.total_paws(), LEVELS.len() * 3), chip.x + 29.0 * u, chip.y + chip.h * 0.5, 13.5 * u, 0.0, WHITE, None, 0.0);
+        g.label(&tally, chip.x + 29.0 * u, chip.y + chip.h * 0.5, 13.5 * u, 0.0, WHITE, None, 0.0);
+        let title_x = cx.min((app.x0 + 52.0 * u + chip.x) / 2.0);
+        g.label("Rufus's Big Days", title_x, app.top + HEADER * u * 0.5, 21.0 * u, 0.5, WHITE, Some((alpha(NAVY, 0.7), 1.6 * u)), 0.0);
         let home = Rect::new(app.x0 + 8.0 * u, app.top + 9.0 * u, 40.0 * u, 40.0 * u);
         app.mark("home", home);
         if app.ui.button(&app.g, &mut app.au, 1, home, BLUE, "", Some(spr::IC_HOME), true) {
             nav = Some(Nav::Title);
+        }
+        if let Some(r) = jump {
+            app.mark("jump", r);
+            if app.ui.button(&app.g, &mut app.au, 2, r, ORANGE, &format!("LEVEL {}", frontier + 1), Some(spr::IC_PLAY), true) {
+                self.scroll = (Self::node(app, frontier).y - view_h * 0.5).clamp(0.0, max_scroll);
+                self.vel = 0.0;
+                self.dragging = false;
+            }
         }
         nav
     }

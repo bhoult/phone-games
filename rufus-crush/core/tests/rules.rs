@@ -502,7 +502,10 @@ fn seeds_are_reproducible() {
 fn fuzz_random_play_on_every_level() {
     let mut rng = Rng::new(2024);
     for level in 0..LEVELS.len() {
-        for seed in 0..25u64 {
+        // the hand-made levels get the full treatment; the thousand designed
+        // ones share their rules, so a few games each is plenty
+        let games = if level < level::HAND_MADE { 25 } else { 3 };
+        for seed in 0..games as u64 {
             let mut s = Session::new(level, seed * 7919 + level as u64);
             let mut sh = Shadow::of(&s.board);
             settle(&mut s.board, &mut sh);
@@ -590,8 +593,8 @@ fn every_level_is_winnable() {
     // On Hard, the tightest budgets, a careful player still has to get through.
     for level in 0..LEVELS.len() {
         let hard = Some(LEVELS[level].moves[Difficulty::Hard.index()]);
-        let wins = (0..30).filter(|&seed| bot::play_with_moves(level, seed, &BotCfg::CAREFUL, hard).won).count();
-        assert!(wins > 0, "level {} was never won in 30 careful attempts on Hard", level + 1);
+        let won = (0..30).any(|seed| bot::play_with_moves(level, seed, &BotCfg::CAREFUL, hard).won);
+        assert!(won, "level {} was never won in 30 careful attempts on Hard", level + 1);
     }
 }
 
@@ -674,5 +677,53 @@ fn no_board_uses_more_kinds_than_it_can_hold() {
         seen.dedup();
         assert_eq!(seen.len(), def.kinds.len(), "level {} repeats a kind", i + 1);
     }
-    assert_eq!(LEVELS.len(), level::CHAPTERS.len() * level::CHAPTER_LEN);
+}
+
+#[test]
+fn the_chapters_cover_the_levels() {
+    assert_eq!(LEVELS.len(), level::HAND_MADE + 1000, "the first day plus a thousand more");
+    assert_eq!(level::chapter_count(), CHAPTERS.len(), "every chapter has a name and every name has levels");
+    let mut names: Vec<&str> = CHAPTERS.iter().map(|c| c.name).collect();
+    assert!(names.iter().all(|n| !n.is_empty()));
+    names.sort();
+    names.dedup();
+    assert_eq!(names.len(), CHAPTERS.len(), "two chapters share a name");
+    // every chapter is a full six, except the very last, which is bedtime
+    for c in 0..level::chapter_count() {
+        let n = level::chapter_levels(c).len();
+        assert!(n == CHAPTER_LEN || (c + 1 == level::chapter_count() && n > 0), "chapter {} has {n} levels", c + 1);
+    }
+    // each day visits the six places in order
+    for (c, chapter) in CHAPTERS.iter().enumerate().take(CHAPTERS.len() - 1) {
+        assert_eq!(chapter.place, Place::ALL[c % 6], "chapter {} is out of place", c + 1);
+    }
+}
+
+#[test]
+fn no_two_levels_share_a_title() {
+    let mut titles: Vec<&str> = LEVELS.iter().map(|l| l.title).collect();
+    assert!(LEVELS.iter().all(|l| !l.title.is_empty() && !l.tip.is_empty()));
+    titles.sort();
+    let before = titles.len();
+    titles.dedup();
+    assert_eq!(titles.len(), before);
+}
+
+#[test]
+fn the_designed_levels_keep_to_the_house_rules() {
+    for (i, def) in LEVELS.iter().enumerate().skip(level::HAND_MADE) {
+        let tiles = |x: usize| def.rows.iter().filter(|r| r.as_bytes()[x] != b' ').count();
+        // bones are handed over at the bottom of a column: a short column would give them away
+        if def.goals.iter().any(|g| matches!(g, Goal::Bones(_))) {
+            assert!((0..COLS).all(|x| tiles(x) >= 6), "level {} asks for bones on a board with a short column", i + 1);
+        }
+        assert!(def.goals.len() <= 3, "level {} has more goals than the designer deals out", i + 1);
+        assert!(def.moves[0] <= 60 && def.moves[2] >= 9, "level {} has a move budget out of range: {:?}", i + 1, def.moves);
+        // the same board twice within a few levels reads as a repeat
+        for back in 1..=4 {
+            if i >= level::HAND_MADE + back {
+                assert!(def.rows != LEVELS[i - back].rows, "level {} repeats the board of level {}", i + 1, i + 1 - back);
+            }
+        }
+    }
 }

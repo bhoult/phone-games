@@ -9,8 +9,10 @@ add it to the home screen. After the first visit it plays with no connection.
 
 A match-3 for phones about the very busy life of one black lab. Line up tennis
 balls, squirrels, cats, stolen socks, poodles, squeaky toys and sticks across
-36 levels of Rufus's day: the backyard, the dog park, the lake, mud season,
-delivery day and night patrol.
+1,036 levels. The first 36 are Rufus's first day, drawn by hand: the backyard,
+the dog park, the lake, mud season, delivery day and night patrol. Then he
+wakes up and does it all again, for 28 more days and 1,000 more levels, each
+day somewhere new: the creek, the farmers' market, the forbidden couch.
 
 Written in Rust, drawn with WebGL, compiled to one WebAssembly file. Everything
 (art, font, sound) is inside the build: it makes no network requests and runs
@@ -55,6 +57,10 @@ chapters ask more.
 
 Each level is rated one to three paws. Progress is saved on the device.
 
+After the first day the game does not keep getting harder: every later
+chapter opens gently and closes about as hard as Night Patrol does, on
+whichever setting you picked.
+
 ## Putting it on a phone
 
 ### Any phone: the web page (easiest)
@@ -95,8 +101,12 @@ push to publish.
 ```
 core/     the rules. Pure Rust, no dependencies, no rendering.
   src/board.rs    matching, power pieces, gravity, shuffles
-  src/level.rs    the 36 levels, goals, paw ratings
+  src/level.rs    goals, paw ratings, and the 36 hand-made levels
+  src/later.rs    the other 1,000 levels (written by examples/mklevels.rs)
+  src/chapters.rs the 173 chapters: their names and where each one happens
   src/bot.rs      a stand-in player for testing and tuning
+  src/tune.rs     works out move budgets from how the stand-in gets on
+  examples/       mklevels (designs levels), balance (reports and retunes)
   tests/rules.rs  rule tests and fuzzers
 game/     everything you see and hear (macroquad -> WebGL).
   src/play.rs     the level screen: plays back what the rules report
@@ -119,27 +129,49 @@ split is what lets the rules be tested natively at thousands of games a second.
 
 ## Changing things
 
-**Levels** are in `core/src/level.rs`: a title, a one-line tip, the goals, and
-the board drawn as nine rows of characters (`.` piece, `m`/`M` mud, `b`/`B` box,
-`o` bone, space for no tile). After changing a level's goals or layout, run
+**The first 36 levels** are in `core/src/level.rs`: a title, a one-line tip,
+the goals, and the board drawn as nine rows of characters (`.` piece, `m`/`M`
+mud, `b`/`B` box, `o` bone, space for no tile). After changing a level's goals
+or layout, run
 
 ```
 tools/apply_tune.py
 ```
 
 It plays every level a few hundred times with the stand-in player and writes the
-move budget and paw thresholds back into the file, so levels stay winnable.
-`cargo run -p rufus-core --release --example balance` prints the win rates,
-measured on different boards from the ones the tuner used.
+move budget and paw thresholds back into the level data, so levels stay
+winnable. `cargo run -p rufus-core --release --example balance` prints the win
+rates, measured on different boards from the ones the tuner used, with a
+summary of all 1,036 at the end.
 
-**Difficulty** is one table: `CURVES` at the top of
-`core/examples/balance.rs`. It has a row for Easy, Normal and Hard, and in each
-row a pair of numbers per chapter: the chance that a casual player wins a
-level on one attempt at the start of the chapter, and at the end of it. Raise
-a number to make that stretch easier or lower it to make it harder, then run
-`tools/apply_tune.py` again; it rewrites all three move budgets for every
-level. The numbers describe a stand-in player, not a person, so if a setting
-feels wrong to you, move its whole row.
+**The other 1,000** were not drawn by hand. `core/examples/mklevels.rs` is a
+level designer: for each level it picks what the level is about from its
+chapter's place (bones at the park, sticks and ponds by the water, mud,
+parcels indoors, a bit of everything at night), draws a board, then plays it a
+few hundred times. It scales the goals until the level takes about as many
+moves as it should, and throws the design away and draws another if it plays
+badly: needing reshuffles, swinging wildly from one game to the next, or with
+a goal that is only decoration. What survives is written to
+`core/src/later.rs` as ordinary level data, in the same form as the hand-made
+levels. The game itself never runs the designer.
+
+```
+cargo run -p rufus-core --release --example mklevels
+```
+
+redoes all of them (about ten minutes on a desktop). Do that after changing
+the designer: its menus of what each place serves, its board shapes, its word
+lists for titles. Chapter names are in `core/src/chapters.rs`.
+
+**Difficulty** is one table: `CURVES` at the top of `core/src/tune.rs`. It has
+a row for Easy, Normal and Hard, and in each row a pair of numbers per chapter
+of the first day: the chance that a casual player wins a level on one attempt
+at the start of the chapter, and at the end of it. Every chapter after the
+first day uses the last pair. Raise a number to make that stretch easier or
+lower it to make it harder, then run `tools/apply_tune.py` again; it rewrites
+all three move budgets for every level, hand-made or not. The numbers describe
+a stand-in player, not a person, so if a setting feels wrong to you, move its
+whole row.
 
 **Art** is SVG in `game/assets/svg/`. Edit a file and rebuild; `tools/sheet.py
 out.png` renders a contact sheet of the atlas to look at. Rufus's parts share

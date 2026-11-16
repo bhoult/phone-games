@@ -3,9 +3,15 @@
 
 pub mod board;
 pub mod bot;
+pub mod chapters;
+mod later;
 pub mod level;
 pub mod rng;
+// Tuning plays thousands of games on every core: a build-time job.
+#[cfg(not(target_arch = "wasm32"))]
+pub mod tune;
 
 pub use board::*;
+pub use chapters::{Chapter, Place, CHAPTERS, CHAPTER_LEN};
 pub use level::{Difficulty, Goal, LevelDef, Session, LEVELS};
 pub use rng::Rng;

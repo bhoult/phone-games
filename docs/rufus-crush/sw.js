@@ -1,8 +1,8 @@
 // Offline cache for Rufus Crush. The whole game is nine static files, so
 // they are all fetched at install time; after that no network is needed.
-// 0ec9105deae0 is replaced by build.sh so each build gets a fresh cache.
+// d43a2bd28f37 is replaced by build.sh so each build gets a fresh cache.
 const PREFIX = "rufus-crush-";
-const CACHE = PREFIX + "0ec9105deae0";
+const CACHE = PREFIX + "d43a2bd28f37";
 const FILES = [
   "./",
   "index.html",

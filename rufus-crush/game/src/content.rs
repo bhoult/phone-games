@@ -2,6 +2,7 @@
 
 use crate::gfx::*;
 use macroquad::prelude::Color;
+use rufus_core::chapters::day_of;
 use rufus_core::level::*;
 use rufus_core::{Difficulty, Item, Rng, Special};
 
@@ -10,27 +11,41 @@ pub struct Theme {
     /// Background gradient below the scene; `top` matches the scene's ground.
     pub top: Color,
     pub bottom: Color,
+    /// The day's light: what the backdrop is tinted with.
+    pub light: Color,
 }
 
-/// Scene numbers follow the order `Gfx` loads them in, not chapter order.
+/// The look of a chapter: its place's backdrop, in that day's light.
 pub fn theme(chapter: usize) -> Theme {
-    match chapter % CHAPTERS.len() {
-        0 => Theme { scene: 0, top: rgb(0x62c545), bottom: rgb(0x2a8a3c) },
-        1 => Theme { scene: 1, top: rgb(0x42b8a0), bottom: rgb(0x1b7a84) },
-        LAKE => Theme { scene: 5, top: rgb(0x2f9fd0), bottom: rgb(0x14507f) },
-        3 => Theme { scene: 2, top: rgb(0xb07a45), bottom: rgb(0x6a4224) },
-        4 => Theme { scene: 3, top: rgb(0x8c78d8), bottom: rgb(0x5540a6) },
-        _ => Theme { scene: 4, top: rgb(0x2f4f8f), bottom: rgb(0x131a42) },
-    }
+    let chapter = chapter.min(CHAPTERS.len() - 1);
+    // Scene numbers follow the order `Gfx` loads them in, not chapter order.
+    let (scene, top, bottom) = match CHAPTERS[chapter].place {
+        Place::Yard => (0, 0x62c545, 0x2a8a3c),
+        Place::Park => (1, 0x42b8a0, 0x1b7a84),
+        Place::Lake => (5, 0x2f9fd0, 0x14507f),
+        Place::Mud => (2, 0xb07a45, 0x6a4224),
+        Place::Home => (3, 0x8c78d8, 0x5540a6),
+        Place::Night => (4, 0x2f4f8f, 0x131a42),
+    };
+    // The same six places come round every day, so each day gets its own
+    // light: the first is as painted, then golden, misty, rosy and dusky.
+    const LIGHTS: [u32; 5] = [0xffffff, 0xffecc4, 0xdcecff, 0xffdfe6, 0xe9dcff];
+    let light = rgb(LIGHTS[day_of(chapter).saturating_sub(1) % LIGHTS.len()]);
+    let lit = |c: u32| {
+        let c = rgb(c);
+        Color::new(c.r * light.r, c.g * light.g, c.b * light.b, 1.0)
+    };
+    Theme { scene, top: lit(top), bottom: lit(bottom), light }
 }
 
-/// The chapter where Rufus swims instead of runs.
-pub const LAKE: usize = 2;
+/// Whether Rufus swims this level instead of running it.
+pub fn is_lake(level: usize) -> bool {
+    place_of(level) == Place::Lake
+}
 
 // Every table below has one arm per kind and then a catch-all, so a new kind
 // would quietly turn up as a squeaky toy. This stops the build instead.
 const _: () = assert!(rufus_core::KINDS == 7, "new piece kind: give it a sprite, colour, name, callout, quips and a cameo");
-const _: () = assert!(CHAPTERS.len() == 6, "new chapter: give it a theme and a CHAPTER_DONE line");
 
 pub fn kind_spr(kind: u8) -> Spr {
     match kind {
@@ -194,7 +209,7 @@ pub const BEG_THANKS: [&str; 4] = ["works every time.", "I KNEW it.", "you're my
 pub const SHAKE_SAYS: [&str; 3] = ["*shake shake shake*", "you looked dry.", "sharing is caring."];
 
 /// The Rufus Report: one headline per win.
-pub const WIN_LINES: [&str; 36] = [
+pub const WIN_LINES: [&str; 72] = [
     "Rufus caught the tennis ball. He will not be giving it back.",
     "Rufus found a sock. The sock is his now.",
     "Rufus treed a squirrel. The squirrel remains unimpressed.",
@@ -231,6 +246,42 @@ pub const WIN_LINES: [&str; 36] = [
     "Rufus found a stick so good he had to lie down with it.",
     "Rufus looked pitiful at a stranger with a sandwich. It worked.",
     "Rufus was asked to drop the stick. He has taken it under advisement.",
+    "Rufus stared at the treat cupboard until it opened. Persistence pays.",
+    "Rufus was told 'leave it'. He left it. Mostly. One lick.",
+    "Rufus discovered his own tail again. The investigation continues.",
+    "Rufus sat on someone's foot so they couldn't leave. It worked.",
+    "Rufus greeted you like you'd been gone a year. It was the bins.",
+    "Rufus chose the one seat in the car with a window that opens.",
+    "Rufus found a smell and rolled in it. He'd do it again.",
+    "Rufus yawned so wide it made a noise. He was surprised too.",
+    "Rufus carried his lead to the door. Subtle as ever.",
+    "Rufus counted his dinner. It was one dinner. He'd like a recount.",
+    "Rufus barked at his reflection. The other dog started it.",
+    "Rufus got a new bed. He is sleeping on the floor next to it.",
+    "Rufus heard the word 'vet' and became 30 kilos of jelly.",
+    "Rufus tilted his head. Whatever you were saying, you've forgotten it.",
+    "Rufus brought the ball back. Then walked off with it. Fetch is a negotiation.",
+    "Rufus checked on everyone in the house. All present. Good.",
+    "Rufus was caught on the couch. He has gone limp to avoid removal.",
+    "Rufus sniffed a hedge for six minutes. It was a very full hedge.",
+    "Rufus did the big sigh. Somebody please ask him what's wrong.",
+    "Rufus ate a bee. He does not recommend it. He may do it again.",
+    "Rufus waited by the door for you. He doesn't know how long. He can't tell time.",
+    "Rufus wagged so hard his whole back half joined in.",
+    "Rufus found the crumb you dropped in March.",
+    "Rufus stood in the doorway. Not in. Not out. Thinking.",
+    "Rufus licked your elbow. No reason. Just checking you're still salty.",
+    "Rufus saw a cow. He has not been the same since.",
+    "Rufus hid behind your legs from a plastic bag. It was a big bag.",
+    "Rufus pushed his bowl across the kitchen. A message has been sent.",
+    "Rufus fell asleep sitting up. He denies this.",
+    "Rufus made a friend of the delivery driver. The mailman doesn't count. That's different.",
+    "Rufus trotted past with something in his mouth. Nobody saw what. It's gone now.",
+    "Rufus put one paw on you. That's it. That's the whole request.",
+    "Rufus chased a leaf, caught the leaf, and didn't know what to do next.",
+    "Rufus sang along with a siren. He was flat. He was committed.",
+    "Rufus had his ears scratched in exactly the right place. His leg agrees.",
+    "Rufus is a good boy. This has been checked several times today.",
 ];
 
 pub const LOSE_LINES: [&str; 12] = [
@@ -248,15 +299,79 @@ pub const LOSE_LINES: [&str; 12] = [
     "Rufus is not begging. Rufus is just sitting here. Looking. At you.",
 ];
 
-/// Shown on the last level's win card instead of a headline.
-pub const FINALE: &str = "That's a full day of being a very good dog. Rufus is going to sleep for eleven hours. You've earned a nap too.";
+/// Shown on the very last level's win card instead of a headline.
+pub const FINALE: &str = "That's every day Rufus had planned. He's asleep on your feet now, so you can't get up. Those are the rules. Good boy, Rufus.";
 
-/// Finishing a chapter gets its own line on the win card.
-pub const CHAPTER_DONE: [&str; 6] = [
+/// Finishing a chapter of the first day gets its own line on the win card.
+const FIRST_DAY_DONE: [&str; 6] = [
     "The backyard is secure. Three new holes have been dug. Rufus regrets nothing.",
     "Every dog at the park has been sniffed. Rufus knows things now.",
     "Rufus has been in the lake nine times. Nobody threw anything the last four. He is ready to go again.",
     "Rufus is 40% mud by weight. He would like to come inside.",
     "All parcels have been opened and inspected. None of them were for Rufus. Yet.",
-    "",
+    "That's a full day of being a very good dog. Rufus will sleep for eleven hours. Then he's doing all of it again.",
 ];
+
+/// After the first day the same six places come round again and again, so
+/// each has a handful of lines to take turns with.
+const PLACE_DONE: [[&str; 6]; 6] = [
+    [
+        "The yard is secure. For now. Rufus will check again in ten minutes.",
+        "Every blade of grass has been inspected and signed off.",
+        "The squirrels have been warned. The squirrels did not listen.",
+        "A new hole has been added to the collection. It is his best work.",
+        "Rufus has patrolled the fence line. The fence is still there.",
+        "Outside has been thoroughly enjoyed. Rufus would like to come in. And then go out.",
+    ],
+    [
+        "Rufus has greeted every dog, every person and one bin.",
+        "The park has been run across in every direction. Twice.",
+        "Rufus made eleven new friends. He remembers none of their names.",
+        "The walk is over. Rufus has sat down to protest this.",
+        "Everything worth sniffing has been sniffed. The report is long.",
+        "Rufus pulled the whole way there and the whole way back. Consistent.",
+    ],
+    [
+        "Rufus is out of the water. The water is mostly in the car.",
+        "The stick has been rescued from the water. Again. It keeps falling in.",
+        "Rufus smells like a pond. He considers this an upgrade.",
+        "The ducks have filed a complaint. Rufus has filed a counter-complaint.",
+        "One more swim, he said, eleven swims ago.",
+        "Rufus has shaken off. Everyone within three metres knows.",
+    ],
+    [
+        "The mud has been redistributed evenly across the house.",
+        "Rufus has been towelled. The towel lost.",
+        "Under the mud there was more mud. Under that, a dog.",
+        "The floor was clean for nearly four minutes. A new record.",
+        "Rufus doesn't see what the problem is. Rufus can't see much: there's mud.",
+        "A bath has been mentioned. Rufus has left the room.",
+    ],
+    [
+        "Everything in the house has been checked for food. Some of it was.",
+        "The parcels were not for Rufus. He opened them as a courtesy.",
+        "Rufus helped. Things are now where Rufus thinks they should be.",
+        "The couch remains officially off limits. Unofficially, it's warm.",
+        "Rufus supervised the whole thing from directly underfoot.",
+        "Nothing was chewed that was not, in some sense, asking for it.",
+    ],
+    [
+        "The house is safe. Rufus barked at the dark until it stopped.",
+        "Whatever it was, it's gone now. Rufus is taking the credit.",
+        "Rufus is asleep, running in place. He's winning.",
+        "Three spins, one sigh, lights out. See you at dawn. Early dawn.",
+        "Rufus has taken your side of the bed. You may have the edge.",
+        "Another day done. Rufus rates it thirteen out of ten.",
+    ],
+];
+
+/// The line on the win card for finishing a chapter.
+pub fn chapter_done(chapter: usize) -> &'static str {
+    match FIRST_DAY_DONE.get(chapter) {
+        Some(line) => line,
+        None => {
+            let lines = &PLACE_DONE[CHAPTERS[chapter.min(CHAPTERS.len() - 1)].place.index()];
+            lines[day_of(chapter) % lines.len()]
+        }
+    }
+}
