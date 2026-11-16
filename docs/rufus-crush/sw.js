@@ -1,7 +1,8 @@
 // Offline cache for Rufus Crush. The whole game is nine static files, so
 // they are all fetched at install time; after that no network is needed.
 // 0ec9105deae0 is replaced by build.sh so each build gets a fresh cache.
-const CACHE = "rufus-crush-0ec9105deae0";
+const PREFIX = "rufus-crush-";
+const CACHE = PREFIX + "0ec9105deae0";
 const FILES = [
   "./",
   "index.html",
@@ -23,11 +24,13 @@ self.addEventListener("install", (event) => {
   );
 });
 
+// Only this game's old caches are cleared. Other games served from the same
+// site keep theirs: cache storage is shared by everything on one origin.
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k.startsWith(PREFIX) && k !== CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -37,6 +40,6 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET" || new URL(req.url).origin !== self.location.origin) return;
   event.respondWith(
-    caches.match(req, { ignoreSearch: true }).then((hit) => hit || fetch(req))
+    caches.match(req, { ignoreSearch: true, cacheName: CACHE }).then((hit) => hit || fetch(req))
   );
 });
