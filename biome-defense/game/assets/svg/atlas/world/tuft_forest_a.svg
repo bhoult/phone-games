@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 100 100">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd052"/><stop offset="1" stop-color="#2f8a34"/></linearGradient></defs>
+  <path d="M50 90 L58.1 84.5 L53.8 79 L59.6 73.3 L54.1 67.7 L59.3 61.9 L53.6 56.1 L57.6 50.2 L52.7 44.2 L54.8 38.2 L51.3 32.1 L50 26 L48.7 32.1 L45.2 38.2 L47.3 44.2 L42.4 50.2 L46.4 56.1 L40.7 61.9 L45.9 67.7 L40.4 73.3 L46.2 79 L41.9 84.5 Z" fill="url(#g)" stroke="#1d5220" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M50 84 Q50 60 50 36.1" fill="none" stroke="#c9f5a0" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+  <path d="M50 90 L54.8 80.3 L48.5 75 L50.9 66.4 L43.4 62.7 L44.9 54.8 L37.3 52.3 L37.4 45.5 L30.4 44 L28.8 38.8 L23.1 37.9 L19 36 L21.4 39.7 L22 45.1 L26.5 47.1 L25.5 53.7 L31.4 55.9 L29.4 63.2 L36.4 66 L34.1 73.8 L41.7 77.7 L40.3 85.5 Z" fill="url(#g)" stroke="#1d5220" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M50 84 Q37 50 24.3 40.8" fill="none" stroke="#c9f5a0" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+  <path d="M50 90 L59.7 85.5 L58.3 77.7 L65.9 73.8 L63.6 66 L70.6 63.2 L68.6 55.9 L74.5 53.7 L73.5 47.1 L78 45.1 L78.6 39.7 L81 36 L76.9 37.9 L71.2 38.8 L69.6 44 L62.6 45.5 L62.7 52.3 L55.1 54.8 L56.6 62.7 L49.1 66.4 L51.5 75 L45.2 80.3 Z" fill="url(#g)" stroke="#1d5220" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M50 84 Q63 50 75.7 40.8" fill="none" stroke="#c9f5a0" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+  <path d="M50 90 L51.4 80.4 L44.4 78.1 L43.6 70.4 L36.2 70.6 L34.1 64 L27.4 66.3 L23.8 61.6 L18.6 65.2 L14.1 63.5 L10.5 67.5 L7 70 L11.1 69.6 L15.2 71.8 L18.4 69.8 L21 74.4 L25.2 72.1 L26.3 78 L32.1 76.3 L32.6 82.8 L39.6 82.7 L40.6 89.3 Z" fill="url(#g)" stroke="#1d5220" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M50 84 Q28 60 13.3 67.9" fill="none" stroke="#c9f5a0" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+  <path d="M50 90 L59.4 89.3 L60.4 82.7 L67.4 82.8 L67.9 76.3 L73.7 78 L74.8 72.1 L79 74.4 L81.6 69.8 L84.8 71.8 L88.9 69.6 L93 70 L89.5 67.5 L85.9 63.5 L81.4 65.2 L76.2 61.6 L72.6 66.3 L65.9 64 L63.8 70.6 L56.4 70.4 L55.6 78.1 L48.6 80.4 Z" fill="url(#g)" stroke="#1d5220" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M50 84 Q72 60 86.7 67.9" fill="none" stroke="#c9f5a0" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+</svg>

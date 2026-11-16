@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 100 100">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c2d868"/><stop offset="1" stop-color="#6f9a3a"/></linearGradient></defs>
+  <path d="M54.6 89.7 L53.8 81.1 L52.7 72.6 L51.5 64 L50.1 55.5 L48.5 47 L46.8 38.5 L45 30 L44.8 38.7 L44.7 47.3 L44.7 55.9 L44.7 64.6 L44.8 73.2 L45 81.7 L45.4 90.3 Z" fill="url(#g)" stroke="#4d6b1f" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M50.2 88.2 L46.5 80.3 L42.5 72.9 L38.2 65.8 L33.7 59.2 L28.9 53.1 L24.1 47.3 L19 42 L22.4 48.4 L25.7 55.1 L29 62 L32.2 69.1 L35.3 76.4 L38.5 84 L41.8 91.8 Z" fill="url(#g)" stroke="#4d6b1f" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M58.4 91.5 L61.1 83.2 L63.9 75.3 L66.7 67.6 L69.8 60.3 L73 53.3 L76.4 46.5 L80 40 L74.7 45.3 L69.7 51.2 L65 57.7 L60.6 64.6 L56.5 72.1 L52.9 80.1 L49.6 88.5 Z" fill="url(#g)" stroke="#4d6b1f" stroke-width="3.2" stroke-linejoin="round"/>
+  <ellipse cx="45" cy="28" rx="3.8" ry="6.8" fill="#a8733a" stroke="#4a2a10" stroke-width="2.4" transform="rotate(-4 45 28)"/>
+  <ellipse cx="18" cy="40" rx="3.8" ry="6.8" fill="#a8733a" stroke="#4a2a10" stroke-width="2.4" transform="rotate(-38 18 40)"/>
+  <ellipse cx="81" cy="38" rx="3.8" ry="6.8" fill="#a8733a" stroke="#4a2a10" stroke-width="2.4" transform="rotate(36 81 38)"/>
+  <path d="M45.1 87.2 L40 82.3 L34.6 78.3 L28.9 75.2 L23 73 L17 71.8 L11 71.5 L5 72 L10.8 73.3 L16.1 75.2 L21.1 77.6 L25.8 80.6 L30.3 84.1 L34.6 88.2 L38.9 92.8 Z" fill="url(#g)" stroke="#4d6b1f" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M61.1 92.8 L65.4 88.1 L69.8 83.9 L74.3 80.2 L79 76.9 L84 74.1 L89.3 71.8 L95 70 L88.9 70 L82.9 70.8 L76.9 72.4 L71 74.9 L65.3 78.1 L59.9 82.3 L54.9 87.2 Z" fill="url(#g)" stroke="#4d6b1f" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M56.1 91.8 L57.1 85.9 L58.1 80 L59.2 74 L60.3 68.1 L61.4 62.1 L62.7 56.1 L64 50 L60.9 55.4 L58.1 61 L55.5 66.6 L53.2 72.3 L51.1 78.2 L49.3 84.2 L47.9 90.2 Z" fill="url(#g)" stroke="#4d6b1f" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M50.5 89.6 L48.3 84.7 L45.7 80 L43 75.4 L40 70.8 L36.8 66.5 L33.5 62.2 L30 58 L32.1 63 L34.1 68 L36 73 L37.9 77.9 L39.8 82.8 L41.6 87.6 L43.5 92.4 Z" fill="url(#g)" stroke="#4d6b1f" stroke-width="3.2" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="h" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a8683a"/><stop offset="1" stop-color="#5e3212"/></linearGradient>
+    <linearGradient id="l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a6d86a"/><stop offset="1" stop-color="#4f8f3a"/></linearGradient>
+  </defs>
+  <!-- a ring of water round the roots -->
+  <ellipse cx="50" cy="88" rx="38" ry="6" fill="#8fd0e8" stroke="#4a8fb0" stroke-width="2.4"/>
+  <path d="M22 89 C30 91.5 40 92 48 91" fill="none" stroke="#e6f8ff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+  <!-- back leaves -->
+  <path d="M46.3 88 L43.5 78.4 L40.1 69.1 L36.2 60.1 L31.6 51.2 L26.6 42.6 L21 34.2 L15 26 L19.4 35.1 L23.3 44.2 L26.9 53.3 L30.1 62.5 L32.9 71.6 L35.5 80.8 L37.7 90 Z" fill="url(#l)" stroke="#2f5a22" stroke-width="2.8" stroke-linejoin="round"/>
+  <path d="M62.3 90 L64.6 81 L67.2 72.1 L70.2 63.3 L73.7 54.8 L77.6 46.4 L82 38.1 L87 30 L80.5 37 L74.5 44.5 L69.1 52.3 L64.3 60.7 L60.1 69.4 L56.5 78.5 L53.7 88 Z" fill="url(#l)" stroke="#2f5a22" stroke-width="2.8" stroke-linejoin="round"/>
+  <path d="M50.9 88.3 L48.9 77.3 L46.9 66.6 L45.1 56 L43.3 45.5 L41.7 35.2 L40.3 25 L39 15 L38.5 25.1 L38.4 35.5 L38.6 46 L39.2 56.7 L40.1 67.5 L41.3 78.5 L43.1 89.7 Z" fill="url(#l)" stroke="#2f5a22" stroke-width="2.8" stroke-linejoin="round"/>
+  <!-- stalks and their brown heads -->
+  <path d="M51 89 V36" fill="none" stroke="#2f5a22" stroke-width="5.2" stroke-linecap="round"/><path d="M51 89 V36" fill="none" stroke="#9ad060" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M46 89 C43 74 35 60 30 50" fill="none" stroke="#2f5a22" stroke-width="5.2" stroke-linecap="round"/><path d="M46 89 C43 74 35 60 30 50" fill="none" stroke="#9ad060" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M56 89 C60 76 67 66 72 58" fill="none" stroke="#2f5a22" stroke-width="5.2" stroke-linecap="round"/><path d="M56 89 C60 76 67 66 72 58" fill="none" stroke="#9ad060" stroke-width="2.2" stroke-linecap="round"/>
+  <g transform="translate(51 26) rotate(0)"><path d="M0 -12 V-20" fill="none" stroke="#5e3212" stroke-width="2.6" stroke-linecap="round"/><rect x="-4.8" y="-12" width="9.6" height="24" rx="4.8" fill="url(#h)" stroke="#3a1e0a" stroke-width="2.8"/><path d="M-1.8 -7 V6" fill="none" stroke="#d9a070" stroke-width="2" stroke-linecap="round" opacity="0.7"/></g>
+  <g transform="translate(27 41) rotate(-20)"><path d="M0 -10 V-18" fill="none" stroke="#5e3212" stroke-width="2.6" stroke-linecap="round"/><rect x="-4.8" y="-10" width="9.6" height="20" rx="4.8" fill="url(#h)" stroke="#3a1e0a" stroke-width="2.8"/><path d="M-1.8 -5 V4" fill="none" stroke="#d9a070" stroke-width="2" stroke-linecap="round" opacity="0.7"/></g>
+  <g transform="translate(75 49) rotate(18)"><path d="M0 -10 V-18" fill="none" stroke="#5e3212" stroke-width="2.6" stroke-linecap="round"/><rect x="-4.8" y="-10" width="9.6" height="20" rx="4.8" fill="url(#h)" stroke="#3a1e0a" stroke-width="2.8"/><path d="M-1.8 -5 V4" fill="none" stroke="#d9a070" stroke-width="2" stroke-linecap="round" opacity="0.7"/></g>
+  <!-- front leaves -->
+  <path d="M41.7 88.4 L38.7 83 L34.9 78.2 L30.5 74 L25.4 70.2 L19.8 67 L13.7 64.2 L7 62 L12.9 65.8 L18 69.8 L22.5 73.9 L26.3 78.1 L29.5 82.5 L32.1 87 L34.3 91.6 Z" fill="url(#l)" stroke="#2f5a22" stroke-width="2.8" stroke-linejoin="round"/>
+  <path d="M66.5 92 L68.9 87.9 L71.7 84.1 L75 80.4 L78.8 77 L83.2 73.7 L88.3 70.7 L94 68 L87.7 69.1 L81.8 70.7 L76.3 73 L71.2 75.8 L66.7 79.3 L62.8 83.3 L59.5 88 Z" fill="url(#l)" stroke="#2f5a22" stroke-width="2.8" stroke-linejoin="round"/>
+  <path d="M57.9 90.7 L58.9 84.3 L59.7 77.5 L60.4 70.5 L60.9 63.3 L61.4 55.8 L61.7 48 L62 40 L60 47.8 L58.1 55.3 L56.2 62.5 L54.5 69.6 L52.9 76.4 L51.4 82.9 L50.1 89.3 Z" fill="url(#l)" stroke="#2f5a22" stroke-width="2.8" stroke-linejoin="round"/>
+</svg>

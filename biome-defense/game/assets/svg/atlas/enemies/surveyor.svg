@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="s" cx="50%" cy="35%" r="75%"><stop offset="0" stop-color="#f6cfa6"/><stop offset="1" stop-color="#dc9f72"/></radialGradient>
+    <linearGradient id="v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffa040"/><stop offset="1" stop-color="#ea6418"/></linearGradient>
+  </defs>
+  <g transform="translate(3.5 0)">
+  <!-- legs and boots -->
+  <path d="M50 62 L40 86 L50 88 L59 68 Z" fill="#5f6f4c" stroke="#2c3622" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M54 62 L64 87 L74 85 L65 62 Z" fill="#7d8f62" stroke="#2c3622" stroke-width="3.2" stroke-linejoin="round"/>
+  <ellipse cx="43" cy="90" rx="8.5" ry="4.6" fill="#6a4426" stroke="#2c1a0e" stroke-width="2.8"/>
+  <ellipse cx="72" cy="89" rx="8.5" ry="4.6" fill="#6a4426" stroke="#2c1a0e" stroke-width="2.8"/>
+  <!-- hi-vis vest -->
+  <path d="M43 43 C43 37 69 37 69 43 L68 64 C68 68 44 68 44 64 Z" fill="url(#v)" stroke="#8a3208" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M45 56 L67 56" stroke="#ffe85c" stroke-width="3.6"/>
+  <!-- survey stake -->
+  <g stroke-linecap="round"><path d="M74 61 L15 15" stroke="#5a3a1c" stroke-width="8"/><path d="M74 61 L15 15" stroke="#e0b070" stroke-width="3.6"/></g>
+  <path d="M27 24.4 L15 15" stroke="#ff5a1a" stroke-width="3.8" stroke-linecap="round"/>
+  <!-- arm -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M55 46 L61 59 L71 59" stroke="#274a78" stroke-width="9.5"/><path d="M55 46 L61 59 L69 59" stroke="#5b8cc6" stroke-width="4.6"/></g>
+  <circle cx="73" cy="59" r="4.2" fill="#e8b488" stroke="#8a5230" stroke-width="2.4"/>
+  <!-- head -->
+  <circle cx="57" cy="25" r="14.5" fill="url(#s)" stroke="#8a5230" stroke-width="3.2"/>
+  <circle cx="72" cy="28" r="2.6" fill="#e8b488" stroke="#8a5230" stroke-width="2"/>
+  <ellipse cx="61" cy="26" rx="2.5" ry="3.3" fill="#2a1608"/><circle cx="61.8" cy="24.8" r="1" fill="#fff"/>
+  <ellipse cx="68" cy="25.5" rx="2" ry="3" fill="#2a1608"/>
+  <path d="M60 33 Q64 36 68 33" fill="none" stroke="#8a5230" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- field hat -->
+  <path d="M45 15 C45 3 70 3 70 15 Z" fill="#e0c88e" stroke="#7a6032" stroke-width="3.2" stroke-linejoin="round"/>
+  <ellipse cx="58" cy="15.5" rx="22" ry="4.6" fill="#d2b878" stroke="#7a6032" stroke-width="3.2"/>
+  </g>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5ad8d0"/><stop offset="1" stop-color="#1c8a98"/></linearGradient>
+    <linearGradient id="e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f7fa"/><stop offset="1" stop-color="#aab4c2"/></linearGradient>
+  </defs>
+  <g transform="translate(51 64) rotate(-14)">
+    <!-- a can somebody stood on -->
+    <path d="M-32 -18 C-22 -19 -14 -18 -8 -15 L-2 -8 L5 -16 C14 -19 24 -19 31 -17 C37 -9 37 9 31 17 C24 19 14 19 6 15 L-1 8 L-8 15 C-14 18 -22 19 -32 18 Z" fill="url(#c)" stroke="#0f5560" stroke-width="3.8" stroke-linejoin="round"/>
+    <path d="M-2 -8 L-5 0 L-1 8 M5 -16 L2 -5 L7 3 L6 15" fill="none" stroke="#0f5560" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 -3 C16 -9 21 3 28 -2 M-26 -2 C-22 -8 -17 4 -11 -2" fill="none" stroke="#ffffff" stroke-width="4.2" stroke-linecap="round"/>
+    <ellipse cx="-32" cy="0" rx="7.5" ry="18" fill="url(#e)" stroke="#5f6b7c" stroke-width="3.6"/>
+    <ellipse cx="-32" cy="2" rx="2.8" ry="6.5" fill="#3c4656"/>
+  </g>
+</svg>

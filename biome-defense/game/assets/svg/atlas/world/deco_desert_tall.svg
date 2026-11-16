@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 100 100">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8ed474"/><stop offset="1" stop-color="#3a8a50"/></linearGradient></defs>
+  <!-- arms -->
+  <path d="M41 79 H24 C14 79 9 72 9 63 V45 C9 35 23 35 23 45 V60 C23 63.5 24.5 65 28 65 H41 Z" fill="url(#g)" stroke="#1f5a30" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M59 63 H76 C86 63 91 56 91 47 V29 C91 19 77 19 77 29 V44 C77 47.5 75.5 49 72 49 H59 Z" fill="url(#g)" stroke="#1f5a30" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M16 45 V62 C16 68 19 72 25 72 H38 M84 29 V46 C84 52 81 56 75 56 H62" fill="none" stroke="#2f7a40" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+  <!-- the trunk -->
+  <path d="M39 90 V25 C39 10 61 10 61 25 V90 C54 92.5 46 92.5 39 90 Z" fill="url(#g)" stroke="#1f5a30" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M46.5 20 V88 M53.5 20 V88" fill="none" stroke="#2f7a40" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+  <path d="M42.8 24 V58" fill="none" stroke="#d6ffb0" stroke-width="2.4" stroke-linecap="round" opacity="0.6"/>
+  <!-- spines -->
+  <path d="M48.5 30 h3 M48.5 44 h3 M48.5 58 h3 M48.5 72 h3 M56 37 h2.6 M56 51 h2.6 M56 65 h2.6 M56 79 h2.6 M41.5 66 h2.6 M41.5 80 h2.6 M11.5 50 h2.4 M18.5 56 h2.4 M30 75.5 h2.6 M86.5 34 h2.4 M79.5 40 h2.4 M67 59.5 h2.6" fill="none" stroke="#f2ffd0" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- blossom -->
+  <g fill="#ffb0d0" stroke="#b8437a" stroke-width="1.8"><circle cx="50" cy="9.2" r="2.9"/><circle cx="53.1" cy="11.5" r="2.9"/><circle cx="51.9" cy="15.2" r="2.9"/><circle cx="48.1" cy="15.2" r="2.9"/><circle cx="46.9" cy="11.5" r="2.9"/></g><circle cx="50" cy="12.5" r="3.3" fill="#ffb0d0"/><circle cx="50" cy="12.5" r="2.3" fill="#ffd23a"/>
+  <g fill="#ffb0d0" stroke="#b8437a" stroke-width="1.8"><circle cx="84" cy="18.5" r="2.6"/><circle cx="86.9" cy="20.6" r="2.6"/><circle cx="85.8" cy="23.9" r="2.6"/><circle cx="82.2" cy="23.9" r="2.6"/><circle cx="81.1" cy="20.6" r="2.6"/></g><circle cx="84" cy="21.5" r="3" fill="#ffb0d0"/><circle cx="84" cy="21.5" r="2.1" fill="#ffd23a"/>
+</svg>

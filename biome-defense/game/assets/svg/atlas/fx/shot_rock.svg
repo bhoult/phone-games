@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 100 100">
+  <defs><radialGradient id="g" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#f79a6c"/><stop offset="1" stop-color="#a8432a"/></radialGradient></defs>
+  <!-- a sandstone boulder -->
+  <path d="M30 14 L62 10 L86 28 L90 58 L72 84 L40 90 L14 70 L10 38 Z" fill="url(#g)" stroke="#5e1f10" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M24 60 H52 M56 70 H74" fill="none" stroke="#8a2f18" stroke-width="4.5" stroke-linecap="round" opacity="0.8"/>
+  <path d="M28 32 Q40 22 56 22" fill="none" stroke="#ffd0b0" stroke-width="5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="s" cx="42%" cy="25%" r="85%"><stop offset="0" stop-color="#a3ab4c"/><stop offset="1" stop-color="#5f6a2a"/></radialGradient>
+  </defs>
+  <!-- the shell of tortoise.svg, settled 6 units down onto the ground -->
+  <g transform="translate(0 6)">
+    <rect x="24" y="79" width="66" height="10" rx="5" fill="#dcbc64" stroke="#343a14" stroke-width="2.6"/>
+    <path d="M21 75 C19 52 37 34 58 34 C79 34 96 52 94 75 Z" fill="url(#s)" stroke="#343a14" stroke-width="3.2" stroke-linejoin="round"/>
+    <g fill="#e4b64c" stroke="#e4b64c" stroke-width="2" stroke-linejoin="round"><path d="M51 49 H65 L70 57 L65 65 H51 L46 57 Z"/><path d="M29 53 L33.5 45.5 L41 42 L43.5 46 L37 53.5 Z"/><path d="M87 53 L82.5 45.5 L75 42 L72.5 46 L79 53.5 Z"/><path d="M90.5 61 H78.5 L73.5 69 H91.5 Z"/><path d="M52 39 H64 L63.5 40.5 H52.5 Z"/></g>
+    <path d="M48 44 H68 L76 57 L68 70 H48 L40 57 Z M48 44 L44 37.5 M68 44 L72 37.5 M76 57 H93 M40 57 H22.5 M48 70 L46 73 M68 70 L70 73" fill="none" stroke="#4a5220" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    <rect x="18" y="72" width="77" height="12" rx="6" fill="#c4963e" stroke="#343a14" stroke-width="3.2"/>
+    <path d="M44 73.6 V82.4 M57 73.6 V82.4 M70 73.6 V82.4 M83 73.6 V82.4" stroke="#343a14" stroke-width="1.8" opacity="0.5"/>
+    <path d="M30 51 C36 42.5 46 38.5 56 38" fill="none" stroke="#d6de8c" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    <!-- where the legs went -->
+    <path d="M33 85.6 C33 77 49 77 49 85.6 Z M70 85.6 C70 77 86 77 86 85.6 Z" fill="#2a2410" stroke="#343a14" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- the front opening, and two eyes peeking out -->
+    <ellipse cx="28" cy="70" rx="9.5" ry="9" fill="#2a2410" stroke="#343a14" stroke-width="2.6"/>
+    <ellipse cx="24.4" cy="69" rx="2.7" ry="3.5" fill="#fff"/><ellipse cx="31.6" cy="69" rx="2.7" ry="3.5" fill="#fff"/>
+    <circle cx="24.9" cy="69.8" r="1.5" fill="#1c0f08"/><circle cx="32.1" cy="69.8" r="1.5" fill="#1c0f08"/>
+  </g>
+</svg>

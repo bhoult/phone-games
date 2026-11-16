@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" viewBox="0 0 100 100">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fcfdfe"/><stop offset="1" stop-color="#b0bcc6"/></linearGradient></defs>
+  <!-- far arms and rotors -->
+  <path d="M40 48 L31 28 M60 48 L69 28" stroke="#39434d" stroke-width="5.4" stroke-linecap="round"/>
+  <g fill="#e2f2fc" stroke="#6f8a9e" stroke-width="2.2" opacity="0.8"><ellipse cx="31" cy="23" rx="13" ry="4"/><ellipse cx="69" cy="23" rx="13" ry="4"/></g>
+  <!-- skids -->
+  <path d="M38 66 L33 83 M62 66 L67 83 M24 84 L76 84" fill="none" stroke="#39434d" stroke-width="3.8" stroke-linecap="round"/>
+  <!-- near arms and motors -->
+  <g stroke-linecap="round"><path d="M34 56 L20 46 M66 56 L80 46" stroke="#39434d" stroke-width="9.6"/><path d="M34 56 L20 46 M66 56 L80 46" stroke="#d4dce2" stroke-width="4.4"/></g>
+  <g fill="#5a6670" stroke="#262e36" stroke-width="2.6"><rect x="15.5" y="36" width="9" height="11" rx="2.4"/><rect x="75.5" y="36" width="9" height="11" rx="2.4"/></g>
+  <!-- body -->
+  <ellipse cx="50" cy="58" rx="24" ry="14.5" fill="url(#g)" stroke="#39434d" stroke-width="3.4"/>
+  <path d="M31 52 Q38 46 50 46" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+  <!-- near rotor blur discs -->
+  <g fill="#eaf6fd" stroke="#6f8a9e" stroke-width="2.4" opacity="0.85"><ellipse cx="20.5" cy="34" rx="15" ry="4.8"/><ellipse cx="79.5" cy="34" rx="15" ry="4.8"/></g>
+  <!-- red camera eye -->
+  <circle cx="63" cy="61" r="10" fill="#2c333b" stroke="#14181c" stroke-width="2.8"/>
+  <circle cx="64" cy="61" r="6" fill="#f23a2c"/><circle cx="66.2" cy="58.8" r="2" fill="#fff"/>
+  <path d="M51 49 L72 54" stroke="#14181c" stroke-width="3.4" stroke-linecap="round"/>
+</svg>

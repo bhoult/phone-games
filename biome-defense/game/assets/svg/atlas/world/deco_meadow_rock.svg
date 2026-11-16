@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="r" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" stop-color="#dadde1"/><stop offset="1" stop-color="#838a92"/></linearGradient>
+    <radialGradient id="m" cx="40%" cy="25%" r="85%"><stop offset="0" stop-color="#a2e676"/><stop offset="1" stop-color="#4f9e3a"/></radialGradient>
+  </defs>
+  <path d="M9 84 C5 68 14 50 30 43 C46 35 68 37 80 47 C93 57 96 73 91 84 C86 91 14 91 9 84 Z" fill="url(#r)" stroke="#4b525a" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M60 66 L65 76 L58 87 M65 76 L82 72" fill="none" stroke="#5f666e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  <path d="M17 70 C18 76 22 80 28 82" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" opacity="0.5"/>
+  <!-- a cap of moss -->
+  <path d="M13 60 C17 50 23 46 30 43 C46 35 68 37 80 47 C85 51 88 55 90 60 C85 64 81 57 76 59 C70 61 71 68 64 66 C57 64 57 56 50 57 C43 58 44 67 37 67 C30 67 31 59 25 60 C20 61 18 65 13 60 Z" fill="url(#m)" stroke="#2f6a22" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M28 50 C36 44 48 41 60 42" fill="none" stroke="#d6ffb0" stroke-width="3.2" stroke-linecap="round" opacity="0.7"/>
+  <g fill="#ffffff" stroke="#a9b0c4" stroke-width="1.8"><circle cx="68" cy="47" r="2.6"/><circle cx="70.9" cy="49.1" r="2.6"/><circle cx="69.8" cy="52.4" r="2.6"/><circle cx="66.2" cy="52.4" r="2.6"/><circle cx="65.1" cy="49.1" r="2.6"/></g><circle cx="68" cy="50" r="3" fill="#ffffff"/><circle cx="68" cy="50" r="2.2" fill="#ffd23a"/>
+  <!-- grass at its foot -->
+  <path d="M6 91 L5 79 L11 85 L14 75 L18 86 L23 81 L24 91 Z" fill="#5fb845" stroke="#2a6a20" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M76 91 L78 81 L82 86 L86 76 L89 86 L94 82 L94 91 Z" fill="#5fb845" stroke="#2a6a20" stroke-width="2.4" stroke-linejoin="round"/>
+</svg>

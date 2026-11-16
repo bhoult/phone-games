@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="k" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd2d8"/><stop offset="1" stop-color="#7d828c"/></linearGradient>
+    <linearGradient id="n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6b872"/><stop offset="1" stop-color="#a8743c"/></linearGradient>
+    <linearGradient id="e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e4a2e"/><stop offset="1" stop-color="#3a2210"/></linearGradient>
+  </defs>
+  <!-- the rock pillar -->
+  <path d="M35 88 L33 70 L39 58 H61 L67 70 L65 88 Z" fill="url(#k)" stroke="#3f434c" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M43 72 L47 77 L44 83 M58 70 L56 77" fill="none" stroke="#4f535c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- the eagle: wings half open, then the body -->
+  <g fill="url(#e)" stroke="#24140a" stroke-width="3" stroke-linejoin="round">
+    <path d="M41 30 C33 17 18 13 7 21 C10 27 8 33 6 39 C12 37 16 39 18 44 C22 40 27 41 30 46 C34 42 38 43 41 46 Z"/>
+    <path d="M59 30 C67 17 82 13 93 21 C90 27 92 33 94 39 C88 37 84 39 82 44 C78 40 73 41 70 46 C66 42 62 43 59 46 Z"/>
+    <path d="M36 54 C34 37 40 27 50 27 C60 27 66 37 64 54 Z"/>
+  </g>
+  <path d="M16 23 L15 33 M26 20 L26 35 M84 23 L85 33 M74 20 L74 35" fill="none" stroke="#a87a4e" stroke-width="2.4" stroke-linecap="round" opacity="0.9"/>
+  <!-- the twig nest -->
+  <path d="M17 49 L8 53 M21 58 L12 64 M83 49 L92 53 M79 58 L88 64 M33 63 L29 71 M67 63 L71 71" fill="none" stroke="#5a3814" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M17 46 C19 60 33 66 50 66 C67 66 81 60 83 46 C70 53 30 53 17 46 Z" fill="url(#n)" stroke="#5a3814" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M26 55 L38 60 M34 56 L44 54 M48 58 L60 61 M56 60 L66 56 M66 58 L76 54" fill="none" stroke="#7a4e24" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- the white head -->
+  <path d="M39 20 C39 10 45 6 50 6 C55 6 61 10 61 20 C61 28 56 32 50 32 C44 32 39 28 39 20 Z" fill="#fff" stroke="#70707e" stroke-width="2.8"/>
+  <path d="M45.5 21 H54.5 L50 30 Z" fill="#ffc72e" stroke="#a86a08" stroke-width="2.2" stroke-linejoin="round"/>
+  <circle cx="44.6" cy="17.6" r="2.9" fill="#2a1608"/><circle cx="45.4" cy="16.8" r="1" fill="#fff"/>
+  <circle cx="55.4" cy="17.6" r="2.9" fill="#2a1608"/><circle cx="56.2" cy="16.8" r="1" fill="#fff"/>
+  <path d="M40.5 13 L47 15.2 M59.5 13 L53 15.2" fill="none" stroke="#4a4a58" stroke-width="2.4" stroke-linecap="round"/>
+</svg>

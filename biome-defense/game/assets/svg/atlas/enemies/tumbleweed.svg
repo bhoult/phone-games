@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" viewBox="0 0 100 100">
+  <defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3e2a10"/><stop offset="0.45" stop-color="#6e5226"/><stop offset="1" stop-color="#c9a660"/></radialGradient></defs>
+  <!-- twig ends poking out all round -->
+  <path d="M85 55 L93 56 M88 55 L90 66 M75 74 L81 80 M77 76 L73 87 M56 84 L58 93 M57 87 L47 93 M35 81 L31 89 M33 84 L22 83 M19 66 L12 70 M16 68 L8 61 M15 45 L7 44 M12 45 L10 34 M25 26 L19 20 M23 24 L27 13 M44 16 L42 7 M43 13 L53 7 M65 19 L69 11 M67 16 L78 17 M81 34 L88 30 M84 32 L92 39" fill="none" stroke="#5a4018" stroke-width="3" stroke-linecap="round"/>
+  <!-- the ball -->
+  <circle cx="50" cy="50" r="37" fill="url(#g)" stroke="#5a4018" stroke-width="3.4"/>
+  <g fill="none" stroke-linecap="round"><path d="M82 65 Q51 77 20 68 M46 85 Q24 60 24 27 M16 57 Q33 28 64 18 M33 19 Q65 27 85 54 M74 24 Q76 57 57 84" stroke="#5a4018" stroke-width="2.6"/><path d="M85 50 Q73 83 38 83 M68 80 Q33 86 16 56 M33 80 Q10 53 28 23 M15 50 Q27 17 62 17 M32 20 Q67 14 84 44 M68 20 Q90 47 72 77 M80 68 Q51 48 17 38 M20 68 Q51 51 77 28 M50 15 Q48 50 56 84" stroke="#f2dc9c" stroke-width="2.8"/></g>
+  <!-- angry eyes peeking out -->
+  <ellipse cx="50" cy="51" rx="19" ry="12" fill="#2e1e0a"/>
+  <path d="M34 46 L48 50 C48 56 45 59 41 59 C36 59 33 54 34 46 Z" fill="#fff8d8"/><circle cx="43" cy="54" r="3" fill="#1a1005"/><circle cx="44" cy="52.8" r="1.1" fill="#fff"/>
+  <path d="M66 46 L52 50 C52 56 55 59 59 59 C64 59 67 54 66 46 Z" fill="#fff8d8"/><circle cx="58" cy="54" r="3" fill="#1a1005"/><circle cx="59" cy="52.8" r="1.1" fill="#fff"/>
+</svg>

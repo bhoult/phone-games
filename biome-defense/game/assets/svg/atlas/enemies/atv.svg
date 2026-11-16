@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" viewBox="0 0 100 100">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6604c"/><stop offset="1" stop-color="#b42418"/></linearGradient></defs>
+  <!-- handlebar and quad body -->
+  <path d="M70 54 L64 40 M60 39 L68 41" stroke="#26231f" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M7 60 C11 50 32 48 40 56 L58 56 C62 46 76 44 86 50 C91 53 93 58 93 62 L66 64 C62 68 56 70 50 70 L36 70 C32 64 20 60 7 60 Z" fill="url(#g)" stroke="#5a100a" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M64 52 Q74 47 84 52" fill="none" stroke="#ffc0b0" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+  <circle cx="89" cy="57" r="3" fill="#ffe680" stroke="#5a100a" stroke-width="2"/>
+  <!-- chunky wheels -->
+  <g fill="#45413a" stroke="#16130f">
+    <circle cx="24" cy="74" r="15.5" stroke-width="5" stroke-dasharray="5.4 4.34"/><circle cx="76" cy="74" r="15.5" stroke-width="5" stroke-dasharray="5.4 4.34"/>
+    <circle cx="24" cy="74" r="6.5" fill="#cfd5d9" stroke-width="2.8"/><circle cx="76" cy="74" r="6.5" fill="#cfd5d9" stroke-width="2.8"/>
+  </g>
+  <!-- rider -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M41 55 L56 59 L55 68" stroke="#1c2c4e" stroke-width="10"/><path d="M41 55 L56 59 L55 68" stroke="#4e76b8" stroke-width="5"/></g>
+  <ellipse cx="57" cy="70" rx="6.5" ry="3.8" fill="#6a4426" stroke="#2c1a0e" stroke-width="2.6"/>
+  <path d="M32 57 C31 45 37 36 47 35 C55 36 56 46 52 58 Z" fill="#2fb0a0" stroke="#0e4a44" stroke-width="3.2" stroke-linejoin="round"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M46 41 L55 49 L64 42" stroke="#0e4a44" stroke-width="9.5"/><path d="M46 41 L55 49 L63 43" stroke="#2fb0a0" stroke-width="4.6"/></g>
+  <!-- helmet -->
+  <circle cx="50" cy="22" r="13.5" fill="#ffd23a" stroke="#8a6408" stroke-width="3.2"/>
+  <path d="M52 15 L63 17 C65 22 64 28 61 31 L52 30 Z" fill="#f2c8a0" stroke="#8a6408" stroke-width="2.4" stroke-linejoin="round"/>
+  <ellipse cx="58" cy="23" rx="2.5" ry="3.3" fill="#2a1608"/><circle cx="58.8" cy="21.8" r="1" fill="#fff"/>
+  <path d="M40 16 Q44 11 51 10" fill="none" stroke="#fff6b8" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+</svg>

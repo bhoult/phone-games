@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="h" cx="42%" cy="32%" r="75%"><stop offset="0" stop-color="#efbf62"/><stop offset="1" stop-color="#c28c34"/></radialGradient>
+    <linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dca84c"/><stop offset="1" stop-color="#a8742a"/></linearGradient>
+  </defs>
+  <g transform="translate(-5 0)">
+    <!-- stubby tail -->
+    <path d="M68 86 C78 80 90 82 92 88 C91 94 80 96 68 93 Z" fill="#8a5c22" stroke="#5e3c10" stroke-width="3.2" stroke-linejoin="round"/>
+    <!-- body, upright -->
+    <path d="M50 34 C66 34 80 56 80 76 C80 88 70 94 50 94 C30 94 20 88 20 76 C20 56 34 34 50 34 Z" fill="url(#b)" stroke="#5e3c10" stroke-width="3.2" stroke-linejoin="round"/>
+    <path d="M50 50 C60 50 68 62 68 76 C68 86 60 91 50 91 C40 91 32 86 32 76 C32 62 40 50 50 50 Z" fill="#f8e4ae"/>
+    <!-- feet -->
+    <ellipse cx="37" cy="92.4" rx="8.6" ry="4.6" fill="#6a441a" stroke="#3c2609" stroke-width="2.4"/>
+    <ellipse cx="63" cy="92.4" rx="8.6" ry="4.6" fill="#6a441a" stroke="#3c2609" stroke-width="2.4"/>
+    <!-- arms and paws at the chest -->
+    <path d="M27 54 Q32 64 43 62 M73 54 Q68 64 57 62" fill="none" stroke="#5e3c10" stroke-width="9.6" stroke-linecap="round"/>
+    <path d="M27 54 Q32 64 43 62 M73 54 Q68 64 57 62" fill="none" stroke="#cf9a40" stroke-width="5.4" stroke-linecap="round"/>
+    <ellipse cx="44" cy="62.6" rx="4.4" ry="5.2" fill="#6a441a" stroke="#3c2609" stroke-width="2"/>
+    <ellipse cx="56" cy="62.6" rx="4.4" ry="5.2" fill="#6a441a" stroke="#3c2609" stroke-width="2"/>
+    <!-- ears -->
+    <circle cx="28" cy="13" r="5.8" fill="#c28c34" stroke="#5e3c10" stroke-width="3.2"/><circle cx="28.6" cy="13.6" r="2.4" fill="#7a5220"/>
+    <circle cx="72" cy="13" r="5.8" fill="#c28c34" stroke="#5e3c10" stroke-width="3.2"/><circle cx="71.4" cy="13.6" r="2.4" fill="#7a5220"/>
+    <!-- head -->
+    <path d="M50 6 C66 6 78 16 78 28 C78 40 66 48 50 48 C34 48 22 40 22 28 C22 16 34 6 50 6 Z" fill="url(#h)" stroke="#5e3c10" stroke-width="3.2" stroke-linejoin="round"/>
+    <ellipse cx="50" cy="38.6" rx="12" ry="8" fill="#f8e4ae"/>
+    <!-- wide-awake eyes -->
+    <ellipse cx="37.5" cy="26" rx="6.2" ry="7" fill="#2a1608"/><circle cx="39.7" cy="23.4" r="2.5" fill="#fff"/>
+    <ellipse cx="62.5" cy="26" rx="6.2" ry="7" fill="#2a1608"/><circle cx="64.7" cy="23.4" r="2.5" fill="#fff"/>
+    <path d="M30.5 15.5 Q37 12 43 14.5 M57 14.5 Q63 12 69.5 15.5" fill="none" stroke="#5e3c10" stroke-width="2.4" stroke-linecap="round"/>
+    <!-- nose and whistling mouth -->
+    <path d="M45.6 33.6 Q50 31 54.4 33.6 Q53.6 38 50 39 Q46.4 38 45.6 33.6 Z" fill="#2a1608"/>
+    <ellipse cx="50" cy="43" rx="2.8" ry="3" fill="#4a1e10" stroke="#5e3c10" stroke-width="1.4"/>
+    <path d="M36 11.5 Q43 8.5 52 9" fill="none" stroke="#ffe2a0" stroke-width="3.2" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>

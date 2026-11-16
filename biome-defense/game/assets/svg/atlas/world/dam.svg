@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="log" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c08a50"/><stop offset="1" stop-color="#7a4e26"/></linearGradient>
+  </defs>
+  <g transform="translate(0 2.3)">
+    <!-- sticks jammed in behind -->
+    <g fill="none" stroke-linecap="round">
+      <path d="M24 34 L15 17 M48 30 L46 14 M72 32 L84 16" stroke="#4a2c12" stroke-width="6.4"/>
+      <path d="M24 34 L15 17 M48 30 L46 14 M72 32 L84 16" stroke="#d2a86c" stroke-width="3.2"/>
+    </g>
+    <!-- three courses of logs -->
+    <g fill="url(#log)" stroke="#4a2c12" stroke-width="3.2">
+      <rect x="15" y="25" width="70" height="20" rx="10"/>
+      <rect x="9" y="44" width="82" height="20" rx="10"/>
+      <rect x="5.4" y="63" width="89.2" height="20" rx="10"/>
+    </g>
+    <path d="M26 30 H58 M20 49 H52 M18 68 H46" fill="none" stroke="#e6bc86" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    <path d="M40 38 H62 M34 57 H44 M56 57 H70 M52 76 H72 M30 76 H38" fill="none" stroke="#4a2c12" stroke-width="1.8" stroke-linecap="round" opacity="0.45"/>
+    <!-- sawn ends -->
+    <g fill="#f0d49e" stroke="#4a2c12" stroke-width="2.4"><ellipse cx="78" cy="35" rx="5.6" ry="8"/><ellipse cx="16" cy="54" rx="5.6" ry="8"/><ellipse cx="87.6" cy="73" rx="5.6" ry="8"/></g>
+    <g fill="none" stroke="#c49a5e" stroke-width="1.5"><ellipse cx="78" cy="35" rx="2.6" ry="4"/><ellipse cx="16" cy="54" rx="2.6" ry="4"/><ellipse cx="87.6" cy="73" rx="2.6" ry="4"/></g>
+    <!-- mud packed into the gaps -->
+    <g fill="#6a4a30" stroke="#3a2414" stroke-width="2.2" stroke-linejoin="round">
+      <path d="M27 44 C31 39.6 41 39.6 45 43.6 C48 46 46 50 41 49.6 C39 53 31 53 30 49 C26 49 24.6 46 27 44 Z"/>
+      <path d="M55 63 C59 58.6 70 58.6 74 62.6 C77 65 75 69 70 68.6 C68 72.6 59 72 58 68 C54 68 52.6 65 55 63 Z"/>
+      <path d="M19 64 C22 60.6 29 60.6 32 63.6 C34 66 32 69 28 68.6 C26 71 21 70.6 20.6 68 C17.6 68 17 65.6 19 64 Z"/>
+      <path d="M52 27 C55 22.6 64 22.6 67 26.6 C69 29 67 32 63 31.6 C61 34 55 33.6 54.6 31 C51 31 50 28.6 52 27 Z"/>
+    </g>
+    <path d="M30 44 Q35 41.6 40 43 M58 63 Q64 60.6 69 62 M55 26.6 Q59 24.6 63 26" fill="none" stroke="#a8825a" stroke-width="1.8" stroke-linecap="round" opacity="0.8"/>
+    <!-- a leaf that got caught -->
+    <path d="M33 27 C35 21 41 19 46 21 C45 27 40 30 33 27 Z" fill="#84d45c" stroke="#2f7a25" stroke-width="1.8" stroke-linejoin="round"/>
+  </g>
+</svg>

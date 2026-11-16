@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100">
+  <defs><linearGradient id="t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b0d8d2"/><stop offset="1" stop-color="#4a7e84"/></linearGradient></defs>
+  <g transform="translate(1 -1.5)">
+  <!-- exhaust stack, chassis -->
+  <rect x="47" y="12" width="6.4" height="36" rx="2" fill="#7a868e" stroke="#262e34" stroke-width="2.8"/>
+  <path d="M45 12 L55.4 12" stroke="#262e34" stroke-width="3.6" stroke-linecap="round"/>
+  <rect x="6" y="68" width="85" height="8" rx="2" fill="#3a444c" stroke="#1a2026" stroke-width="2.8"/>
+  <!-- tank -->
+  <rect x="21" y="25" width="13" height="9" rx="3" fill="#4a7e84" stroke="#1f3e44" stroke-width="2.8"/>
+  <rect x="5" y="32" width="46" height="38" rx="15" fill="url(#t)" stroke="#1f3e44" stroke-width="3.4"/>
+  <path d="M11 44 Q13 38 22 38 L36 38" fill="none" stroke="#f0fffc" stroke-width="3.4" stroke-linecap="round" opacity="0.8"/>
+  <!-- hoses -->
+  <g fill="none" stroke-linecap="round"><path d="M25 27 C17 13 5 25 10 44 L10 55" stroke="#1a2026" stroke-width="7.4"/><path d="M25 27 C17 13 5 25 10 44 L10 53" stroke="#f0a030" stroke-width="3.4"/></g>
+  <rect x="6.6" y="54" width="6.8" height="7" rx="1.6" fill="#7a868e" stroke="#1a2026" stroke-width="2.4"/>
+  <g fill="none" stroke-linecap="round"><path d="M30 52 A2.5 2.5 0 0 1 30 57 A4.5 4.5 0 0 1 30 48 A6.5 6.5 0 0 1 30 61 A8.5 8.5 0 0 1 30 44" stroke="#1a2026" stroke-width="6.4"/><path d="M30 52 A2.5 2.5 0 0 1 30 57 A4.5 4.5 0 0 1 30 48 A6.5 6.5 0 0 1 30 61 A8.5 8.5 0 0 1 30 44" stroke="#f0a030" stroke-width="2.6"/></g>
+  <!-- cab: side, then grumpy front -->
+  <path d="M54 34 C54 29 56 27 60 27 L71 27 L71 74 L54 74 Z" fill="#3f888a" stroke="#173a40" stroke-width="3.2" stroke-linejoin="round"/>
+  <rect x="58" y="32" width="10" height="14" rx="1.6" fill="#cdeefa" stroke="#173a40" stroke-width="2.4"/>
+  <path d="M71 27 L88 31 C91 32 93 34 93 38 L93 74 L71 74 Z" fill="#86c8c2" stroke="#173a40" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M74.6 32 L88 35 C89.4 35.4 90 36 90 37.6 L90 45 L74.6 44 Z" fill="#cdeefa" stroke="#173a40" stroke-width="2.4" stroke-linejoin="round"/>
+  <circle cx="77.6" cy="56.4" r="6" fill="#fff6c0" stroke="#173a40" stroke-width="2.6"/><circle cx="79.2" cy="57.6" r="3" fill="#10242a"/><circle cx="80.2" cy="56.2" r="1.1" fill="#fff"/>
+  <circle cx="88.6" cy="57" r="4.6" fill="#fff6c0" stroke="#173a40" stroke-width="2.6"/><circle cx="89.6" cy="58" r="2.4" fill="#10242a"/>
+  <path d="M72 48.4 L83.4 53 M93.4 49.6 L85.6 53" stroke="#173a40" stroke-width="3.6" stroke-linecap="round"/>
+  <path d="M74.6 72 Q83.6 63 92 72 Z" fill="#1a2026" stroke="#1a2026" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M79 68.6 L79 72 M83.4 67.4 L83.4 72 M88 68.6 L88 72" stroke="#aab6be" stroke-width="2"/>
+  <path d="M71 77 L92 77" stroke="#1a2026" stroke-width="5.4" stroke-linecap="round"/>
+  <!-- wheels -->
+  <g fill="#45413a" stroke="#16130f" stroke-width="3.4"><circle cx="18" cy="81" r="10.5"/><circle cx="40" cy="81" r="10.5"/><circle cx="75" cy="81" r="10.5"/></g>
+  <g fill="#cfd5d9" stroke="#4a5258" stroke-width="2.4"><circle cx="18" cy="81" r="4.2"/><circle cx="40" cy="81" r="4.2"/><circle cx="75" cy="81" r="4.2"/></g>
+  </g>
+</svg>

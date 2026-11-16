@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="b" cx="42%" cy="28%" r="80%"><stop offset="0" stop-color="#6379b0"/><stop offset="1" stop-color="#333f6e"/></radialGradient>
+    <linearGradient id="w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#96704a"/><stop offset="1" stop-color="#5f4226"/></linearGradient>
+    <radialGradient id="e" cx="50%" cy="50%" r="50%"><stop offset="0.45" stop-color="#ffdc52"/><stop offset="1" stop-color="#f2a11c"/></radialGradient>
+  </defs>
+  <!-- ear tufts -->
+  <path d="M17 32 C12 20 14 9 18 5 C27 9 34 15 38 22 Z" fill="#46558a" stroke="#1f2747" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M83 32 C88 20 86 9 82 5 C73 9 66 15 62 22 Z" fill="#46558a" stroke="#1f2747" stroke-width="3.2" stroke-linejoin="round"/>
+  <!-- body -->
+  <path d="M50 14 C74 14 90 32 90 55 C90 77 74 91 50 91 C26 91 10 77 10 55 C10 32 26 14 50 14 Z" fill="url(#b)" stroke="#1f2747" stroke-width="3.2" stroke-linejoin="round"/>
+  <!-- speckled chest -->
+  <path d="M50 58 C63 58 70 68 68 79 C66 87 58 90 50 90 C42 90 34 87 32 79 C30 68 37 58 50 58 Z" fill="#f8ebcb"/>
+  <path d="M40 72 l2.2 2.4 l2.2 -2.4 M55.6 72 l2.2 2.4 l2.2 -2.4 M47.8 77 l2.2 2.4 l2.2 -2.4 M39 82 l2.2 2.4 l2.2 -2.4 M56.6 82 l2.2 2.4 l2.2 -2.4" fill="none" stroke="#a87c4a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- folded wings -->
+  <path d="M11 52 C8 68 14 82 27 88 C33 76 31 62 23 50 C18 47 13 48 11 52 Z" fill="url(#w)" stroke="#3c2814" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M89 52 C92 68 86 82 73 88 C67 76 69 62 77 50 C82 47 87 48 89 52 Z" fill="url(#w)" stroke="#3c2814" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M15 62 Q19 68 25 68 M17 72 Q21 77 27 77 M85 62 Q81 68 75 68 M83 72 Q79 77 73 77" fill="none" stroke="#3c2814" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+  <!-- talons -->
+  <g fill="#eeaa3c" stroke="#8a5510" stroke-width="1.6"><ellipse cx="34" cy="92.6" rx="2.9" ry="4.4"/><ellipse cx="39.6" cy="93" rx="2.9" ry="4.4"/><ellipse cx="45.2" cy="92.6" rx="2.9" ry="4.4"/><ellipse cx="54.8" cy="92.6" rx="2.9" ry="4.4"/><ellipse cx="60.4" cy="93" rx="2.9" ry="4.4"/><ellipse cx="66" cy="92.6" rx="2.9" ry="4.4"/></g>
+  <!-- heart-shaped face -->
+  <path d="M50 30 C55 20 76 19 81 33 C85 47 72 59 50 66 C28 59 15 47 19 33 C24 19 45 20 50 30 Z" fill="#f9f0da" stroke="#b79a6c" stroke-width="2" stroke-linejoin="round"/>
+  <!-- golden eyes -->
+  <circle cx="35" cy="41" r="11.5" fill="url(#e)" stroke="#a8690d" stroke-width="2"/>
+  <circle cx="65" cy="41" r="11.5" fill="url(#e)" stroke="#a8690d" stroke-width="2"/>
+  <ellipse cx="35.5" cy="43" rx="6.2" ry="7" fill="#2a1608"/><circle cx="37.7" cy="40.4" r="2.5" fill="#fff"/>
+  <ellipse cx="64.5" cy="43" rx="6.2" ry="7" fill="#2a1608"/><circle cx="66.7" cy="40.4" r="2.5" fill="#fff"/>
+  <!-- calm, level lids -->
+  <path d="M24.4 36.4 A11.5 11.5 0 0 1 45.6 36.4 Q35 33.4 24.4 36.4 Z M54.4 36.4 A11.5 11.5 0 0 1 75.6 36.4 Q65 33.4 54.4 36.4 Z" fill="#e6d6b2" stroke="#8a6a3a" stroke-width="1.6" stroke-linejoin="round"/>
+  <!-- beak -->
+  <path d="M45.6 49 Q50 46 54.4 49 Q53.4 57 50 59 Q46.6 57 45.6 49 Z" fill="#f2a332" stroke="#9a5a0c" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M33 21 Q41 16.5 51 17" fill="none" stroke="#9db0de" stroke-width="3.4" stroke-linecap="round" opacity="0.8"/>
+</svg>

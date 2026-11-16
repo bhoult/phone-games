@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="c" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffac4a"/><stop offset="1" stop-color="#e2581a"/></linearGradient>
+    <linearGradient id="w" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f0d49a"/><stop offset="1" stop-color="#c49a5c"/></linearGradient>
+  </defs>
+  <!-- the survey stake and its flag -->
+  <path d="M67 91 L68.5 24 L76.5 24 L76 91 Z" fill="url(#w)" stroke="#7a5326" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M70.5 40 V58 M73 66 V80" fill="none" stroke="#a87c44" stroke-width="2" stroke-linecap="round"/>
+  <path d="M72.5 26 C79 21 85 30 93 24 L92 41 C85 47 79 38 72.5 43 Z" fill="#ff5aa8" stroke="#a81f62" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M76 29 C80 27.5 84 31 88 30" fill="none" stroke="#ffc2de" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
+  <!-- the cone -->
+  <path d="M9 83 H49 L52 91 H6 Z" fill="#e2581a" stroke="#8a3208" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M14 84 L24.5 33 C25.5 27 32.5 27 33.5 33 L44 84 Z" fill="url(#c)" stroke="#8a3208" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M23.8 45 L34.2 45 L36.2 55 L21.8 55 Z M20.2 63 L37.8 63 L39.8 73 L18.2 73 Z" fill="#ffffff"/>
+  <path d="M26.5 34 L22 56" fill="none" stroke="#ffe0b0" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/>
+</svg>

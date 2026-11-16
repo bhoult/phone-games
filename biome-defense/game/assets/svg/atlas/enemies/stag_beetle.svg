@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100">
+  <defs><radialGradient id="g" cx="36%" cy="26%" r="85%"><stop offset="0" stop-color="#dc8e4e"/><stop offset="1" stop-color="#6a2c12"/></radialGradient></defs>
+  <!-- legs -->
+  <g fill="none" stroke="#331408" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 72 L11 80 L6 89"/><path d="M34 74 L33 83 L26 90"/><path d="M52 72 L59 82 L57 90"/>
+    <path d="M26 72 L23 82 L18 87" opacity="0.55"/><path d="M44 72 L47 82 L43 88" opacity="0.55"/>
+  </g>
+  <!-- antler mandibles -->
+  <path d="M69 66 C75 71 85 69 92 55 C94 51 91 49 89 52 C86 57 83 60 79 60 L81 54 C81 51 78 51 77 53 L74 61 Z" fill="#6e3216" stroke="#331408" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M66 56 C65 40 76 20 91 13 C95 12 95 17 93 19 C86 24 82 30 80 36 L88 33 C91 33 91 38 88 39 L79 44 C78 48 77 52 76 57 Z" fill="#8a4420" stroke="#331408" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M71 44 C73 34 79 25 87 19" fill="none" stroke="#e8a870" stroke-width="2.6" stroke-linecap="round" opacity="0.75"/>
+  <!-- head, pronotum, scarred shell -->
+  <ellipse cx="63" cy="60" rx="13.5" ry="14" fill="#b0622e" stroke="#331408" stroke-width="3.4"/>
+  <ellipse cx="49" cy="56" rx="11" ry="19" fill="#8e4a22" stroke="#331408" stroke-width="3.4"/>
+  <path d="M5 66 C3 44 12 27 26 27 C39 27 47 44 46 66 C44 77 8 77 5 66 Z" fill="url(#g)" stroke="#331408" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M10 46 Q14 35 24 32" fill="none" stroke="#ffd4a4" stroke-width="3.6" stroke-linecap="round" opacity="0.85"/>
+  <path d="M43 43 Q47 40 52 41" fill="none" stroke="#e8a870" stroke-width="2.6" stroke-linecap="round" opacity="0.7"/>
+  <g fill="none" stroke="#f6d2ae" stroke-width="2.4" stroke-linecap="round">
+    <path d="M14 50 L26 64 M16 57 L21 53 M21 63 L26 59"/><path d="M30 37 L38 49 M31 44 L36 41"/>
+  </g>
+  <!-- face: one eye narrowed -->
+  <ellipse cx="59" cy="60" rx="5.2" ry="6" fill="#fff"/><circle cx="60.8" cy="61" r="3.1" fill="#1a0d07"/><circle cx="61.8" cy="59.6" r="1.2" fill="#fff"/>
+  <path d="M66 61 Q70.5 56 75 61 Q70.5 64 66 61 Z" fill="#fff"/><circle cx="71" cy="60.6" r="2" fill="#1a0d07"/>
+  <path d="M51.6 51 L64.6 55 M65.6 58 L76 58.4" stroke="#331408" stroke-width="3.4" stroke-linecap="round"/>
+  <path d="M61 70 Q66 68 71 70.4" fill="none" stroke="#331408" stroke-width="2.6" stroke-linecap="round"/>
+</svg>

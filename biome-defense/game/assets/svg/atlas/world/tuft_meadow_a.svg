@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 100 100">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9be070"/><stop offset="1" stop-color="#4fa838"/></linearGradient></defs>
+  <!-- daisy stem -->
+  <path d="M60 80 C60 66 62 54 64 44" fill="none" stroke="#22561a" stroke-width="7" stroke-linecap="round"/>
+  <path d="M60 80 C60 66 62 54 64 44" fill="none" stroke="#6fc04a" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- grass -->
+  <path d="M11 90 C14 78 12 66 7 56 C18 60 24 68 28 78 C28 62 29 50 24 38 C37 46 44 60 46 76 C50 66 55 60 62 56 C61 64 62 72 66 80 C72 72 82 66 94 64 C88 72 86 80 89 90 Z" fill="url(#g)" stroke="#22561a" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M31 50 C35 56 38 62 39 70 M14 64 C17 68 19 72 20 77" fill="none" stroke="#d6ffb0" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+  <!-- the daisy -->
+  <g fill="#ffffff" stroke="#9aa2ba" stroke-width="2.4"><circle cx="65" cy="25.6" r="6.2"/><circle cx="72.3" cy="29.8" r="6.2"/><circle cx="72.3" cy="38.2" r="6.2"/><circle cx="65" cy="42.4" r="6.2"/><circle cx="57.7" cy="38.2" r="6.2"/><circle cx="57.7" cy="29.8" r="6.2"/></g><circle cx="65" cy="34" r="8.4" fill="#ffffff"/><circle cx="65" cy="34" r="6" fill="#ffd23a" stroke="#b9790f" stroke-width="1.8"/>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe044"/><stop offset="1" stop-color="#e8a010"/></linearGradient></defs>
+  <!-- exhaust stack -->
+  <rect x="50" y="12" width="6.4" height="30" rx="2" fill="#6a747c" stroke="#262e34" stroke-width="2.8"/>
+  <path d="M48 12 L58.4 12" stroke="#262e34" stroke-width="3.6" stroke-linecap="round"/>
+  <!-- cab -->
+  <path d="M12 62 L12 20 L42 20 L44 62 Z" fill="url(#g)" stroke="#6e4a04" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M17 25 L38 25 L39 44 L17 44 Z" fill="#cdeefa" stroke="#6e4a04" stroke-width="2.6" stroke-linejoin="round"/>
+  <rect x="8" y="13" width="38" height="7.4" rx="2.4" fill="#f2b418" stroke="#6e4a04" stroke-width="3"/>
+  <!-- engine hood with a mean grille-face -->
+  <path d="M43 40 L72 40 C77 40 80 43 80 48 L80 67 L43 67 Z" fill="url(#g)" stroke="#6e4a04" stroke-width="3.2" stroke-linejoin="round"/>
+  <circle cx="60" cy="50" r="6.2" fill="#fff" stroke="#6e4a04" stroke-width="2.6"/><circle cx="61.8" cy="51.2" r="3.1" fill="#2a1c04"/><circle cx="62.8" cy="49.8" r="1.2" fill="#fff"/>
+  <circle cx="73.4" cy="50.4" r="4.8" fill="#fff" stroke="#6e4a04" stroke-width="2.6"/><circle cx="74.6" cy="51.4" r="2.5" fill="#2a1c04"/>
+  <path d="M51 42 L67 47.4 M80 43.4 L70 47.4" stroke="#4a3002" stroke-width="4" stroke-linecap="round"/>
+  <path d="M56 60 L78 58.4 L78 64.6 L56 64.6 Z" fill="#3a2a06" stroke="#3a2a06" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M60.4 60 L60.4 64.4 M65 59.6 L65 64.4 M69.6 59.2 L69.6 64.4 M74.2 58.8 L74.2 64.4" stroke="#ffe044" stroke-width="2.2"/>
+  <!-- tracks -->
+  <rect x="7.5" y="65" width="66" height="25" rx="12.5" fill="#45413a" stroke="#16130f" stroke-width="5" stroke-dasharray="4.4 3.6"/>
+  <g fill="#aab4bc" stroke="#262e34" stroke-width="2.6"><circle cx="20" cy="77.5" r="7"/><circle cx="40.5" cy="79" r="5"/><circle cx="61" cy="77.5" r="7"/></g>
+  <!-- push arm, hydraulic ram, blade -->
+  <g stroke-linecap="round"><path d="M46 76 L84 72" stroke="#6e4a04" stroke-width="8.4"/><path d="M46 76 L84 72" stroke="#f2b418" stroke-width="3.6"/></g>
+  <path d="M85 37 L92 37 C86 52 86 74 93.4 90 L83 90 C77 74 77 52 85 37 Z" fill="url(#g)" stroke="#6e4a04" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M84 47 C81 58 81 70 85 82" fill="none" stroke="#fff6b8" stroke-width="2.8" stroke-linecap="round" opacity="0.85"/>
+</svg>

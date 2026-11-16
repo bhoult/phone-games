@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="224" height="224" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="rock" cx="40%" cy="22%" r="85%"><stop offset="0" stop-color="#d6dade"/><stop offset="1" stop-color="#868d97"/></radialGradient>
+    <radialGradient id="hole" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="#1c0f08"/><stop offset="1" stop-color="#3f2413"/></radialGradient>
+  </defs>
+  <ellipse cx="50" cy="84" rx="46" ry="11" fill="#000" opacity="0.2"/>
+  <!-- granite boulder -->
+  <path d="M6 83 C3 62 10 38 30 28 C50 18 78 24 90 46 C96 58 96 72 94 83 C80 89 20 89 6 83 Z" fill="url(#rock)" stroke="#474c55" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M24 44 C27 52 25 60 19 68 M82 44 C77 50 75 58 76 66" fill="none" stroke="#474c55" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <g fill="#474c55" opacity="0.4"><circle cx="16" cy="56" r="1.3"/><circle cx="30" cy="50" r="1.1"/><circle cx="40" cy="46" r="1.3"/><circle cx="62" cy="48" r="1.2"/><circle cx="72" cy="42" r="1.1"/><circle cx="86" cy="60" r="1.3"/><circle cx="80" cy="74" r="1.1"/><circle cx="22" cy="76" r="1.2"/><circle cx="54" cy="42" r="1"/></g>
+  <!-- snow cap -->
+  <path d="M19 37 C24 28 38 21 54 21.6 C68 22 79 28 85 38 C81 42 77 36 72 40 C67 35 62 42 56 38 C51 43 45 36 39 42 C34 37 28 42 19 37 Z" fill="#fff" stroke="#a3b9cf" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M30 30 C38 25.6 46 24.4 54 24.6" fill="none" stroke="#dbe8f4" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- the burrow -->
+  <path d="M31 85 C29 68 36 56 50 56 C64 56 71 68 69 85 Z" fill="#6a5a4c" stroke="#33291f" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M36 85 C35 71 40 62 50 62 C60 62 65 71 64 85 Z" fill="url(#hole)"/>
+  <path d="M34 64.6 C40 56.6 60 56.6 66 64.6" fill="none" stroke="#a89a8a" stroke-width="3" stroke-linecap="round"/>
+  <!-- snow at the foot -->
+  <path d="M5 86 C7 79.6 17 78.6 24 84.6 C20 89.6 9 90 5 86 Z M73 86.6 C77 80 89 79.6 95 85.6 C90 90 78 90.6 73 86.6 Z" fill="#fff" stroke="#a3b9cf" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- purple alpine flowers -->
+  <path d="M15 80 C15 76 14.6 73 14 70 M23 82 C23 79 23.6 77 24 75 M84 81 C84 77 84.6 74 85 71" fill="none" stroke="#3f8f2e" stroke-width="1.8" stroke-linecap="round"/>
+  <g fill="#b888f4" stroke="#6a3aa8" stroke-width="1"><circle cx="14" cy="66" r="2.7"/><circle cx="17.6" cy="69.6" r="2.7"/><circle cx="14" cy="73.2" r="2.7"/><circle cx="10.4" cy="69.6" r="2.7"/><circle cx="24" cy="72" r="2.2"/><circle cx="27" cy="75" r="2.2"/><circle cx="24" cy="78" r="2.2"/><circle cx="21" cy="75" r="2.2"/><circle cx="85" cy="67" r="2.7"/><circle cx="88.6" cy="70.6" r="2.7"/><circle cx="85" cy="74.2" r="2.7"/><circle cx="81.4" cy="70.6" r="2.7"/></g>
+  <g fill="#ffd23a"><circle cx="14" cy="69.6" r="2.2"/><circle cx="24" cy="75" r="1.8"/><circle cx="85" cy="70.6" r="2.2"/></g>
+</svg>

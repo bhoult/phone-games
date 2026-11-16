@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="h" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b06e3e"/><stop offset="1" stop-color="#6a3814"/></linearGradient>
+    <linearGradient id="l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd05a"/><stop offset="1" stop-color="#3c8a2c"/></linearGradient>
+  </defs>
+  <!-- reed blades -->
+  <g fill="url(#l)" stroke="#22561a" stroke-width="3" stroke-linejoin="round">
+    <path d="M44 88 C38 72 26 58 8 50 C20 62 30 76 36 88 Z"/>
+    <path d="M56 88 C62 72 74 58 92 50 C80 62 70 76 64 88 Z"/>
+    <path d="M46 88 C44 70 42 58 37 46 C37 60 38 74 40 88 Z"/>
+    <path d="M54 88 C56 70 58 58 63 46 C63 60 62 74 60 88 Z"/>
+  </g>
+  <!-- three heads, angled like launch tubes -->
+  <g transform="rotate(-25 50 86)">
+    <path d="M50 86 V50" stroke="#22561a" stroke-width="6"/><path d="M50 86 V50" stroke="#6fc04a" stroke-width="2.6"/>
+    <path d="M50 26 V17" stroke="#3e1f0a" stroke-width="3.2" stroke-linecap="round"/>
+    <rect x="43.5" y="25" width="13" height="28" rx="6.5" fill="url(#h)" stroke="#3e1f0a" stroke-width="3"/>
+    <path d="M47.5 31 V45" stroke="#e0a674" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/>
+  </g>
+  <g transform="rotate(25 50 86)">
+    <path d="M50 86 V50" stroke="#22561a" stroke-width="6"/><path d="M50 86 V50" stroke="#6fc04a" stroke-width="2.6"/>
+    <path d="M50 26 V17" stroke="#3e1f0a" stroke-width="3.2" stroke-linecap="round"/>
+    <rect x="43.5" y="25" width="13" height="28" rx="6.5" fill="url(#h)" stroke="#3e1f0a" stroke-width="3"/>
+    <path d="M47.5 31 V45" stroke="#e0a674" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/>
+  </g>
+  <path d="M50 86 V42" stroke="#22561a" stroke-width="6"/><path d="M50 86 V42" stroke="#6fc04a" stroke-width="2.6"/>
+  <path d="M50 16 V7" stroke="#3e1f0a" stroke-width="3.2" stroke-linecap="round"/>
+  <rect x="43.5" y="15" width="13" height="30" rx="6.5" fill="url(#h)" stroke="#3e1f0a" stroke-width="3"/>
+  <path d="M47.5 21 V37" stroke="#e0a674" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/>
+  <!-- the tussock -->
+  <path d="M26 89 L29 78 L35 84 L39 74 L45 82 L50 72 L55 82 L61 74 L65 84 L71 78 L74 89 Z" fill="#4fa838" stroke="#22561a" stroke-width="3" stroke-linejoin="round"/>
+</svg>

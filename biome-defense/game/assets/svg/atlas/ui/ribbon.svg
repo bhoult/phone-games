@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="144" viewBox="0 0 256 72">
+  <!-- drawn pale so the game can tint it to each biome's colour -->
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d4d4d4"/></linearGradient></defs>
+  <path d="M4 20 H44 V58 H4 L16 39 Z" fill="#a8a8a8" stroke="#000" stroke-opacity="0.5" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M252 20 H212 V58 H252 L240 39 Z" fill="#a8a8a8" stroke="#000" stroke-opacity="0.5" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M26 46 L44 58 V46 Z" fill="#000" opacity="0.5"/><path d="M230 46 L212 58 V46 Z" fill="#000" opacity="0.5"/>
+  <rect x="26" y="6" width="204" height="42" rx="6" fill="url(#g)" stroke="#000" stroke-opacity="0.5" stroke-width="3"/>
+  <path d="M34 13 H222" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+  <path d="M34 41 H222" stroke="#000" stroke-width="2" stroke-linecap="round" opacity="0.22" stroke-dasharray="5 5"/>
+</svg>

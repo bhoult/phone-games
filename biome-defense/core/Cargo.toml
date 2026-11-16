@@ -1,0 +1,7 @@
+[package]
+name = "biome-core"
+version = "0.1.0"
+edition = "2021"
+description = "Biome Defense rules: the battle simulation and the campaign. Pure logic, no rendering, no dependencies."
+
+[dependencies]

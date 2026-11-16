@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 100 100">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0.5" y2="1"><stop offset="0" stop-color="#58b074"/><stop offset="1" stop-color="#1c6048"/></linearGradient></defs>
+  <path d="M44 78 H56 V91 H44 Z" fill="#8a5a30" stroke="#4a2a12" stroke-width="3.2" stroke-linejoin="round"/>
+  <!-- three tiers of boughs, each with its snow -->
+  <path d="M50 40 L89 80 C81 84.5 75 78 68 82 C62 86 56 78 50 82 C44 78 38 86 32 82 C25 78 19 84.5 11 80 Z" fill="url(#g)" stroke="#134a36" stroke-width="3.2" stroke-linejoin="round"/>
+  <ellipse cx="25" cy="67.5" rx="10" ry="4" fill="#ffffff" stroke="#8fb0d6" stroke-width="2.2" transform="rotate(-46 25 67.5)"/><ellipse cx="75" cy="67.5" rx="10" ry="4" fill="#ffffff" stroke="#8fb0d6" stroke-width="2.2" transform="rotate(46 75 67.5)"/>
+  <path d="M50 22 L81 58 C75 62 69 56 62 60 C56 64 54 57 50 60 C46 57 44 64 38 60 C31 56 25 62 19 58 Z" fill="url(#g)" stroke="#134a36" stroke-width="3.2" stroke-linejoin="round"/>
+  <ellipse cx="30.5" cy="46.5" rx="9" ry="3.8" fill="#ffffff" stroke="#8fb0d6" stroke-width="2.2" transform="rotate(-49 30.5 46.5)"/><ellipse cx="69.5" cy="46.5" rx="9" ry="3.8" fill="#ffffff" stroke="#8fb0d6" stroke-width="2.2" transform="rotate(49 69.5 46.5)"/>
+  <path d="M50 5 L70 35 C65 39 60 33 55 37 C52 39 48 39 45 37 C40 33 35 39 30 35 Z" fill="url(#g)" stroke="#134a36" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M50 5 L61 21.5 C57.5 24.5 54.5 20 50 23.5 C45.5 20 42.5 24.5 39 21.5 Z" fill="#ffffff" stroke="#8fb0d6" stroke-width="2.2" stroke-linejoin="round"/>
+  <g fill="#ffffff"><circle cx="44" cy="31" r="1.8"/><circle cx="57" cy="29" r="1.6"/><circle cx="42" cy="52" r="1.8"/><circle cx="56" cy="50" r="1.8"/><circle cx="64" cy="54" r="1.6"/><circle cx="36" cy="74" r="1.8"/><circle cx="50" cy="71" r="1.8"/><circle cx="62" cy="75" r="1.8"/></g>
+</svg>
